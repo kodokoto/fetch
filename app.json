@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "fetch",
-    "slug": "fetch",
+    "name": "app",
+    "slug": "app",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
     ]
   },
-  "name": "fetch"
+  "name": "app"
 }
