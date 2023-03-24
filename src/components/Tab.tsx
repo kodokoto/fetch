@@ -1,6 +1,7 @@
 //Import @React-navigation/native and bottom-tabs
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from '@expo/vector-icons';
+import { ImageBackground } from 'react-native';
 //Import pages from screens
 import HomeScreen from '../screens/Home';
 import ChatScreen from '../screens/Chat';  
@@ -12,6 +13,7 @@ const Tab = createBottomTabNavigator();
 export default function Tabs() {
     return(
           <Tab.Navigator
+
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
@@ -26,6 +28,30 @@ export default function Tabs() {
 
                     return <Ionicons name={iconName} size={size} color={color} />;
                 },
+                tabBarActiveTintColor: '#4c8ab9',
+                tabBarStyle: {
+                    borderTopWidth: 0,
+                    borderLeftWidth: 0,
+                    padding: 0,
+                    elevation: 0,
+                },
+                tabBarBackground: () => (
+                    <ImageBackground
+                      style={{
+                        flex : 1,
+                        width: '110%',
+                        height: '150%',
+                        //flexDirection: "row",
+                        alignItems: 'center',
+                        marginLeft: -15,
+                        marginBottom: -30,
+                        paddingLeft: '85%',
+                        justifyContent: "center",
+                      }}
+                      source={require('../assets/Bifford.png')}
+                      resizeMode="cover"
+                    />
+                  ),
             })}
           >
               <Tab.Screen name="Home" component={HomeScreen} />
