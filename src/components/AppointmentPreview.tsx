@@ -9,17 +9,16 @@ import Appointment from '../screens/Appointment';
 // import HomeScreen from '../screens/Home';
 import React, { Component } from "react";
 
-// const navigation = useNavigation();
-
 
 export default function AppointmentsPreview() {
     // imageUrl: String;
     // sitterName: String;
     // Appointment: String;
     // dateDescription: String;
+    const navigation = useNavigation();
+
     const handlePress = () => {
-        const navigation = useNavigation();
-        navigation.navigate('Appointment');
+        navigation.navigate('AppointmentDetails');
     }
 
     return(
@@ -34,5 +33,6 @@ export default function AppointmentsPreview() {
                 </Box>
             </Button> 
         </NativeBaseProvider>
+
     );
 }
