@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { Image, Text } from 'react-native';
-import { Avatar, Button, Box, NativeBaseProvider } from 'native-base';
+import { Button, Box, NativeBaseProvider } from 'native-base';
 //Import pages from screens
 import Appointment from '../screens/Appointment';
 // import HomeScreen from '../screens/Home';
@@ -23,16 +23,19 @@ export default function AppointmentsPreview() {
 
     return(
         <NativeBaseProvider>
-            <Button onPress={handlePress} height="120" width="40" borderColor="coolGray.200" borderWidth="1" alignSelf="center">
-                <Box maxW="80" rounded="lg" maxH="200">
-                    <Avatar source={{uri: "../assets/userIcon.png"}}>Js</Avatar>
-                    <Text>Jessica</Text>
-                    <Text>walk with fufu</Text>
-                    <Text>next friday at 10am</Text>
-                    <Text>weekly</Text>
+            <Button onPress={handlePress} height="50" width="300">
+                <Box className='bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800 mt-6' width={325} style={{ flexDirection: 'row' }}>
+                    <Image source={require('../assets/userIcon.png')} className='w-24 h-24 md:w-48 md:h-auto float-left mt-8'></Image>
+                    <Box className='ml-4 mt-8' >
+                        <Text className='font-bold text-lg'>Jessica</Text>
+                        <Text>walk with fufu</Text>
+                        <Text>next friday at 10am</Text>
+                    </Box>
+                    <Text className='mt-4 mr-8'>weekly</Text>
                 </Box>
             </Button> 
         </NativeBaseProvider>
+
 
     );
 }
