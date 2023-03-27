@@ -1,13 +1,8 @@
 //Import @React-navigation/native
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { Image, Text } from 'react-native';
 import { Button, Box, NativeBaseProvider } from 'native-base';
-//Import pages from screens
-import Appointment from '../screens/Appointment';
-// import HomeScreen from '../screens/Home';
-import React, { Component } from "react";
+import React from "react";
 
 
 export default function AppointmentsPreview() {
@@ -35,7 +30,5 @@ export default function AppointmentsPreview() {
                 </Box>
             </Button> 
         </NativeBaseProvider>
-
-
     );
 }
