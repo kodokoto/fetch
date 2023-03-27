@@ -18,15 +18,15 @@ export default function AppointmentsPreview() {
 
     return(
         <NativeBaseProvider>
-            <Button onPress={handlePress} className='items-center w-96 bg-transparent mt-20 h-12'>
-                <Box className='bg-slate-100 rounded-xl p-8 md:p-0 dark:bg-slate-800 w-80 h-48 ml-4 border-solid border-transparent border-2' style={{ flexDirection: 'row' }}>
-                    <Image source={require('../assets/userIcon.png')} className='w-24 h-24 md:w-48 md:h-auto float-left mt-4'></Image>
-                    <Box className='ml-4 mt-8' >
+            <Button onPress={handlePress} className='items-center w-96 bg-transparent mt-12 h-48'>
+                <Box className='bg-slate-100 rounded-xl p-4 md:p-0 dark:bg-slate-800 w-80 h-40 ml-4 border-solid border-transparent border-2' style={{ flexDirection: 'row' }}>
+                    <Image source={require('../assets/userIcon.png')} className='w-24 h-24 md:w-48 md:h-auto mt-4 float-left'></Image>
+                    <Box className='ml-4 float-left mt-4'>
                         <Text className='font-bold text-lg'>Jessica</Text>
                         <Text>walk with fufu</Text>
                         <Text>next friday at 10am</Text>
                     </Box>
-                    <Text className='mr-8'>weekly</Text>
+                    <Text className='mr-12 mt-0'>weekly</Text>
                 </Box>
             </Button> 
         </NativeBaseProvider>
