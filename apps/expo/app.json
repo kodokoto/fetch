@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "fetch",
+    "scheme": "fetch",
     "slug": "fetch",
     "version": "1.0.0",
     "orientation": "portrait",
