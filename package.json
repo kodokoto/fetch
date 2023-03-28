@@ -22,7 +22,9 @@
       "node": ">=16.0.0 <17.0.0"
     },
     "packageManager": "npm@8.15.0",
-    "dependencies": {
+    "dependencies": {  
+      "dotenv": "^16.0.3",
+      "dotenv-cli": "^6.0.0",
       "expo-dev-client": "~2.1.6"
     }
   }
