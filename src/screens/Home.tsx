@@ -6,11 +6,11 @@ import AppointmentsPreview from '../components/AppointmentPreview';
 
 // const Stack = createNativeStackNavigator();
 export const mockAppointmentData = {
-    imageUrl: "../assets/userIcon.png",
+    imageUrl: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
     sitterName: 'Jessica',
     appointment: 'walk with fufu',
     dateDescription: 'next friday at 10am',
-    bookingFrequency: 'weekly';
+    bookingFrequency: 'weekly'
 }
 
 
@@ -18,7 +18,6 @@ export default function Home() {
   return (
     
     <View>
-      <Text className="text-red-500">Test</Text>
       <AppointmentsPreview{...mockAppointmentData}/>
     </View>
   )

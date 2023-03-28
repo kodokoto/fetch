@@ -14,11 +14,6 @@ type AppointmentPreviewProps = {
 }
 
 export default function AppointmentsPreview(props: AppointmentPreviewProps) {
-    imageUrl: '../assets/userIcon.png';
-    sitterName: 'Jessica';
-    appointment: 'walk with fufu';
-    dateDescription: 'next friday at 10am';
-    bookingFrequency: 'weekly';
     const navigation = useNavigation();
 
     const handlePress = () => {
@@ -28,13 +23,13 @@ export default function AppointmentsPreview(props: AppointmentPreviewProps) {
     return(
         <Button onPress={handlePress} className='items-center w-96 bg-transparent mt-12 h-48'>
             <Box className='bg-slate-100 rounded-xl p-4 md:p-0 dark:bg-slate-800 w-80 h-40 ml-4 border-solid border-transparent border-2' style={{ flexDirection: 'row' }}>
-                <Image source={require(props.imageUrl)} className='w-24 h-24 md:w-48 md:h-auto mt-4 float-left'></Image>
+                <Image source={{uri: props.imageUrl}} className='w-24 h-24 md:w-48 md:h-auto mt-4 float-left'></Image>
                 <Box className='ml-4 float-left mt-4'>
-                    <Text className='font-bold text-lg'>props.sitterName</Text>
-                    <Text>props.appointment</Text>
-                    <Text>props.dateDescription</Text>
+                    <Text className='font-bold text-lg'>{props.sitterName}</Text>
+                    <Text>{props.appointment}</Text>
+                    <Text>{props.dateDescription}</Text>
                 </Box>
-                <Text className='mr-12 mt-0'>props.bookingFrequency</Text>
+                <Text className='mr-12 mt-0'>{props.bookingFrequency}</Text>
             </Box>
         </Button> 
     );
