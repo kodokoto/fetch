@@ -5,13 +5,21 @@ import React from 'react'
 import AppointmentsPreview from '../components/AppointmentPreview';
 
 // const Stack = createNativeStackNavigator();
+export const mockAppointmentData = {
+    imageUrl: "../assets/userIcon.png",
+    sitterName: 'Jessica',
+    appointment: 'walk with fufu',
+    dateDescription: 'next friday at 10am',
+    bookingFrequency: 'weekly';
+}
+
 
 export default function Home() {
   return (
     
     <View>
       <Text className="text-red-500">Test</Text>
-      {/* <AppointmentsPreview/> */}
+      <AppointmentsPreview{...mockAppointmentData}/>
     </View>
   )
 }
