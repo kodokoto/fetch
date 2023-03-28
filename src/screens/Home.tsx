@@ -11,7 +11,7 @@ export default function Home() {
     
     <View>
       <Text className="text-red-500">Test</Text>
-      <AppointmentsPreview/>
+      {/* <AppointmentsPreview/> */}
     </View>
   )
 }
