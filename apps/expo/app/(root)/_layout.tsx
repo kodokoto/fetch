@@ -8,19 +8,6 @@ export default function Layout() {
     }}
   >
     <Tabs.Screen 
-      name="index" 
-      options={{
-        title: "Home",
-        tabBarIcon: ({ focused, color, size }) => {
-          return <Ionicons 
-            name={focused ? "ios-home" : 'ios-home-outline'} 
-            size={size} 
-            color={color} 
-          />;
-        },
-      }} 
-    />
-    <Tabs.Screen 
       name="chat" 
       options={{
         title: "Chat",
@@ -32,6 +19,20 @@ export default function Layout() {
           />;
         },
       }}
+    />
+
+    <Tabs.Screen 
+      name="index" 
+      options={{
+        title: "Home",
+        tabBarIcon: ({ focused, color, size }) => {
+          return <Ionicons 
+            name={focused ? "ios-home" : 'ios-home-outline'} 
+            size={size} 
+            color={color} 
+          />;
+        },
+      }} 
     />
     <Tabs.Screen 
       name="search" 

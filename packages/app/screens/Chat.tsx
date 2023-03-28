@@ -6,7 +6,7 @@ import React from 'react'
 export default function Chat() {
   return (
     <View>
-      <Text className="text-blue-500">Test</Text>        
+      <Text className="text-green-500">Test</Text>        
     </View>
   )
 }
