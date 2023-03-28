@@ -1,8 +1,15 @@
-/** @type {import('tailwindcss').Config} */
+// @ts-check
+
+// @ts-ignore
+const { theme } = require('app/design/tailwind/theme')
+
+/**
+ * @type {import('tailwindcss').Config}
+ */
 module.exports = {
-  content: ["./App.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
+  content: ['./App.tsx', '../../packages/**/*.{js,jsx,ts,tsx}'],
   theme: {
-    extend: {},
+    ...theme,
   },
   plugins: [],
 }

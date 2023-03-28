@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from '../../packages/screens/Home';
-import Tabs from '../../packages/components/Tab';
+import Home from 'app/screens/Home';
+import Tabs from 'app/components/Tab';
 
 const Stack = createNativeStackNavigator();
 

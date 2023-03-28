@@ -35,24 +35,7 @@ export default function Tabs() {
                     padding: 0,
                     elevation: 0,
                 },
-                tabBarBackground: () => (
-                    <ImageBackground
-                      style={{
-                        flex : 1,
-                        width: '110%',
-                        height: '150%',
-                        //flexDirection: "row",
-                        alignItems: 'center',
-                        marginLeft: -15,
-                        marginBottom: -30,
-                        paddingLeft: '85%',
-                        justifyContent: "center",
-                      }}
-                      source={require('../assets/Bifford.png')}
-                      resizeMode="cover"
-                    />
-                  ),
-            })}
+          })}
           >
               <Tab.Screen name="Home" component={HomeScreen} />
               <Tab.Screen name="Chat" component={ChatScreen} />

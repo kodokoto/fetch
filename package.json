@@ -15,7 +15,8 @@
       "typescript": "^4.7.4"
     },
     "scripts": {
-      "native": "cd apps/expo && expo start"
+      "native": "cd apps/expo && expo start",
+      "web": "cd apps/next && yarn next"
     },
     "engines": {
       "node": ">=16.0.0 <17.0.0"
