@@ -4,8 +4,8 @@ import { TRPCProvider } from "app/utils/trpc";
 import { Slot } from "expo-router";
 import Constants from "expo-constants";
 import { tokenCache } from "app/provider/auth/cache";
-import SignInSignUpScreen from "app/screens/SignIn";
-import Home from "app/screens/Home";
+import SignInSignUpScreen from "app/design/screens/SignIn";
+import Home from "app/design/screens/Home";
 import { Provider } from "app/provider";
 
 export default function index() {

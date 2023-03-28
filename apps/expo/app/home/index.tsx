@@ -1,4 +1,4 @@
-import Home from "app/screens/Home";
+import Home from "app/design/screens/Home";
 
 export default function () { 
     return <Home />;

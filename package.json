@@ -15,8 +15,15 @@
       "typescript": "^4.7.4"
     },
     "scripts": {
-      "native": "cd apps/expo && expo start",
-      "web": "cd apps/next && yarn next"
+      "build": "turbo build",
+      "clean": "turbo clean",
+      "clean:workspaces": "turbo clean",
+      "dev": "turbo dev --parallel",
+      "db-generate": "turbo db-generate",
+      "db-push": "turbo db-push",
+      "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+      "lint": "turbo lint",
+      "type-check": "turbo type-check"
     },
     "engines": {
       "node": ">=16.0.0 <17.0.0"
