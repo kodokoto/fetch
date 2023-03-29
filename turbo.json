@@ -1,18 +1,32 @@
 {
     "$schema": "https://turbo.build/schema.json",
     "pipeline": {
-      "build": {
-        "outputs": ["dist/**"],
-        "dependsOn": ["^build"]
+      "db-generate": {
+        "inputs": ["prisma/schema.prisma"],
+        "cache": false
+      },
+      "db-push": {
+        "inputs": ["prisma/schema.prisma"],
+        "cache": false
       },
       "dev": {
-        "cache": false,
-        "persistent": true
+        "dependsOn": ["^db-generate"],
+        "cache": false
       },
-      "lint": {},
+      "build": {
+        "dependsOn": ["^build", "^db-generate"],
+        "outputs": [".next/**", ".expo/**"]
+      },
+      "lint": {
+        "outputs": []
+      },
       "clean": {
         "cache": false
-      }
+      },
+      "type-check": {
+        "dependsOn": ["^db-generate"],
+        "cache": false
+      }  
     },
     "globalEnv": [
       "DATABASE_URL",

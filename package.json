@@ -2,37 +2,39 @@
     "name": "fetch",
     "private": true,
     "workspaces": [
-      "apps/*",
-      "packages/*"
+        "apps/*",
+        "packages/*"
     ],
     "devDependencies": {
-      "@types/react": "^18.0.17",
-      "@types/react-native": "^0.69.5",
-      "eslint": "^8.21.0",
-      "prettier": "^2.7.1",
-      "prettier-plugin-tailwindcss": "^0.1.13",
-      "turbo": "^1.4.2",
-      "typescript": "^4.7.4"
+        "@types/react": "^18.0.17",
+        "@types/react-native": "^0.69.5",
+        "eslint": "^8.21.0",
+        "prettier": "^2.7.1",
+        "prettier-plugin-tailwindcss": "^0.1.13",
+        "turbo": "^1.4.2",
+        "typescript": "^4.7.4"
     },
     "scripts": {
-      "build": "turbo build",
-      "clean": "turbo clean",
-      "clean:workspaces": "turbo clean",
-      "dev": "turbo dev --parallel",
-      "db-generate": "turbo db-generate",
-      "db-push": "turbo db-push",
-      "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-      "lint": "turbo lint",
-      "type-check": "turbo type-check"
+        "build": "turbo build",
+        "clean": "turbo clean",
+        "clean:workspaces": "turbo clean",
+        "dev": "turbo dev --parallel",
+        "web": "turbo run dev --filter nextjs",
+        "native": "cd apps/expo && yarn dev",
+        "db-generate": "turbo db-generate",
+        "db-push": "turbo db-push",
+        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+        "lint": "turbo lint",
+        "type-check": "turbo type-check"
     },
     "engines": {
-      "node": ">=16.0.0 <17.0.0"
+        "node": ">=16.0.0 <17.0.0"
     },
     "packageManager": "npm@8.15.0",
-    "dependencies": {  
-      "dotenv": "^16.0.3",
-      "dotenv-cli": "^6.0.0",
-      "expo-dev-client": "~2.1.6"
+    "dependencies": {
+        "dotenv": "^16.0.3",
+        "dotenv-cli": "^6.0.0",
+        "expo-dev-client": "~2.1.6",
+        "next": "^0.1.0"
     }
-  }
-  
+}
