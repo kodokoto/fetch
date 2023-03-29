@@ -3,7 +3,7 @@ import { trpc } from "../../utils/trpc";
 
 export default function Home() {
   const { data, error } = trpc.booking.all.useQuery();
-  
+  console.log(data)
   if (error) {
     return <Text>{error.message}</Text>
   }
