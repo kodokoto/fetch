@@ -1,12 +1,13 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import { Avatar } from 'native-base'
 
+type User = {
+  iconUrl: string
+}
 
-
-export default function ProfileIcon() {
+export default function ProfileIcon(props: User) {
   return (
-    <View>
-      <Text className="text-blue-500">Test</Text>        
-    </View>
-  )
+    <Avatar source={{uri: props.iconUrl}}></Avatar>
+  );
 }
