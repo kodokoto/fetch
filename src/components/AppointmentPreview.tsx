@@ -1,7 +1,7 @@
 //Import @React-navigation/native
 import { useNavigation } from '@react-navigation/native';
 import { Image, Text } from 'react-native';
-import { Button, Box, NativeBaseProvider } from 'native-base';
+import { Button, Box} from 'native-base';
 import React from "react";
 
 
