@@ -1,7 +1,9 @@
 import { View, Text } from 'react-native'
 import React from "react";
 import { Box, Select, Button, Input, CheckIcon, Center, Radio, Heading,  NativeBaseProvider } from "native-base";
-import SearchResults from '../screens/SearchResults';
+import { useNavigation } from '@react-navigation/native';
+
+//Rating
 const Rating = () => {
   const [service, setService] = React.useState("");
   return <Center>
@@ -19,6 +21,8 @@ const Rating = () => {
       </Box>
     </Center>;
 };
+
+//Dropdown for service
 const Service = () => {
   const [service, setService] = React.useState("");
   return <Center>
@@ -35,6 +39,7 @@ const Service = () => {
     </Center>;
 };
 
+//Open for recurring visit
 const RadioButton = () => {
   const [value, setValue] = React.useState("Yes");
   return <Radio.Group name="radioButtons" accessibilityLabel="Available for recurring visit" value={value} onChange={nextValue => {
@@ -50,6 +55,12 @@ const RadioButton = () => {
 };
 
   export default function Filter() {
+    const navigation = useNavigation();
+    //Button handler
+    const handlePress = () => {
+        navigation.navigate('SearchResults');
+    }
+
     return (
       <NativeBaseProvider>
         <Box flex={1} bg="#fff" alignItems="center" justifyContent="center">
@@ -65,7 +76,7 @@ const RadioButton = () => {
           <Rating />
           <Heading>Proximity:</Heading>
           <Input mx="3" placeholder="Distance" w="100" />
-          <Button onPress={() => <SearchResults />}>Submit</Button>
+          <Button onPress={handlePress}>Submit</Button>
         </Box>
       </NativeBaseProvider>
   
