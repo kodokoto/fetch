@@ -10,10 +10,10 @@ export default function ProfileIcon(props: User) {
   const navigation = useNavigation();
 
   return (
-    <Box w="90%" alignItems="center">
-      <Menu w="190" trigger={triggerProps => {
+    <Box className='items-end'>
+      <Menu trigger={triggerProps => {
         return <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-                  <Avatar source={{uri: props.iconUrl}}/>
+                  <Avatar className='w-24 h-24 mx-6 mt-6' source={{uri: props.iconUrl}}/>
               </Pressable>;
         }}>
         <Menu.Item onPress={() => navigation.navigate('EditProfile')}>Edit Profile</Menu.Item>
