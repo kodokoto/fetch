@@ -7,6 +7,8 @@ import HomeScreen from '../screens/Home';
 import ChatScreen from '../screens/Chat';  
 import SearchScreen from '../screens/Search';  
 import React from "react";
+import Setting from "../screens/Setting";
+import EditProfile from "../screens/EditProfile";
 
 const Tab = createBottomTabNavigator();
 
