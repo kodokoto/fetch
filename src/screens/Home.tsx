@@ -5,7 +5,6 @@ export default function Home() {
   return (
     <View>
       <Text className="text-red-500">Test</Text> 
-    </View>
-        
+    </View>  
   )
 }
