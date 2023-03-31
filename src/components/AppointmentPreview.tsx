@@ -1,11 +1,12 @@
 //Import @React-navigation/native
 import { useNavigation } from '@react-navigation/native';
 import { Image, Text } from 'react-native';
-import { Button, Box} from 'native-base';
+import { Button, Box, FormControl } from 'native-base';
 import React from "react";
 
 
 type AppointmentPreviewProps = {
+    id: number,
     imageUrl: string;
     sitterName: string;
     appointment: string;
@@ -17,8 +18,16 @@ export default function AppointmentsPreview(props: AppointmentPreviewProps) {
     const navigation = useNavigation();
 
     const handlePress = () => {
-        navigation.navigate('AppointmentDetails');
-    }
+        const appointmentData = {
+          id: props.id,
+          imageUrl: props.imageUrl,
+          sitterName: props.sitterName,
+          appointment: props.appointment,
+          dateDescription: props.dateDescription,
+          bookingFrequency: props.bookingFrequency
+        };
+        navigation.navigate('AppointmentDetails', { appointmentData });
+      };
 
     return(
         <Button onPress={handlePress} className='m-auto w-80 bg-slate-100 mt-6 h-40 hover:bg-[#4c8ab9]'>
@@ -31,6 +40,6 @@ export default function AppointmentsPreview(props: AppointmentPreviewProps) {
                 </Box>
                 <Text className='mr-12 mt-0'>{props.bookingFrequency}</Text>
             </Box>
-        </Button> 
+        </Button>
     );
 }

@@ -5,6 +5,7 @@ import AppointmentsPreview from '../components/AppointmentPreview';
 // const Stack = createNativeStackNavigator();
 export const mockAppointmentData = [
   {
+    id: 1,
     imageUrl: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
     sitterName: 'Jessica',
     appointment: 'walk with fufu',
@@ -12,6 +13,7 @@ export const mockAppointmentData = [
     bookingFrequency: 'weekly'
   },
   {
+    id: 2,
     imageUrl: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
     sitterName: 'Jessica',
     appointment: 'walk with fufu',
