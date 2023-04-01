@@ -6,8 +6,10 @@ import Appointment from './src/screens/AppointmentDetails';
 import SearchResults from './src/screens/SearchResults';
 import Tabs from './src/components/Tab';
 import { NativeBaseProvider } from 'native-base';
-import Setting from './src/screens/Setting';
+import Setting from './src/screens/Settings';
 import EditProfile from './src/screens/EditProfile';
+import VisualSettings from './src/screens/VisualSettings';
+import TermsAndConditions from './src/screens/TermsAndConditions';
 
 
 const Stack = createNativeStackNavigator();
@@ -23,6 +25,8 @@ export default function App() {
           <Stack.Screen name="Setting" component={Setting} />
           <Stack.Screen name='EditProfile' component={EditProfile} />
           <Stack.Screen name="SearchResults" component={SearchResults} />
+          <Stack.Screen name="VisualSettings" component={VisualSettings} />
+          <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
         </Stack.Navigator>  
       </NavigationContainer>
     </NativeBaseProvider>
