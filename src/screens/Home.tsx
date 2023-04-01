@@ -3,6 +3,27 @@ import { Box } from 'native-base'
 import React from 'react'
 import ProfileIcon from '../components/ProfileIcon'
 import WelcomeMessage from '../components/WelcomeMessage'
+import AppointmentsPreview from '../components/AppointmentPreview';
+
+// const Stack = createNativeStackNavigator();
+export const mockAppointmentData = [
+  {
+    id: 1,
+    imageUrl: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
+    sitterName: 'Jessica',
+    appointment: 'walk with fufu',
+    dateDescription: 'next friday at 10am',
+    bookingFrequency: 'weekly'
+  },
+  {
+    id: 2,
+    imageUrl: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
+    sitterName: 'Jessica',
+    appointment: 'walk with fufu',
+    dateDescription: 'next friday at 10am',
+    bookingFrequency: 'weekly'
+  }
+]
 
 export const mockUserData = {
   iconUrl:
@@ -17,6 +38,9 @@ export default function Home() {
         <WelcomeMessage {...mockUserData} />
         <ProfileIcon {...mockUserData} />
       </Box>
+      {mockAppointmentData.map((data, index) => (
+        <AppointmentsPreview key={index} {...data} />
+      ))}
     </View>
   )
 }
