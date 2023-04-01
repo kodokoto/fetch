@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/screens/Home';
-import Appointment from './src/screens/Appointment';
+import Appointment from './src/screens/AppointmentDetails';
 import SearchResults from './src/screens/SearchResults';
 import Tabs from './src/components/Tab';
 import { NativeBaseProvider } from 'native-base';
