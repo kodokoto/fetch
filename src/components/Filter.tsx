@@ -1,23 +1,21 @@
 import React from "react";
-import { Box, Select, FormControl, Text, Button, Input, HStack, CheckIcon, Radio, NativeBaseProvider } from "native-base";
+import { Box, Select, FormControl, Text, Button, Input, HStack, CheckIcon, Slider, NativeBaseProvider } from "native-base";
 import { useNavigation } from '@react-navigation/native';
 
-//Rating
-const Rating = () => {
-  const [service, setService] = React.useState("");
-  return <Box maxW="full">
-        <Select selectedValue={service} minWidth="full" accessibilityLabel="Choose rating" placeholder="Rating" _selectedItem={{
-        bg: "teal.600",
-        endIcon: <CheckIcon size="5" />
-      }} mt={1} onValueChange={itemValue => setService(itemValue)}>
-          <Select.Item label="1" value="one" />
-          <Select.Item label="2" value="two" />
-          <Select.Item label="3" value="three" />
-          <Select.Item label="4" value="four" />
-          <Select.Item label="5" value="five" />
-        </Select>
-      </Box>
-    
+const Proximity = () => {
+  const [onChangeValue, setOnChangeValue] = React.useState(0);
+  return <Box alignItems="center" w="100%">
+    <HStack>
+      <Slider w="3/4" maxW="300" defaultValue={0} minValue={0} maxValue={100} accessibilityLabel="hello world" step={10}
+      onChange={v => { setOnChangeValue(Math.floor(v)); }}>
+        <Slider.Track>
+          <Slider.FilledTrack />
+        </Slider.Track>
+        <Slider.Thumb />
+      </Slider>
+      <Text textAlign="center">      {onChangeValue} Miles</Text>
+    </HStack> 
+  </Box>;
 };
 
 //Dropdown for service
@@ -37,16 +35,17 @@ const Service = () => {
 };
 
 //Open for recurring visit
-const RadioButton = () => {
-  const [value, setValue] = React.useState("Yes");
-  return  <Radio.Group name="radioButtons" accessibilityLabel="Available for recurring visit" value={value} onChange={nextValue => { setValue(nextValue); }}>
-    <HStack space={5}>
-     <Radio value="Yes" my={1}>Yes</Radio>
-      <Radio value="No" my={1}>No</Radio>
-     </HStack>
-   
-       
-    </Radio.Group>;
+const Recurring = () => {
+  const [service, setService] = React.useState("");
+  return <Box maxW="full">
+        <Select selectedValue={service} minWidth="full" accessibilityLabel="Choose availability" placeholder="Choose availability" _selectedItem={{
+        bg: "teal.600",
+        endIcon: <CheckIcon size="5" />
+      }} mt={1} onValueChange={itemValue => setService(itemValue)}>
+          <Select.Item label="Yes" value="yes" />
+          <Select.Item label="No" value="no" />
+        </Select>
+      </Box>
 };
 
   export default function Filter() {
@@ -68,15 +67,9 @@ const RadioButton = () => {
           <FormControl.Label _text={{ bold: true }}>Service:</FormControl.Label>
           <Service />
           <FormControl.Label _text={{ bold: true }}>Open for recurring visit:</FormControl.Label>
-          <RadioButton />
-          <FormControl.Label _text={{ bold: true }}>User rating:</FormControl.Label>
-          <Rating />
+          <Recurring />
           <FormControl.Label _text={{ bold: true }}>Proximity:</FormControl.Label>
-          <HStack space={2}>
-            <Input my="1" placeholder="Distance" w='300' keyboardType='numeric' />
-            <Text my={4}>Miles</Text>
-          </HStack>
-          
+          <Proximity /> 
           <Button my={5} onPress={handlePress}>Submit</Button>
         </Box>
       </NativeBaseProvider>
