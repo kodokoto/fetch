@@ -1,10 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import Filter from '../components/Filter'
 
-export default function Chat() {
+export default function Search() {
   return (
-    <View>
-      <Text className="text-orange-500">Test</Text>
-    </View>
+        <View className='h-96'>
+          <Filter/>
+        </View>
   )
 }
+
