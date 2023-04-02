@@ -47,7 +47,7 @@ export default function AppointmentsPreview(props: AppointmentPreviewProps) {
                 <Ionicons size={24} className='flex-start' name="ios-calendar-outline"></Ionicons>
                 <Text className='mx-2 text-md'>{props.dateDescription}</Text>
                 <Ionicons size={24} name="ios-time-outline"></Ionicons>
-                <Text className='mx-2 text-md'>{props.timeDescriptiom}</Text>
+                <Text className='mx-2 text-md'>{props.timeDescription}</Text>
             </Box>
         </Button>
     );
