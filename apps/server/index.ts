@@ -17,6 +17,6 @@ app.use(
     }),
   );
   
-  app.listen(5000, () => console.log('up and running on', 'localhost:5000'));
+  app.listen(3000, () => console.log('up and running on', 'localhost:3000'));
   
   export type { AppRouter } from 'api'

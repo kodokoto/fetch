@@ -19,6 +19,7 @@
     "lint": "turbo lint",
     "type-check": "turbo type-check"
   },
-  "dependencies": {
+  "devDependencies": {
+    "turbo": "^1.8.8"
   }
 }

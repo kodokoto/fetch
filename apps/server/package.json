@@ -5,7 +5,8 @@
     "types": "index.tsx",
     "scripts": {
       "dev": "tsx index.ts",
-      "build": "tsc -p ."
+      "build": "tsc -p .",
+      "clean": "rm -r ./node_modules"
     },
     "dependencies": {
       "api": "*",
