@@ -12,15 +12,17 @@ export const mockAppointmentData = [
     imageUrl: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
     sitterName: 'Jessica',
     appointment: 'walk with fufu',
-    dateDescription: 'next friday at 10am',
-    bookingFrequency: 'weekly'
+    dateDescription: 'Friday, 21 April',
+    timeDescription: '1:00 - 4:00 PM',
+    bookingFrequency: 'monthly'
   },
   {
     id: 2,
     imageUrl: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
     sitterName: 'Jessica',
     appointment: 'walk with fufu',
-    dateDescription: 'next friday at 10am',
+    dateDescription: 'Monday, 29 July',
+    timeDescription: '11:00 - 12:00 AM',
     bookingFrequency: 'weekly'
   }
 ]
@@ -28,7 +30,8 @@ export const mockAppointmentData = [
 export const mockUserData = {
   iconUrl:
     'https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-  userName: 'Joey',
+  name: 'Sofia Klarna',
+  role: 'Owner'
 }
 
 export default function Home() {
@@ -38,6 +41,7 @@ export default function Home() {
         <WelcomeMessage {...mockUserData} />
         <ProfileIcon {...mockUserData} />
       </Box>
+      <Text className='font-bold text-xl ml-2'>Upcoming Appointments</Text>
       {mockAppointmentData.map((data, index) => (
         <AppointmentsPreview key={index} {...data} />
       ))}

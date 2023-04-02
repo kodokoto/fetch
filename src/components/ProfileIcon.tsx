@@ -16,7 +16,7 @@ export default function ProfileIcon(props: User) {
           return (
             <Pressable accessibilityLabel="More options menu" {...triggerProps}>
               <Avatar
-                className="w-24 h-24 mx-6 mt-6"
+                className="w-16 h-16 mr-2 ml-14 mt-10"
                 source={{ uri: props.iconUrl }}
               />
             </Pressable>
