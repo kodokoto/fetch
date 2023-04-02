@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// this is a database for a pet app, which has 2 different types of users: Owner and Sitter
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String?
+  role      Role     @default(OWNER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  pets      Pet[]
+}
+
+model Pet {
+  id          Int       @id @default(autoincrement())
+  name        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  ownerId     Int
+  owner       User      @relation(fields: [ownerId], references: [id])
+  bookings    Booking[]
+  services    Service[]
+  description String?
+
+  @@index([ownerId])
+}
+
+enum Role {
+  OWNER
+  SITTER
+}
+
+model Service {
+  id          Int         @id @default(autoincrement())
+  type        ServiceType
+  price       Float
+  description String
+  length      Int
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  pets        Pet[]
+  bookings    Booking[]
+}
+
+enum ServiceType {
+  WALK
+  PET_CARE
+  HOUSE_SITTING
+}
+
+
+model Booking {
+  id        Int           @id @default(autoincrement())
+  status    BookingStatus
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  ownerId   Int
+  sitterId  Int
+  services  Service[]
+  pets      Pet[]
+}
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
