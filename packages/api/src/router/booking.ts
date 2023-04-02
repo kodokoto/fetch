@@ -9,4 +9,7 @@ export const bookingRouter = router({
   byId: publicProcedure.input(z.number()).query(({ input }) => {
     return prisma.booking.findFirst({ where: { id: input } });
   }),
+  echo: publicProcedure.input(z.string()).query(({ input }) => {
+    return input;
+  })
 });
