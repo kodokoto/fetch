@@ -8,6 +8,7 @@ import Tabs from './src/components/Tab';
 import { NativeBaseProvider } from 'native-base';
 import Setting from './src/screens/Setting';
 import EditProfile from './src/screens/EditProfile';
+import DirectMessages from './src/screens/DirectMessages';
 
 
 const Stack = createNativeStackNavigator();
@@ -20,6 +21,7 @@ export default function App() {
           <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />   
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="AppointmentDetails" component={Appointment} />
+          <Stack.Screen name="DirectMessages" component={DirectMessages} options={({ route }) => ({ title: route.params.username})}  />       
           <Stack.Screen name="Setting" component={Setting} />
           <Stack.Screen name='EditProfile' component={EditProfile} />
           <Stack.Screen name="SearchResults" component={SearchResults} />
