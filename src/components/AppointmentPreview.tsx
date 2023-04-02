@@ -34,14 +34,16 @@ export default function AppointmentsPreview(props: AppointmentPreviewProps) {
 
     return(
         <Button onPress={handlePress} className='m-auto rounded-2xl w-80 bg-[#4c8ab9] mt-6 h-30 hover:bg-[#4c8ab9]  border-solid border-transparent border-2'>
-            <Box className='bg-[#4c8ab9] rounded-2xl p-4 w-80 h-25 mb-2' style={{ flexDirection: 'row' }}>
-                <Avatar source={{uri: props.imageUrl}} className='w-12 h-12 md:w-48 md:h-auto float-left'></Avatar>
-                <Box className='ml-4 float-left'>
-                    <Text className='font-bold text-lg'>{props.sitterName}</Text>
-                    <Text>{props.appointment}</Text>
-                    {/* <Text>{props.dateDescription}</Text> */}
+            <Box className='bg-[#4c8ab9] rounded-2xl p-4 w-80 h-25 mb-2 flex-wrap flex-row justify-between'>
+                <Box className='flex-start' style={{ flexDirection: 'row' }}>
+                    <Avatar source={{uri: props.imageUrl}} className='w-12 h-12 md:w-48 md:h-auto float-left'></Avatar>
+                    <Box className='ml-4 float-left'>
+                        <Text className='font-bold text-lg'>{props.sitterName}</Text>
+                        <Text>{props.appointment}</Text>
+                        {/* <Text>{props.dateDescription}</Text> */}
+                    </Box>
                 </Box>
-                <Text className='ml-24 mr-12 mt-0'>{props.bookingFrequency}</Text>
+                <Text className='flex-end'>{props.bookingFrequency}</Text>
             </Box>
             <Box className='ml-4 flex-wrap flex-row'>
                 <Ionicons size={24} className='flex-start' name="ios-calendar-outline"></Ionicons>

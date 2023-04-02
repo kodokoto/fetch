@@ -10,7 +10,7 @@ export const mockAppointmentData = [
   {
     id: 1,
     imageUrl: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
-    sitterName: 'Jessica',
+    sitterName: 'Joey',
     appointment: 'walk with fufu',
     dateDescription: 'Friday, 21 April',
     timeDescription: '1:00 - 4:00 PM',
@@ -20,7 +20,7 @@ export const mockAppointmentData = [
     id: 2,
     imageUrl: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png',
     sitterName: 'Jessica',
-    appointment: 'walk with fufu',
+    appointment: 'walk with mario',
     dateDescription: 'Monday, 29 July',
     timeDescription: '11:00 - 12:00 AM',
     bookingFrequency: 'weekly'
