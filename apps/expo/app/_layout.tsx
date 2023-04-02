@@ -5,7 +5,7 @@ export default function root() {
 
   return (
     <Provider>
-      <Stack />
+        <Stack />
     </Provider>
-    )
+  )
 }

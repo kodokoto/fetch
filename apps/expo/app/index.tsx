@@ -1,34 +1,27 @@
-import { View, Text } from 'react-native'
 import React from 'react'
-import { trpc } from '../../../packages/app/utils/trpc'
+import { SignedIn, SignedOut, useClerk } from '@clerk/clerk-expo'
+import SignInWithOAuth from 'app/components/SignInWithOAuth'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import Bookings from 'app/components/Bookings'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Text } from 'react-native'
+
 
 export default function index() {
-
-  const { data, error, isLoading } = trpc.booking.all.useQuery();
-  
-  if (isLoading) {
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    )
-  }
-
-  if (error) {
-    return (
-      <View>
-        <Text className='text-red-600'>Error: {error.message}</Text>
-      </View>
-    )
-  }
-
+  const { signOut } = useClerk()
   return (
-    <View>
-      <Text className='text-red-600'>
-        {data.map(
-          (booking) => `${booking.id} - ${booking.ownerId} - ${booking.status}`
-        )}
-      </Text>
-    </View>
+    <>
+      <SafeAreaView>
+        <SignedIn>
+          <Bookings />
+          <TouchableOpacity onPress={() => signOut()} >
+            <Text>Sign out</Text>
+          </TouchableOpacity>
+        </SignedIn>
+        <SignedOut>
+          <SignInWithOAuth />
+        </SignedOut>
+      </SafeAreaView>
+    </>
   )
 }
