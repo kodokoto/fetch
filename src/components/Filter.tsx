@@ -72,6 +72,7 @@ const Recurring = () => {
           <Proximity /> 
           <Button my={5} onPress={handlePress}>Submit</Button>
         </Box>
+        
       </NativeBaseProvider>
   
     )
