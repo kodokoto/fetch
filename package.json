@@ -20,6 +20,5 @@
     "type-check": "turbo type-check"
   },
   "dependencies": {
-    "expo": "^47.0.13"
   }
 }

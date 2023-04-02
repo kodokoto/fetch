@@ -1,0 +1,16 @@
+{
+    "name": "api",
+    "version": "0.0.0",
+    "packageManager": "yarn@3.2.3",
+    "types": "./index.ts",
+    "license": "MIT",
+    "dependencies": {
+        "@trpc/server": "^10.18.0",
+        "db": "*",
+        "zod": "^3.21.4"
+    },
+    "devDependencies": {
+        "eslint": "^8.28.0",
+        "typescript": "4.9.4"
+    }
+}
