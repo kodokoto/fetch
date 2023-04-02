@@ -25,16 +25,19 @@ export default function ViewProfile() {
   return (
     <NativeBaseProvider>
       <View>
-        <Image
-          className="w-28 h-28 rounded-full"
-          source={require('../assets/pfp.png')}
-        />
-
-        <Text className="text-orange">Leonard Lungu</Text>
-        <Text>Pet Sitter</Text>
-
-        <ProfileRating />
-
+        <View className="flex-row">
+          <View>
+            <Image
+              className="w-28 h-28 rounded-full"
+              source={require('../assets/pfp.png')}
+            />
+          </View>
+          <View>
+            <Text className="text-orange">Leonard Lungu</Text>
+            <Text>Pet Sitter</Text>
+            <ProfileRating />
+          </View>
+        </View>
         <View className="flex-row">
           <Text className="text-2xl">About me</Text>
 

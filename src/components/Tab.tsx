@@ -6,7 +6,6 @@ import { ImageBackground } from 'react-native'
 import HomeScreen from '../screens/Home'
 import ChatScreen from '../screens/Chat'
 import SearchScreen from '../screens/Search'
-import ProfileScreen from '../screens/ViewProfileSitter'
 import React from 'react'
 
 const Tab = createBottomTabNavigator()
@@ -24,8 +23,6 @@ export default function Tabs() {
             iconName = focused ? 'ios-chatbubble' : 'ios-chatbubble-outline'
           } else if (route.name === 'Search') {
             iconName = focused ? 'ios-search' : 'ios-search-outline'
-          } else if (route.name === 'Profile') {
-            iconName = focused ? 'ios-person' : 'ios-person-outline'
           }
 
           return <Ionicons name={iconName} size={size} color={color} />
@@ -59,7 +56,6 @@ export default function Tabs() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Chat" component={ChatScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   )
 }
