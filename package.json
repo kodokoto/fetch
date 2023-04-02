@@ -2,6 +2,24 @@
   "name": "fetch",
   "version": "1.0.0",
   "description": "a pet sitting app",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
+    "build": "turbo build",
+    "clean": "turbo clean",
+    "clean:workspaces": "turbo clean",
+    "dev": "turbo dev --parallel",
+    "web": "turbo run dev --filter nextjs",
+    "native": "cd apps/expo && yarn dev",
+    "db-generate": "turbo db-generate",
+    "db-push": "turbo db-push",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo lint",
+    "type-check": "turbo type-check"
+  },
+  "dependencies": {
+    "expo": "^47.0.13"
   }
 }
