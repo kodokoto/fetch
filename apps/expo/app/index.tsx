@@ -17,14 +17,14 @@ export default function index() {
   if (error) {
     return (
       <View>
-        <Text>Error: {error.message}</Text>
+        <Text className='text-red-600'>Error: {error.message}</Text>
       </View>
     )
   }
 
   return (
     <View>
-      <Text>{data.map(
+      <Text className='text-red-600'>{data.map(
         (item) => {
           return item.id
         }
