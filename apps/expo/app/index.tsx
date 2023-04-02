@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { trpc } from '../utils/trpc'
+import { trpc } from '../../../packages/app/utils/trpc'
 
 export default function index() {
 
@@ -24,11 +24,11 @@ export default function index() {
 
   return (
     <View>
-      <Text className='text-red-600'>{data.map(
-        (item) => {
-          return item.id
-        }
-      )}</Text>
+      <Text className='text-red-600'>
+        {data.map(
+          (booking) => `${booking.id} - ${booking.ownerId} - ${booking.status}`
+        )}
+      </Text>
     </View>
   )
 }

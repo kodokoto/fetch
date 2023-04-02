@@ -10,6 +10,7 @@
     "clean": "rm -r ./node_modules/ && rm -r ./.expo"
   },
   "dependencies": {
+    "app": "*",
     "@types/react": "~18.0.24",
     "@types/react-native": "~0.70.6",
     "expo": "~47.0.13",
