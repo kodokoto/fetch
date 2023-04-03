@@ -8,8 +8,12 @@ import ChatScreen from '../screens/Chat'
 import SearchScreen from '../screens/Search'
 import React from 'react'
 import Appointment from '../screens/Appointment'
+import Setting from '../screens/Settings'
 
 const Tab = createBottomTabNavigator()
+
+//create a function which cahnges the colour of the background in Tab.tsx to black
+
 
 export default function Tabs() {
   return (
@@ -26,11 +30,13 @@ export default function Tabs() {
             iconName = focused ? 'ios-chatbubble' : 'ios-chatbubble-outline'
           } else if (route.name === 'Search') {
             iconName = focused ? 'ios-search' : 'ios-search-outline'
+          } else if (route.name === 'Settings') {
+            iconName = focused ? 'ios-settings' : 'ios-settings-outline'
           }
 
           return <Ionicons name={iconName} size={size} color={color} />
         },
-        tabBarActiveTintColor: '#4c8ab9',
+         tabBarActiveTintColor: '#4c8ab9',
         tabBarStyle: {
           borderTopWidth: 0,
           borderLeftWidth: 0,
@@ -60,6 +66,7 @@ export default function Tabs() {
       <Tab.Screen name="Appointment" component={Appointment} />
       <Tab.Screen name="Chat" component={ChatScreen} />
       <Tab.Screen name="Search" component={SearchScreen} />
+      <Tab.Screen name="Settings" component={Setting} />
     </Tab.Navigator>
   )
 }
