@@ -14,6 +14,8 @@ import TermsAndConditions from './src/screens/TermsAndConditions';
 import FAQ from './src/screens/FAQ';
 import { useState } from 'react';
 import FontContext from './src/components/FontContext';
+import DirectMessages from './src/screens/DirectMessages';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +28,7 @@ export default function App() {
             <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
             <Stack.Screen name="Home" component={Home} />
             <Stack.Screen name="AppointmentDetails" component={Appointment} />
+            <Stack.Screen name="DirectMessages" component={DirectMessages} options={({ route }) => ({ title: route.params.username})}  />  
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name='EditProfile' component={EditProfile} />
             <Stack.Screen name="SearchResults" component={SearchResults} />

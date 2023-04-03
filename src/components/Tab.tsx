@@ -24,7 +24,7 @@ export default function Tabs() {
 
           if (route.name === 'Home') {
             iconName = focused ? 'ios-home' : 'ios-home-outline'
-          } else if (route.name === 'Appointment'){
+          } else if (route.name === 'Appointment') {
             iconName = focused ? 'ios-calendar' : 'ios-calendar-outline'
           } else if (route.name === 'Chat') {
             iconName = focused ? 'ios-chatbubble' : 'ios-chatbubble-outline'
