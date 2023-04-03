@@ -7,7 +7,6 @@ import BookingPreview from 'app/components/BookingPreview';
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import { trpc } from 'app/utils/trpc';
 
-
 export default function Home() {
     // const { isLoaded, userId, sessionId, getToken } = useAuth();
     const { isLoaded, isSignedIn, user } = useUser();

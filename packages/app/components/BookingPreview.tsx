@@ -45,7 +45,11 @@ export default function BookingPreview(props: Booking) {
     const { data, error, isLoading } = trpc.sitter.byId.useQuery(props.sitterId);
 
     const handlePress = () => {
-      };
+        router.push({
+            pathname: `/booking/${props.id}`,
+            params: { bookingId: props.id }
+        })
+    };
 
     if (isLoading) return <Text>Loading...</Text>;
     if (error) return <Text>{error.message}</Text>;
