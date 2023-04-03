@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { Box } from 'native-base'
 
-function TermsAndConditionsText() {
+function AboutUsText() {
   return (
     <Box flex={1} bg="#fff" p={4}>
       <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie non nulla eget finibus. Donec vel nisi a tellus feugiat commodo eu ut sem. Phasellus nec sagittis nisl. Sed eu mi nec turpis vulputate condimentum. Nulla in vehicula nisl. Donec nec lacus nulla. Nunc blandit ligula eget odio viverra, sit amet porttitor nisi pulvinar. Quisque ornare ligula ac scelerisque malesuada. Aenean tincidunt, sapien sit amet consectetur dapibus, est lorem viverra massa, condimentum vulputate lorem elit non nulla. Vestibulum vestibulum sed quam eu consequat. Donec nec ligula non lectus luctus ultricies a sed dolor. Mauris nec nulla vitae tellus scelerisque vestibulum. Aenean ultrices ut quam sit amet posuere. Aliquam tempor nisi eget egestas fringilla. Aliquam vel iaculis nibh.
@@ -18,4 +18,4 @@ Integer tincidunt tincidunt maximus. In hac habitasse platea dictumst. Nunc faci
   )
 }
 
-export default TermsAndConditionsText
+export default AboutUsText
