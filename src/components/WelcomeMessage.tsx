@@ -4,8 +4,8 @@ import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
 
 type User = {
-  iconUrl: string,
-  name: string,
+  iconUrl: string
+  name: string
   role: string
 }
 
@@ -15,9 +15,13 @@ export default function WelcomeMessage(props: User) {
       <Text className="font-bold text-lg">Hello</Text>
       <Text className="font-bold text-2xl">
         {props.name}
-        <Ionicons size={30} color='#4c8ab9' className='ml-2' name="hand-left-outline"></Ionicons>
+        <Ionicons
+          size={30}
+          color="#4c8ab9"
+          className="ml-2"
+          name="hand-left-outline"
+        ></Ionicons>
       </Text>
-      
     </Box>
   )
 }
