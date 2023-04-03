@@ -2,9 +2,7 @@ import React from 'react'
 import { SignedIn, SignedOut, useClerk } from '@clerk/clerk-expo'
 import SignInWithOAuth from 'app/components/SignInWithOAuth'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Bookings from 'app/components/Bookings'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { Text } from 'react-native'
+import { Redirect } from 'expo-router'
 
 
 export default function index() {
@@ -13,10 +11,11 @@ export default function index() {
     <>
       <SafeAreaView>
         <SignedIn>
-          <Bookings />
+          <Redirect href="/home" />
+          {/* <Bookings />
           <TouchableOpacity onPress={() => signOut()} >
             <Text>Sign out</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </SignedIn>
         <SignedOut>
           <SignInWithOAuth />

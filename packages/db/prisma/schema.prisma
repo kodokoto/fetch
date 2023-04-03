@@ -14,14 +14,17 @@ datasource db {
 // this is a database for a pet app, which has 2 different types of users: Owner and Sitter
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  name      String?
-  role      Role     @default(OWNER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  // id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  googleId  String    @unique
+  name      String
+  role      Role      @default(OWNER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   pets      Pet[]
+  bookings  Booking[]
+  imageUrl  String
 }
 
 model Pet {
@@ -61,18 +64,28 @@ enum ServiceType {
   HOUSE_SITTING
 }
 
-
 model Booking {
-  id        Int           @id @default(autoincrement())
+  id        Int               @id @default(autoincrement())
   status    BookingStatus
   startDate DateTime
   endDate   DateTime
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  owner     User              @relation(fields: [ownerId], references: [id])
   ownerId   Int
   sitterId  Int
   services  Service[]
   pets      Pet[]
+  frequency BookingFrequency?
+
+  @@index([ownerId])
+}
+
+enum BookingFrequency {
+  ONE_OFF
+  WEEKLY
+  BI_WEEKLY
+  MONTHLY
 }
 
 enum BookingStatus {

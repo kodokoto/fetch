@@ -21,5 +21,6 @@
   },
   "devDependencies": {
     "turbo": "^1.8.8"
-  }
+  },
+  "prisma.schema": "packages/db/prisma/schema.prisma"
 }
