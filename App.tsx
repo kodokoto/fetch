@@ -18,11 +18,9 @@ import FontContext from './src/components/FontContext';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  const [fontSize, setFontSize] = useState(16);
 
   return (
     <NativeBaseProvider>
-      <FontContext.Provider value={{ fontSize, setFontSize }}>
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
@@ -37,7 +35,6 @@ export default function App() {
             <Stack.Screen name="FAQ" component={FAQ} />
           </Stack.Navigator>
         </NavigationContainer>
-      </FontContext.Provider>
     </NativeBaseProvider>
   );
 }
