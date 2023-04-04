@@ -15,7 +15,7 @@ import FAQ from './src/screens/FAQ';
 import { useState } from 'react';
 import FontContext from './src/components/FontContext';
 import DirectMessages from './src/screens/DirectMessages';
-
+import ViewProfile from './src/screens/ViewProfileSitter';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +36,7 @@ export default function App() {
             <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
             <Stack.Screen name="AboutUs" component={AboutUs} />
             <Stack.Screen name="FAQ" component={FAQ} />
+            <Stack.Screen name="ViewProfileSitter" component={ViewProfile} />
           </Stack.Navigator>
         </NavigationContainer>
     </NativeBaseProvider>
