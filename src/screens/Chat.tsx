@@ -1,18 +1,11 @@
-import { View, TouchableOpacity, Text, Image, ImageBackground, TextInput } from 'react-native'
+import { View, Text, TextInput } from 'react-native'
 import React, { useEffect, useState, useRef } from 'react'
 import ChatContact from '../components/ChatContact';
 import { Ionicons } from '@expo/vector-icons';
-import { createNativeStackNavigator } from "@react-navigation/bottom-tabs";
-import { Flex } from 'native-base'
-import { border } from 'native-base/lib/typescript/theme/styled-system'
 
 export default function Chat({ navigation }) {
   const [chatLogs, setChatLogs] = useState(null);
   const contacts = useRef([]);
-  const [text, setText] = useState("");
-  const [imageUrl, setImageUrl] = useState("../assets/Bifford.png");
-
-  let chatLogComponents = null;
 
   useEffect(() => {
     const chatLogData = require("../assets/exampleChatData.json");
