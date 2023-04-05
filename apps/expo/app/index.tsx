@@ -12,11 +12,6 @@ export default function index() {
       <SafeAreaView>
         <SignedIn>
           <Redirect href="/home" />
-          {/* <Text>Hello</Text> */}
-          {/* <Bookings />
-          <TouchableOpacity onPress={() => signOut()} >
-            <Text>Sign out</Text>
-          </TouchableOpacity> */}
         </SignedIn>
         <SignedOut>
           <SignInWithOAuth />

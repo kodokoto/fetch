@@ -1,5 +1,5 @@
 import React from 'react'
-import { trpc } from '../../utils/trpc';
+import { api } from '../../utils/trpc';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { httpBatchLink } from '@trpc/client'
 import Constants from 'expo-constants';
@@ -19,7 +19,7 @@ const getBaseUrl = () => {
 export default function TRPCProvider({children}) {
     const [queryClient] = React.useState(() => new QueryClient())
     const [trpcClient] = React.useState(() =>
-      trpc.createClient({
+      api.createClient({
         links: [
           httpBatchLink({
             // async headers() {
@@ -36,11 +36,11 @@ export default function TRPCProvider({children}) {
     )
 
     return (
-        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <api.Provider client={trpcClient} queryClient={queryClient}>
           <QueryClientProvider client={queryClient}>
             {children}
           </QueryClientProvider>
-        </trpc.Provider>
+        </api.Provider>
     )    
 
 }

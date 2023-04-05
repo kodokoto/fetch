@@ -8,6 +8,7 @@ import {
   import { Ionicons } from '@expo/vector-icons'
   import { api } from 'app/utils/trpc'
   import { useUser } from "@clerk/clerk-expo";
+import { Skeleton } from 'native-base'
 
   export default function Chat() {
 
@@ -29,8 +30,8 @@ import {
       })
       return filteredcontacts;
     }
-    if (!isLoaded || isLoading || contactIsLoading) return <Text>Loading...</Text>;
-    if (error || contactError) return <Text>{error.message}</Text>;
+    // if (!isLoaded || isLoading || contactIsLoading) return <Text>Loading...</Text>;
+    // if (error || contactError) return <Text>{error.message}</Text>;
 
     return (
       <View>
