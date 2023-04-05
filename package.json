@@ -2,6 +2,7 @@
   "name": "fetch",
   "version": "1.0.0",
   "description": "a pet sitting app",
+  "private": true,
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -14,6 +15,7 @@
     "web": "turbo run dev --filter nextjs",
     "native": "cd apps/expo && yarn dev",
     "db-generate": "turbo db-generate",
+    "db-seed": "turbo db-seed",
     "db-push": "turbo db-push",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo lint",

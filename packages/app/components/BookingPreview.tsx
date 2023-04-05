@@ -40,7 +40,7 @@ function parseBookingFrequency(bookingFrequency: string) {
 export default function BookingPreview(props: Booking) {
 
     const router = useRouter();
-    console.log(props)
+    console.log(props);
 
     const { data, error, isLoading } = trpc.sitter.byId.useQuery(props.sitterId);
 
@@ -53,16 +53,13 @@ export default function BookingPreview(props: Booking) {
 
     if (isLoading) return <Text>Loading...</Text>;
     if (error) return <Text>{error.message}</Text>;
-    for (let i = 0; i < 10; i++) {
-        console.log('data');
-    }
-    console.log(data);
+
     return(
         <Button onPress={handlePress} className='m-auto rounded-2xl w-80 bg-[#4c8ab9] mt-6 h-30 hover:bg-[#4c8ab9]  border-solid border-transparent border-2'>
             <Box className='bg-[#4c8ab9] rounded-2xl p-4 w-80 h-25 mb-2' style={{ flexDirection: 'row' }}>
                 {/* <Avatar source={{uri: data.imageUrl}} className='w-12 h-12 md:w-48 md:h-auto float-left'></Avatar> */}
                 <Box className='ml-4 float-left'>
-                    <Text className='font-bold text-lg'>{data.name}</Text>
+                    <Text className='font-bold text-lg'>{data.id}</Text>
                     <Text>{'test'}</Text>
                     {/* <Text>{props.dateDescription}</Text> */}
                 </Box>
@@ -73,7 +70,7 @@ export default function BookingPreview(props: Booking) {
                 {/* <Text>{typeof props.startDate}</Text> */}
                 {/* <Text className='mx-2 text-md'>{getDateDescription(props.startDate)}</Text> */}
                 <Ionicons size={24} name="ios-time-outline"></Ionicons>
-                <Text className='mx-2 text-md'>{getTimeDescription(props.startDate, props.endDate)}</Text>
+                <Text className='mx-2 text-md'>{getTimeDescription(props.startDate, props.startDate)}</Text>
             </Box>
         </Button>
     );

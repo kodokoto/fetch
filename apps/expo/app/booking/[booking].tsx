@@ -20,6 +20,7 @@ export default function Booking() {
         <View className="flex flex-col justify-center items-center">
             {/* Use `../` as a simple way to navigate to the root. This is not analogous to "goBack". */}
             {!isPresented && <Link href="../">Dismiss</Link>}
+            {/* <BookingDeatil /> */}
             <Text>
                 this is booking {bookingId}
             </Text>

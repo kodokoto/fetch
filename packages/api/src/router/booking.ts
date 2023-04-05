@@ -13,7 +13,9 @@ export const bookingRouter = router({
     return prisma.booking.findMany({
       where: {
         owner: {
-          email: input,
+          User : {
+              email: input
+          }
         },
       },
     });

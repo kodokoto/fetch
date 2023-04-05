@@ -9,6 +9,10 @@
         "inputs": ["prisma/schema.prisma"],
         "cache": false
       },
+      "db-seed": {
+        "inputs": ["prisma/seed.ts"],
+        "cache": false
+      },
       "dev": {
         "dependsOn": ["^db-generate"],
         "cache": false

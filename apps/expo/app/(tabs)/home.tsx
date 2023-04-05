@@ -9,7 +9,7 @@ import { trpc } from 'app/utils/trpc';
 
 export default function Home() {
     // const { isLoaded, userId, sessionId, getToken } = useAuth();
-    const { isLoaded, isSignedIn, user } = useUser();
+    const { isLoaded, user } = useUser();
 
     
     if (!isLoaded) return null;
@@ -18,7 +18,7 @@ export default function Home() {
 
     if (isLoading) return <Text>Loading...</Text>;
     if (error) return <Text>{error.message}</Text>;
-
+    console.log()
 
     return (
       <View>
