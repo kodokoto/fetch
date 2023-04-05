@@ -2,8 +2,6 @@ package-lock.json
 yarn.lock
 .env
 node_modules/
-.expo/
-dist/
 npm-debug.*
 *.jks
 *.p8

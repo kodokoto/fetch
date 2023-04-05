@@ -6,15 +6,8 @@ import {
   import React, { useEffect, useState, useRef } from 'react'
   import ChatPreview from 'app/components/ChatPreview'
   import { Ionicons } from '@expo/vector-icons'
-  import { trpc } from 'app/utils/trpc'
+  import { api } from 'app/utils/trpc'
   import { useUser } from "@clerk/clerk-expo";
-  // TODO: redo with prisma schema and trpc procedure in mind
-
-  type ContactData = {
-    id: number;
-    name: string;
-    imageUrl: string;
-  }
 
   export default function Chat() {
 
@@ -24,11 +17,11 @@ import {
 
     const email = user?.primaryEmailAddress.emailAddress;
     
-    const  { data: currentUser, error, isLoading } = trpc.user.byEmail.useQuery(user.primaryEmailAddress.emailAddress, {enabled: !!email});
+    const  { data: currentUser, error, isLoading } = api.user.byEmail.useQuery(user.primaryEmailAddress.emailAddress, {enabled: !!email});
 
     const currentUserId = currentUser?.id;
 
-    const {  data: contactData, error: contactError, isLoading: contactIsLoading } = trpc.user.contacts.useQuery(currentUserId, {enabled: !!currentUserId});
+    const {  data: contactData, error: contactError, isLoading: contactIsLoading } = api.user.contacts.useQuery(currentUserId, {enabled: !!currentUserId});
 
     const filtercontacts = (filterWord) => {
       const filteredcontacts = contactData.filter((user) => {

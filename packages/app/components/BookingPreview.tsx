@@ -5,7 +5,7 @@ import { Button, Box, FormControl, Avatar } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'
 import React from "react";
 import { Booking } from '@prisma/client';
-import { trpc } from '../utils/trpc';
+import { api } from '../utils/trpc';
 
 function getDateDescription(date: Date) {
     // desired output format: "Monday, 1 April"
@@ -42,7 +42,7 @@ export default function BookingPreview(props: Booking) {
     const router = useRouter();
     console.log(props);
 
-    const { data, error, isLoading } = trpc.sitter.byId.useQuery(props.sitterId);
+    const { data, error, isLoading } = api.sitter.byId.useQuery(props.sitterId);
 
     const handlePress = () => {
         router.push({

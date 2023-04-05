@@ -5,7 +5,7 @@ import ProfileIcon from 'app/components/ProfileIcon'
 import WelcomeMessage from 'app/components/WelcomeMessage'
 import BookingPreview from 'app/components/BookingPreview';
 import { useAuth, useUser } from "@clerk/clerk-expo";
-import { trpc } from 'app/utils/trpc';
+import { api } from 'app/utils/trpc';
 
 export default function Home() {
     // const { isLoaded, userId, sessionId, getToken } = useAuth();
@@ -14,7 +14,7 @@ export default function Home() {
     
     if (!isLoaded) return null;
 
-    const { data, error, isLoading } = trpc.booking.byOwnerEmail.useQuery(user.primaryEmailAddress.emailAddress);
+    const { data, error, isLoading } = api.booking.byOwnerEmail.useQuery(user.primaryEmailAddress.emailAddress);
 
     if (isLoading) return <Text>Loading...</Text>;
     if (error) return <Text>{error.message}</Text>;

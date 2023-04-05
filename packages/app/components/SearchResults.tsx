@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { Sitter } from '@prisma/client'
-import { trpc } from '../utils/trpc';
+import { api } from '../utils/trpc';
 import { FilterSearchParams } from './Filter';
 
 export default function SearchResults(SearchParams: FilterSearchParams) {
@@ -9,7 +9,7 @@ export default function SearchResults(SearchParams: FilterSearchParams) {
         console.log("SearchResults");
     }
     console.log(SearchParams);
-    const { data, error, isLoading } = trpc.sitter.bySearchParams.useQuery({
+    const { data, error, isLoading } = api.sitter.bySearchParams.useQuery({
         service: "WALK",
         frequency: "WEEKLY",
         proximity: "10",

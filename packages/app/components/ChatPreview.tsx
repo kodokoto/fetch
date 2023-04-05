@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, ImageBackground } from 'react-native'
 import React from 'react'
 import { useRouter } from 'expo-router'
-import { trpc } from 'app/utils/trpc'
+import { api } from 'app/utils/trpc'
 
 type ChatPreviewProps = {
   senderId: number,
@@ -14,7 +14,7 @@ type ChatPreviewProps = {
 export default function ChatPreview(props: ChatPreviewProps) {
 
   const router = useRouter()
-  const { data: mostRecentMessage , error, isLoading } = trpc.message.latestBetweenUsers.useQuery({senderId: props.senderId, receiverId: props.receiverId});
+  const { data: mostRecentMessage , error, isLoading } = api.message.latestBetweenUsers.useQuery({senderId: props.senderId, receiverId: props.receiverId});
   if (isLoading) return <Text>Loading...</Text>;
   return (
     <View>

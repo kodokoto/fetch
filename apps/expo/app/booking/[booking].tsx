@@ -1,13 +1,13 @@
 import { Text, View } from "react-native"
 import { useSearchParams, useNavigation, Link} from "expo-router"
-import { trpc } from "app/utils/trpc"
+import { api } from "app/utils/trpc"
 import { StatusBar } from "expo-status-bar";
 
 export default function Booking() {
 
     const { bookingId } = useSearchParams();
     // convert to number
-    const { data, error, isLoading } = trpc.booking.byId.useQuery(Number(bookingId));
+    const { data, error, isLoading } = api.booking.byId.useQuery(Number(bookingId));
     const navigation = useNavigation();
     // If the page was reloaded or navigated to directly, then the modal should be presented as
     // a full screen page. You may need to change the UI to account for this.

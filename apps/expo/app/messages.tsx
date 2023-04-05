@@ -5,7 +5,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import ChatLog, { FilteredMessages } from 'app/components/ChatLog';
 // import 'react-native-get-random-values';
 import { useSearchParams, useRouter } from 'expo-router';
-import { trpc } from 'app/utils/trpc';
+import { api } from 'app/utils/trpc';
 import { Message } from '@prisma/client';
 
 
@@ -17,7 +17,7 @@ export default function Messages() {
     // router.setParams({ headerTitle: String(receiverName)});
     const [filteredMessages, setfilteredMessages] = useState<FilteredMessages[]>([]);
     
-    const { data, error, isLoading } = trpc.message.betweenUsers.useQuery({senderId: Number(senderId), receiverId: Number(receiverId)}, { onSuccess: (data: Message[]) => {
+    const { data, error, isLoading } = api.message.betweenUsers.useQuery({senderId: Number(senderId), receiverId: Number(receiverId)}, { onSuccess: (data: Message[]) => {
       // filter out id from each message
       const filteredData = data.map((message) => {
         return { 
@@ -31,7 +31,7 @@ export default function Messages() {
       setfilteredMessages(filteredData);
     }});
 
-    const mutation = trpc.message.create.useMutation();
+    const mutation = api.message.create.useMutation();
 
     // const { username, mostRecentMessage } = route.params;
     const [showSendButton, setShowSendButton] = useState(false);
