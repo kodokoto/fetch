@@ -15,20 +15,13 @@ export default function ProfileIcon(props: User) {
         trigger={(triggerProps) => {
           return (
             <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-              <Avatar
-                className="w-8 h-8 mr-2 ml-14 mt-10 mb-4"
-                source={{ uri: props.iconUrl }}
-              />
+              <Avatar className="w-8 h-8 mr-2 ml-14 mt-10 mb-4" source={{ uri: props.iconUrl }} />
             </Pressable>
           )
         }}
       >
-        <Menu.Item onPress={() => router.push('EditProfile')}>
-          Edit Profile
-        </Menu.Item>
-        <Menu.Item onPress={() => router.push('Setting')}>
-          Setting
-        </Menu.Item>
+        <Menu.Item onPress={() => router.push('EditProfile')}>Edit Profile</Menu.Item>
+        <Menu.Item onPress={() => router.push('Setting')}>Setting</Menu.Item>
         <Menu.Item>Help</Menu.Item>
       </Menu>
     </Box>

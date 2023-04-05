@@ -15,18 +15,92 @@ export default function SitterProfile() {
       'I am a dog lover and I have a dog of my own. I have been dog sitting for 5 years and I have experience with all types of dogs. I am a very active person and I love to take dogs on walks and play with them. I am also very responsible and I will make sure your dog is safe and happy while you are away.',
     //does that data structure suck? yes. but it's the best I could come up with
     available: [
-      [false, false, false, false, false, false, false, false, false, false, true, true, true, false, false, false, true, true, false, false, true, false, false, false],
-      [false, false, false, false, false, false, false, false, false, true, true, true, true, true, true, true, false, true, false, false, false, false, false, false],
-      [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
-    ]
+      [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+      [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    ],
   }
 
   return (
     <NativeBaseProvider>
       <View>
         <View className="flex-row">
-          <View>
-          </View>
+          <View></View>
           <View>
             <Text className="text-orange">Leonard Lungu</Text>
             <Text>Pet Sitter</Text>
@@ -52,11 +126,7 @@ export default function SitterProfile() {
 
         <View>
           <Box className="border-2">
-            {mockSitter.about ? (
-              <Text>{mockSitter.about}</Text>
-            ) : (
-              <Text>No bio provided</Text>
-            )}
+            {mockSitter.about ? <Text>{mockSitter.about}</Text> : <Text>No bio provided</Text>}
           </Box>
 
           <Text className="text-xl">Services I offer</Text>
@@ -70,10 +140,9 @@ export default function SitterProfile() {
             )}
           </Box>
         </View>
-        <SitterProfileLocation {...mockSitter}/>
+        <SitterProfileLocation {...mockSitter} />
 
-        <SitterProfileNextAvailable {...mockSitter}/>
-
+        <SitterProfileNextAvailable {...mockSitter} />
       </View>
     </NativeBaseProvider>
   )

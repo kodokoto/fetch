@@ -6,7 +6,7 @@ interface SitterProfileLocationProps {
   location: string
 }
 
-const distance = 5;
+const distance = 5
 
 export default function SitterProfileLocation(props: SitterProfileLocationProps) {
   return (
@@ -16,7 +16,6 @@ export default function SitterProfileLocation(props: SitterProfileLocationProps)
         <Text className="text-xl">{props.location}</Text>
         <Text className="text-xl">{distance} miles away</Text>
       </Box>
-      
     </View>
   )
 }

@@ -20,9 +20,11 @@ npm run db-generate
 Ask me for the `.env` file and put it in the root directory.
 
 ## Usage
+
 ```
 npm run dev
 ```
+
 Setup for [android](https://docs.expo.dev/workflow/android-studio-emulator/) and [ios](https://docs.expo.dev/workflow/ios-simulator/) simulators.
 
 ## Build
@@ -30,30 +32,34 @@ Setup for [android](https://docs.expo.dev/workflow/android-studio-emulator/) and
 NOTE: Don't worry about this for now, we will be using expo to build the app.
 
 install EAS cli:
+
 ```
 npm install -g eas-cli
 ```
 
 login
+
 ```
 eas login
 ```
 
 build
+
 ```
 eas build --platform <android | ios | all>
 ```
 
 ## Contribution guidelines
 
-- The steps for contributiing to the project are as follows: 
-    1. Create a new branch from the main branch
-    2. Make your changes
-    3. Commit your changes regularly 
-    4. Check your changes in the development server, make sure they don't break anything else
-    5. Build your project and check for any errors/warnings
-    6. Make a pull request on github to merge branch with main
-    7. Ask for someone to review your code and merge it
+- The steps for contributiing to the project are as follows:
+
+  1. Create a new branch from the main branch
+  2. Make your changes
+  3. Commit your changes regularly
+  4. Check your changes in the development server, make sure they don't break anything else
+  5. Build your project and check for any errors/warnings
+  6. Make a pull request on github to merge branch with main
+  7. Ask for someone to review your code and merge it
 
 - Please make sure you are using the latest version of the main branch before you start working on your branch
 - Keep your commits small
@@ -74,27 +80,28 @@ Use [native base](https://docs.nativebase.io/) components as a baseline to your 
 We are using functional components, so please don't use class components.
 
 1. Create a new file in `packages/app/design/components` with the name of the component
-    ```sh
-    touch packages/app/design/components/Component.tsx
-    ```
+   ```sh
+   touch packages/app/design/components/Component.tsx
+   ```
 2. If your component takes in parameters, it should be defined as a type in the component file. The type should be named after the component name with `Props` appended to it. i.e
 
-    ```ts
-    type componentProps = {
-        text: string
-    }
-    ```
+   ```ts
+   type componentProps = {
+     text: string
+   }
+   ```
+
 3. define and export the component as such (use `rnf` [snippet](https://marketplace.visualstudio.com/items?itemName=jundat95.react-native-snippet) if you are using vscode):
 
-    ```tsx
-    export default function Component({ text } : componentProps) {
-        return (
-            <View>
-                <Text>{text}</Text>
-            </View>
-        )
-    }
-    ```
+   ```tsx
+   export default function Component({ text }: componentProps) {
+     return (
+       <View>
+         <Text>{text}</Text>
+       </View>
+     )
+   }
+   ```
 
 ### Adding a new page
 
@@ -112,9 +119,9 @@ To make changes to the database, you can use the [prisma studio](https://www.pri
 
 ### Server Side
 
-A we are using tRPC, for now, only to handle requests to the database. 
+A we are using tRPC, for now, only to handle requests to the database.
 
-The tRPC routers are defined in `packages/api/src/routers`. 
+The tRPC routers are defined in `packages/api/src/routers`.
 
 Each router corresponds to a model in the database. Each procedure in the router defines the queries that can be made to the database.
 
@@ -141,9 +148,9 @@ We can now call the procedures defined in the routers as such:
 const { data } = api.user.byId.useQuery({ id: 1 })
 
 return (
-    <View>
-        <Text>{data?.name}</Text>
-    </View>
+  <View>
+    <Text>{data?.name}</Text>
+  </View>
 )
 ```
 
@@ -155,9 +162,10 @@ Never call the api conditially, for example, never do this:
 
 ```tsx
 if (condition) {
-    const { data } = api.user.byId.useQuery({ id: 1 })
+  const { data } = api.user.byId.useQuery({ id: 1 })
 }
 ```
+
 Instead, use the `enabled` field of the hook to conditionally call the api:
 
 ```tsx
@@ -167,7 +175,7 @@ const { data: user } = api.user.byId.useQuery({ id: 1 }, { enabled: condition })
 The same trick can be used to chain api calls, for example, if you want to get a user by email, and then get all the posts by that user, you can do this:
 
 ```tsx
-const { data: user } = api.user.byEmail.useQuery({ email: 'example@gmail.com'})
+const { data: user } = api.user.byEmail.useQuery({ email: 'example@gmail.com' })
 const userId = user?.id
 const { data: posts } = api.post.byUser.useQuery({ id: userId }, { enabled: !!userId })
 ```
@@ -178,24 +186,16 @@ When displaying data from the api, always check if the data is defined, if not t
 import { api } from '../utils/trpc'
 import { Skeleton } from 'native-base'
 
-export default function Component({ text } : componentProps) {
-    const { data: user } = api.user.byId.useQuery({ id: 1 })
-    return (
-        <View>
-            {user ? (
-                <Text>{user.name}</Text>
-            ) : (
-                <Skeleton.Text />
-            )}
-        </View>
-    )
+export default function Component({ text }: componentProps) {
+  const { data: user } = api.user.byId.useQuery({ id: 1 })
+  return <View>{user ? <Text>{user.name}</Text> : <Skeleton.Text />}</View>
 }
 ```
 
 ## Styling guidelines
 
 - Use tailwind css to further change the styling of a component within its component file.
-- Try to use the same theming as other components, keeping consistent colours and margins. 
+- Try to use the same theming as other components, keeping consistent colours and margins.
 
 ### Naming conventions
 
@@ -213,10 +213,11 @@ export default function Component({ text } : componentProps) {
         |-- components
         |-- provider
         |-- utils
-    |-- api  
+    |-- api
     |-- db
 ```
-- `expo` is the expo app, this is where the [mobile navigation](https://expo.github.io/router/docs/) is handled 
+
+- `expo` is the expo app, this is where the [mobile navigation](https://expo.github.io/router/docs/) is handled
 - `components` is where all the custom components are stored
 - `provider` contains the context providers for the app (authentication, theming, tanstack query and trpc)
 - `assets` is where all the images and other assets are stored
@@ -224,20 +225,20 @@ export default function Component({ text } : componentProps) {
 - `api` api backend w/ tRPC routers
 - `db` database backend w/ prisma
 
-
 ## resources
 
 ### Backend
+
 - [prisma](https://www.prisma.io/docs)
 - [trpc](https://trpc.io/docs)
 - [tanstack query](https://tanstack.com/query/latest/docs/react/quick-start)
 
 ### react native
+
 - [expo](https://docs.expo.dev/)
 - [expo router](https://expo.github.io/router/docs/)
 
 ### styling
+
 - [tailwind css](https://tailwindcss.com/)
 - [native base](https://nativebase.io/)
-
-

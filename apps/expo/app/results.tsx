@@ -4,16 +4,16 @@ import SearchResults from 'app/components/SearchResults'
 import { useSearchParams } from 'expo-router'
 
 export default function Results() {
-  const {date, service, frequency, proximity} = useSearchParams();
+  const { date, service, frequency, proximity } = useSearchParams()
 
   return (
-        <View>
-            <Text>Results</Text>
-            {/* <Text>{date}</Text>
+    <View>
+      <Text>Results</Text>
+      {/* <Text>{date}</Text>
             <Text>{service}</Text>
             <Text>{recurring}</Text>
             <Text>{proximity}</Text> */}
-          {/* <SearchResults {...{date, service, frequency, proximity}} /> */}
-        </View> 
+      {/* <SearchResults {...{date, service, frequency, proximity}} /> */}
+    </View>
   )
 }

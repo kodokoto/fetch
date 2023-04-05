@@ -1,6 +1,5 @@
 {
-    "extends": "expo/tsconfig.base",
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-    "exclude": ["node_modules"]
+  "extends": "expo/tsconfig.base",
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
-  

@@ -7,6 +7,6 @@
     "name": "expo-app",
     "slug": "expo-app",
     "userInterfaceStyle": "automatic",
-    "sourceExts": [ "js", "json", "ts", "tsx", "jsx", "vue"]
+    "sourceExts": ["js", "json", "ts", "tsx", "jsx", "vue"]
   }
 }

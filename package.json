@@ -22,6 +22,7 @@
     "type-check": "turbo type-check"
   },
   "devDependencies": {
+    "prettier": "^2.8.7",
     "turbo": "^1.8.8"
   },
   "prisma.schema": "packages/db/prisma/schema.prisma"
