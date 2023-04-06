@@ -6,6 +6,7 @@
 - yarn `npm install -g yarn`
 - git (ideally ssh'd into it)
 - android studio
+- xcode (osx only)
 - Expo go
 
 ## Installation
