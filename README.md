@@ -29,6 +29,12 @@ yarn install
 yarn db-generate
 ```
 
+If you use a simulator you need to add a flag to the `dev` script in `apps/expo/package.json`:
+
+i.e `"dev": "expo start --android",` or `"dev": "expo start --ios",`
+
+If you are using Expo go, you need to copy the `exp://` url from the terminal and paste it into the Expo go app.
+
 Ask me for the `.env` file and put it in the root directory.
 
 ## Usage
