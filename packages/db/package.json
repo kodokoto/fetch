@@ -7,10 +7,10 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "with-env": "dotenv -e ../../.env --",
-    "dev": "pnpm with-env prisma studio --port 5555",
-    "db-push": "pnpm with-env prisma db push",
-    "db-generate": "pnpm with-env prisma generate",
-    "db-seed": "pnpm with-env prisma db seed"
+    "dev": "yarn with-env prisma studio --port 5555",
+    "db-push": "yarn with-env prisma db push",
+    "db-generate": "yarn with-env prisma generate",
+    "db-seed": "yarn with-env prisma db seed"
   },
   "dependencies": {
     "@prisma/client": "^4.6.1"

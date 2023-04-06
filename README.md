@@ -3,6 +3,7 @@
 ## Prerequisites
 
 - node
+- yarn `npm install -g yarn`
 - git (ideally ssh'd into it)
 - android studio
 - Expo go
@@ -11,10 +12,20 @@
 
 clone the github repo then run the following commands:
 
+To intsall yarn:
+```
+npm install -g yarn
+```
+
+On windows, if this doesn't work, try running this in powershell as admin:
+```
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
+```
+
 ```
 cd fetch
-npm install
-npm run db-generate
+yarn install
+yarn db-generate
 ```
 
 Ask me for the `.env` file and put it in the root directory.
@@ -22,7 +33,7 @@ Ask me for the `.env` file and put it in the root directory.
 ## Usage
 
 ```
-npm run dev
+yarn dev
 ```
 
 Setup for [android](https://docs.expo.dev/workflow/android-studio-emulator/) and [ios](https://docs.expo.dev/workflow/ios-simulator/) simulators.
