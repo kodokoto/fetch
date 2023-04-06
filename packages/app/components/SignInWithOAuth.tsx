@@ -1,7 +1,6 @@
 import { useSignUp, useSignIn } from '@clerk/clerk-expo'
 import React from 'react'
 import { Button, View } from 'react-native'
-
 import * as AuthSession from 'expo-auth-session'
 
 const SignInWithOAuth = () => {
@@ -12,7 +11,7 @@ const SignInWithOAuth = () => {
   const handleSignInWithGooglePress = async () => {
     try {
       const redirectUrl = AuthSession.makeRedirectUri({
-        path: '/',
+        path: '/signUp',
       })
 
       // Choose your OAuth provider, based upon your instance.

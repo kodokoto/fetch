@@ -12,33 +12,35 @@ datasource db {
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
-  content   String
-  sender    User     @relation("sentMessages", fields: [senderId], references: [id])
-  senderId  Int
-  receiver  User     @relation("receivedMessages", fields: [receiverId], references: [id])
-  receiverId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  content    String
+  owner      Owner     @relation("ownerMessages", fields: [ownerId], references: [id])
+  ownerId   Int
+  sitter   Sitter     @relation("sitterMessages", fields: [sitterId], references: [id])
+  sitterId Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  @@index([senderId])
-  @@index([receiverId])
+  @@index([ownerId])
+  @@index([sitterId])
 }
 
-model User {
-  id            Int       @id @default(autoincrement())
-  email         String    @unique
-  googleId      String    @unique
-  name          String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  imageUrl      String
-  ownerAccount  Owner?
-  sitterAccount Sitter?
-  location      Location?
-  sentMessages   Message[] @relation("sentMessages")
-  receivedMessages Message[] @relation("receivedMessages")
-}
+// model User {
+//   id               Int       @id @default(autoincrement())
+//   email            String    @unique
+//   googleId         String    @unique
+//   name             String
+//   createdAt        DateTime  @default(now())
+//   updatedAt        DateTime  @updatedAt
+//   imageUrl         String
+//   ownerAccount     Owner?
+//   sitterAccount    Sitter?
+//   location         Location?
+//   sentMessages     Message[] @relation("sentMessages")
+//   receivedMessages Message[] @relation("receivedMessages")
+// }
+
+
 
 model Owner {
   id        Int       @id @default(autoincrement())
@@ -46,8 +48,11 @@ model Owner {
   updatedAt DateTime  @updatedAt
   pets      Pet[]
   bookings  Booking[]
-  userId    Int       @unique
-  User      User      @relation(fields: [userId], references: [id])
+  userId    String       @unique
+  messages  Message[] @relation("ownerMessages")
+  name      String
+  imageUrl  String
+  description String?
 }
 
 model Sitter {
@@ -57,8 +62,11 @@ model Sitter {
   bookings       Booking[]
   availableTimes AvailableTime[]
   services       Service[]
-  userId         Int             @unique
-  User           User            @relation(fields: [userId], references: [id])
+  userId         String             @unique
+  messages       Message[]       @relation("sitterMessages")
+  name      String
+  imageUrl  String
+  description String?
 }
 
 model Location {
@@ -72,9 +80,8 @@ model Location {
   lat       Float
   lng       Float
   userId    Int      @unique
-  User      User     @relation(fields: [userId], references: [id])
+  // User      User     @relation(fields: [userId], references: [id])
 }
-
 
 model AvailableTime {
   id        Int               @id @default(autoincrement())

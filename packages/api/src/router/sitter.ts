@@ -42,6 +42,20 @@ export const sitterRouter = router({
       },
     })
   }),
+  contacts: publicProcedure
+    .input(z.number())
+    .query(({ input }) => {
+      return prisma.owner.findMany({
+        where: {
+          messages: {
+            some: {
+              sitterId: input,
+            },
+          }
+        },
+    })
+  }),
+
   bySearchParams: publicProcedure
     .input(
       z.object({

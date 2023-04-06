@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "types": "./index.ts",
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^4.8.1",
     "@trpc/server": "^10.18.0",
     "db": "*",
     "zod": "^3.21.4"

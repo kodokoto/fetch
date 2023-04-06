@@ -1,6 +1,7 @@
 import React from 'react'
 import { useRouter } from 'expo-router'
 import { Box, Menu, Avatar, Pressable } from 'native-base'
+import { useClerk } from '@clerk/clerk-expo'
 
 type User = {
   iconUrl: string
@@ -8,7 +9,7 @@ type User = {
 
 export default function ProfileIcon(props: User) {
   const router = useRouter()
-
+  const { signOut } = useClerk()
   return (
     <Box className="items-end">
       <Menu
@@ -22,6 +23,10 @@ export default function ProfileIcon(props: User) {
       >
         <Menu.Item onPress={() => router.push('EditProfile')}>Edit Profile</Menu.Item>
         <Menu.Item onPress={() => router.push('Setting')}>Setting</Menu.Item>
+        <Menu.Item onPress={() =>{ 
+          signOut()
+          router.push('/')
+        }}>Sign out</Menu.Item>
         <Menu.Item>Help</Menu.Item>
       </Menu>
     </Box>

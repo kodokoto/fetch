@@ -4,7 +4,7 @@ import React from 'react'
 import ProfileIcon from 'app/components/ProfileIcon'
 import WelcomeMessage from 'app/components/WelcomeMessage'
 import BookingPreview from 'app/components/BookingPreview'
-import { useAuth, useUser } from '@clerk/clerk-expo'
+import { useUser } from '@clerk/clerk-expo'
 import { api } from 'app/utils/trpc'
 
 export default function Home() {
