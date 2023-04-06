@@ -11,7 +11,7 @@ const SignInWithOAuth = () => {
   const handleSignInWithGooglePress = async () => {
     try {
       const redirectUrl = AuthSession.makeRedirectUri({
-        path: '/signUp',
+        path: '/create'
       })
 
       // Choose your OAuth provider, based upon your instance.
