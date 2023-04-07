@@ -1,5 +1,5 @@
 import { router, publicProcedure } from '../trpc'
-import { z } from 'zod'
+import { number, z } from 'zod'
 import { prisma } from 'db'
 
 export const userRouter = router({
@@ -17,6 +17,17 @@ export const userRouter = router({
     return prisma.user.findFirst({
       where: {
         email: input,
+      },
+    })
+  }),
+  bySitterId: publicProcedure.input(z.number()).query(({ input }) => {
+    return prisma.user.findFirst({
+      where: {
+        sitterAccount: {
+          id: {
+            equals: input,
+          },
+        },
       },
     })
   }),
