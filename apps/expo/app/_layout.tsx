@@ -12,12 +12,19 @@ export default function root() {
             headerShown: false,
           }}
         />
+        {/*Create a path for the Settings page which is in /(settings)/Settings.tsx*/}
         <Stack.Screen
-          name="booking/[booking]"
+          name="settings"
           options={{
-            // Set the presentation mode to modal for our modal route.
-            headerTitle: 'Booking',
-            presentation: 'modal',
+            // Hide the header for all other routes.
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="aboutus"
+          options={{
+            // Hide the header for all other routes.
+            headerShown: false,
           }}
         />
       </Stack>

@@ -20,8 +20,8 @@ export default function ProfileIcon(props: User) {
           )
         }}
       >
-        <Menu.Item onPress={() => router.push('EditProfile')}>Edit Profile</Menu.Item>
-        <Menu.Item onPress={() => router.push('Setting')}>Setting</Menu.Item>
+        <Menu.Item onPress={() => router.push('/editprofile')}>Edit Profile</Menu.Item>
+        <Menu.Item onPress={() => router.push('/settings')}>Settings</Menu.Item>
         <Menu.Item>Help</Menu.Item>
       </Menu>
     </Box>

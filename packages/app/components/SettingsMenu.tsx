@@ -1,26 +1,71 @@
-import { View, Button } from 'react-native'
+import { View, Linking } from 'react-native'
+import { Button } from 'native-base'
 import React from 'react'
 import { useRouter } from 'expo-router'
 import { Box } from 'native-base'
 
 export default function SettingsMenu() {
   const router = useRouter()
+  const phoneNumber = '020FETCHAPP'; 
+  const email = 'contact@fetch.co.uk';
+
+  const handleCallUsPress = () => {
+    Linking.openURL(`tel:${phoneNumber}`);
+  };
+  const handleEmailUsPress = () => {
+    Linking.openURL(`mailto:${email}`);
+  };
 
   return (
     <View>
-      <Box flex={1} bg="#fff" p={4}>
-        {/* Button to take you to Visual Settings Screen */}
-        <Button title="About us" onPress={() => router.push('about')} />
-        <Button title="Visual Settings" onPress={() => router.push('visual-settings')} />
-        {/* Button to take you to Terms and Conditions Screen */}
-        <Button title="Terms and Conditions" onPress={() => router.push('terms-and-conditions')} />
-        <Button title="Privacy Policy" />
-        <Button title="Contact Us" />
-        <Button title="FAQ" onPress={() => router.push('faq')} />
-        <Button title="Log Out" />
-        <Button title="Delete Account" />
-        <Button title="Developer Settings" />
+      <Box bg="#fff" p={4} rounded="lg" shadow={1} className="w-11/12 mx-auto">
+        <View >
+          <Button style={{marginBottom: 30}} onPress={() => router.push('about')}>
+            About Us
+          </Button>
+        </View>
+        <View style={{ marginBottom: 30 }}>
+          <Button title="Terms and Conditions" onPress={() => router.push('terms-and-conditions')} >
+            Terms and Conditions
+          </Button>
+        </View>
+        <View style={{ marginBottom: 30 }}>
+          <Button title="Privacy Policy" onPress={() => router.push('privacy-policy')} >
+            Privacy Policy
+          </Button>
+        </View>
+        <View style={{ marginBottom: 30 }}>
+          <Button title="Call Us" onPress={handleCallUsPress} >
+            Call Us
+          </Button>
+        </View>
+        <View style={{ marginBottom: 30 }}>
+          <Button title="Email Us" onPress={handleEmailUsPress} >
+            Email Us
+          </Button>
+        </View>
+        <View style={{ marginBottom: 30 }}>
+          <Button title="FAQ" onPress={() => router.push('faq')} >
+            FAQ 
+          </Button>
+        </View>
+        <View style={{ marginBottom: 30 }}>
+          <Button title="Log Out" >
+            Log Out
+          </Button>
+        </View>
+        <View style={{ marginBottom: 30 }}>
+          <Button title="Delete Account" >
+            Delete Account
+          </Button>
+        </View>
+        <View style={{ marginBottom: 8 }}>
+          <Button title="Developer Settings" >
+            Developer Settings
+          </Button>
+        </View>
       </Box>
     </View>
   )
 }
+
