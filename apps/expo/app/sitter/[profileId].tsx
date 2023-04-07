@@ -4,8 +4,23 @@ import React from 'react'
 import SitterProfileLocation from 'app/components/SitterProfileLocation'
 import ProfileRating from 'app/components/ProfileRating'
 import SitterProfileNextAvailable from 'app/components/SitterProfileNextAvaliable'
+import { useRouter, useSearchParams } from 'expo-router'
+import { useUser } from '@clerk/clerk-expo'
+import { api } from 'app/utils/trpc'
 
 export default function SitterProfile() {
+  const { name, userId, imageUrl } = useSearchParams()
+  const { user, isLoaded } = useUser()
+  const router = useRouter()
+  const email = user?.primaryEmailAddress.emailAddress
+
+  const {
+    data: currentUser,
+    error,
+    isLoading,
+  } = api.user.byEmail.useQuery(user.primaryEmailAddress.emailAddress, { enabled: !!email })
+
+  const currentUserId = currentUser?.id
   const mockSitter = {
     name: 'Leonard Lungu',
     rating: 4,
@@ -102,7 +117,7 @@ export default function SitterProfile() {
         <View className="flex-row">
           <View></View>
           <View>
-            <Text className="text-orange">Leonard Lungu</Text>
+            <Text className="text-orange">{name}</Text>
             <Text>Pet Sitter</Text>
             <ProfileRating />
           </View>
@@ -115,8 +130,18 @@ export default function SitterProfile() {
             <Text className="text-black-500">Book</Text>
           </Button>
           {/* redirects user to messaging page */}
-          <Button className="border-gray-500 border-2 bg-white">
-            <Text className="text-black-500">Messagse</Text>
+          <Button onPress={() =>
+          router.push({
+            pathname: '/messages',
+            params: {
+              senderId: currentUserId,
+              receiverId: userId,
+              receiverName: name,
+              receiverImageUrl: imageUrl,
+            },
+          })
+        } className="border-gray-500 border-2 bg-white">
+            <Text className="text-black-500">Message</Text>
           </Button>
           {/* redirects user to report page */}
           <Button className="border-gray-500 border-2 bg-white">

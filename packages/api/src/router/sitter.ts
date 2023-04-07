@@ -7,7 +7,7 @@ function parseServiceStringToEnum(service: string): ServiceType {
   switch (service) {
     case 'walk':
       return 'WALK'
-    case 'pet_care':
+    case 'petcare':
       return 'PET_CARE'
     case 'house_sitting':
       return 'HOUSE_SITTING'
@@ -59,13 +59,6 @@ export const sitterRouter = router({
               services: {
                 some: {
                   type: parseServiceStringToEnum(input.service) as ServiceType,
-                },
-              },
-            },
-            {
-              availableTimes: {
-                some: {
-                  frequency: parseFrequencyStringToEnum(input.frequency),
                 },
               },
             },
