@@ -6,9 +6,7 @@ export default function Provider({ children }) {
   return (
     <AuthProvider>
       <TRPCProvider>
-        <NativeBaseProvider>
-            {children}
-        </NativeBaseProvider>
+        <NativeBaseProvider>{children}</NativeBaseProvider>
       </TRPCProvider>
     </AuthProvider>
   )
