@@ -5,6 +5,8 @@ import { sitterRouter } from './sitter'
 import { messageRouter } from './message'
 import { userRouter } from './user'
 import { serviceRouter } from './service'
+import { availableTimeRouter } from './availableTime'
+import { petRouter } from './pet'
 
 export const appRouter = router({
   booking: bookingRouter,
@@ -12,7 +14,9 @@ export const appRouter = router({
   sitter: sitterRouter,
   message: messageRouter,
   user: userRouter,
-  service: serviceRouter
+  service: serviceRouter,
+  availableTime: availableTimeRouter,
+  pet: petRouter
 })
 
 export type AppRouter = typeof appRouter

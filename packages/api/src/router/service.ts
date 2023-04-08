@@ -27,6 +27,13 @@ export const serviceRouter = router({
       },
     })
   }),
+  bySitterIdArray: publicProcedure.input(z.number()).query(({ input }) => {
+    return prisma.service.findMany({
+      where: {
+        sitterId: input,
+      },
+    })
+  }),
   byService: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.service.findFirst({
         where: {
