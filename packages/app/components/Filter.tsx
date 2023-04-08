@@ -12,7 +12,7 @@ import {
   NativeBaseProvider,
   VStack
 } from 'native-base'
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Platform } from 'react-native';
 import { useRouter } from 'expo-router'
 import DatePicker from 'react-native-modal-datetime-picker'
 
@@ -59,6 +59,11 @@ export default function Filter() {
               setShowDate(true)
             }}>
           <Input
+            _ios={{
+              onTouchStart: () => {
+                setShowDate(true)
+              }
+            }}
             placeholder="Select day"
             editable={false}
             value={date.toLocaleDateString()}
@@ -129,6 +134,7 @@ export default function Filter() {
           mode='date'
           onConfirm={onConfirmDate}
           onCancel={() => setShowDate(false)}
+          display={Platform.OS === 'ios' ? 'inline' : 'default'}
         />
         <Button
           className="w-[300px] m-auto mt-10"
