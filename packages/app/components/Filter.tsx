@@ -14,11 +14,12 @@ import {
 import { TouchableOpacity, Platform } from 'react-native';
 import { useRouter } from 'expo-router'
 import DatePicker from 'react-native-modal-datetime-picker'
+import { TimeOfDay, Day, ServiceType } from '@prisma/client'
 
 export type FilterSearchParams = {
-  date: string
   service: string
-  availability: string
+  date: Day
+  availability: TimeOfDay
   maxPrice: number
 }
 
@@ -26,21 +27,22 @@ export default function Filter() {
   const router = useRouter()
 
   const handleSubmit = (data: FilterSearchParams) => {
+    console.log("Data: " + JSON.stringify(data))
     router.push({
       pathname: '/results',
       params: {
         date: data.date,
         service: data.service,
         availability: data.availability,
-        proximity: data.maxPrice,
+        maxPrice: data.maxPrice,
       },
     })
   }
 
   const [date, setDate] = React.useState(new Date())
   const [showDate, setShowDate] = React.useState(false)
-  const [service, setService] = React.useState('')
-  const [availability, setAvailability] = React.useState('')
+  const [service, setService] = React.useState<ServiceType>('WALK')
+  const [availability, setAvailability] = React.useState<TimeOfDay>('ANY')
   const [maxPrice, setMaxPrice] = React.useState(0)
 
   const onConfirmDate = (date: Date) => {
@@ -80,11 +82,11 @@ export default function Filter() {
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
-              onValueChange={(itemValue) => setService(itemValue)}
+              onValueChange={(itemValue) => setService(itemValue as ServiceType)}
             >
-              <Select.Item label="Walking" value="walking" />
-              <Select.Item label="Pet care" value="petcare" />
-              <Select.Item label="House sitting" value="house_sitting" />
+              <Select.Item label="Walking" value="WALK" />
+              <Select.Item label="Pet care" value="PET_CARE" />
+              <Select.Item label="House sitting" value="HOUSE_SITTING" />
             </Select>
           </Box>
           <FormControl.Label _text={{ bold: true }}>Open for frequency visit:</FormControl.Label>
@@ -99,7 +101,7 @@ export default function Filter() {
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
-              onValueChange={(itemValue) => setAvailability(itemValue)}
+              onValueChange={(itemValue) => setAvailability(itemValue as TimeOfDay)}
             >
               <Select.Item label="6am-11am" value="MORNING" />
               <Select.Item label="11am-3pm" value="AFTERNOON" />
@@ -138,7 +140,11 @@ export default function Filter() {
         />
         <Button
           className="w-[300px] m-auto mt-10"
-          onPress={() => handleSubmit({ date: date.toLocaleDateString(), availability, service, maxPrice })}
+          onPress={() => handleSubmit({ 
+            date: date.toLocaleDateString('en-us', {  weekday: "long" }).replace(/[^a-z]/gi, '').toUpperCase() as Day, 
+            availability, 
+            service, 
+            maxPrice })}
         >
           Submit
         </Button>

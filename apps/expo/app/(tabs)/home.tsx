@@ -36,6 +36,7 @@ export default function Home() {
       </Box>
       <Text className="font-bold text-xl ml-2">Upcoming Appointments</Text>
       {
+        bookings &&
         bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)
       }
     </View>

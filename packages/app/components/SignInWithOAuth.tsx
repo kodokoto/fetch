@@ -11,18 +11,25 @@ const SignInWithOAuth = () => {
   // https://docs.expo.dev/guides/authentication/#improving-user-experience
   useWarmUpBrowser();
  
-  const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
+  const { startOAuthFlow } = useOAuth({ strategy: "oauth_google", redirectUrl: "exp://" });
  
   const onPress = React.useCallback(async () => {
     try {
       const { createdSessionId, signIn, signUp, setActive } =
         await startOAuthFlow();
- 
+      
       if (createdSessionId) {
         setActive({ session: createdSessionId });
       } else {
-        // Use signIn or signUp for next steps such as MFA
-      }
+        if (!signUp || signIn.firstFactorVerification.status !== 'transferable') {
+          throw 'Something went wrong during the Sign up OAuth flow. Please ensure that all sign up requirements are met.'
+        }
+
+        console.log("Didn't have an account transferring, following through with new account sign up")
+        // Create user
+        await signUp.create({ transfer: true })
+        await setActive(signUp.createdSessionId)     
+       }
     } catch (err) {
       console.error("OAuth error", err);
     }
@@ -30,7 +37,7 @@ const SignInWithOAuth = () => {
  
   return (
     <View 
-    // className=" h-full flex justify-center"
+    className=" h-full flex justify-center"
     >
     <Button
       

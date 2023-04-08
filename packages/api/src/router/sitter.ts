@@ -84,7 +84,7 @@ export const sitterRouter = router({
               availableTimes: {
                 some: {
                   AND: [
-                    { day: input.availability as Day },
+                    { day: input.date as Day },
                     { time: input.availability as TimeOfDay }
                   ]
                 },

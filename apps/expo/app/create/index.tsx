@@ -7,7 +7,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 export default function Create() {
   const router = useRouter()
   return (
-    <SafeAreaView>
     <View className='flex flex-col justify-center items-center gap-10'>
         <Text className='pt-8'>What are you looking for?</Text>
         <TouchableOpacity
@@ -27,6 +26,5 @@ export default function Create() {
             <Text>Take care of someone elses pet</Text>
         </TouchableOpacity>
     </View>
-    </SafeAreaView>
   )
 }

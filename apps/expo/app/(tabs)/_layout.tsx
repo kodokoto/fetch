@@ -6,19 +6,17 @@ export default function () {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: '#4c8ab9',
-        // headerShown: false,
       }}
     >
       <Tabs.Screen
-        name="chat"
+        name="search"
         options={{
-          title: 'Chat',
+          title: 'Search',
           tabBarIcon: ({ focused, color, size }) => {
-            return <Ionicons name={focused ? 'ios-chatbubble' : 'ios-chatbubble-outline'} size={size} color={color} />
+            return <Ionicons name={focused ? 'ios-search' : 'ios-search-outline'} size={size} color={color} />
           },
         }}
       />
-
       <Tabs.Screen
         name="home"
         options={{
@@ -29,11 +27,11 @@ export default function () {
         }}
       />
       <Tabs.Screen
-        name="search"
+        name="chat"
         options={{
-          title: 'Search',
+          title: 'Chat',
           tabBarIcon: ({ focused, color, size }) => {
-            return <Ionicons name={focused ? 'ios-search' : 'ios-search-outline'} size={size} color={color} />
+            return <Ionicons name={focused ? 'ios-chatbubble' : 'ios-chatbubble-outline'} size={size} color={color} />
           },
         }}
       />

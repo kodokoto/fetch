@@ -7,6 +7,8 @@ import { useSearchParams } from 'expo-router'
 
 export default function Results() {
   const { date, service, availability, maxPrice } = useSearchParams()
+  console.log("max: " + maxPrice);
+
   const searchParamsObject = {
     service: String(service),
     maxPrice: Number(maxPrice),
@@ -14,19 +16,18 @@ export default function Results() {
     date: String(date),
   }
 
+  console.log("Search Params: " + JSON.stringify(searchParamsObject));
   const { data: sitters } = api.sitter.bySearchParams.useQuery(searchParamsObject)
 
-  // console.log("Service: " + service);
-
-  // const searchResults = api.sitter.bySearchParams.useQuery(searchParamsObject,{enabled: !!searchParamsObject}).data;
-  // console.log("Results: " + JSON.stringify(searchResults));
-  // console.log("Services Results: " + JSON.stringify(api.service.byService.useQuery(service).data));
   return (
     <View className='flex gap-8'>
+      <Text className='font-bold text-xl ml-2'>Search Results</Text>
       {
-        sitters ? sitters.map(searchResult => {
+        sitters 
+        ? sitters.map(searchResult => {
           return (<SearchResult searchResult={searchResult} key={searchResult.id} />)
-        }) : null
+        }) 
+        : (<Text>No Results</Text>)
       }
     </View>
     //   {searchResults ? searchResults.map(searchResult => {
