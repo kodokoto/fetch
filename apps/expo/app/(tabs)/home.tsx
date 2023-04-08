@@ -15,9 +15,17 @@ export default function Home() {
   const userId = user?.id
   const router = useRouter()
 
-  const { data: ownerProfile, isLoading: ownerProfileLoading } = api.owner.byUserId.useQuery(userId, { enabled: !!userId });
-  const { data: sitterProfile, isLoading: sitterProfileLoading } = api.sitter.byUserId.useQuery(userId, { enabled: !!userId });
-  const { data: bookings, isLoading: bookingsLoading } = api.booking.byOwnerId.useQuery(ownerProfile?.id, { enabled: !!ownerProfile?.id })
+  const { data: ownerProfile, isLoading: ownerProfileLoading } = api.owner.byUserId.useQuery(userId, {
+    enabled: !!userId,
+    cacheTime: 0,
+  })
+  const { data: sitterProfile, isLoading: sitterProfileLoading } = api.sitter.byUserId.useQuery(userId, {
+    enabled: !!userId,
+    cacheTime: 0,
+  })
+  const { data: bookings, isLoading: bookingsLoading } = api.booking.byOwnerId.useQuery(ownerProfile?.id, {
+    enabled: !!ownerProfile?.id,
+  })
 
   if (!isLoaded) return null
 
@@ -35,10 +43,7 @@ export default function Home() {
         <ProfileIcon iconUrl={ownerProfile.imageUrl} />
       </Box>
       <Text className="font-bold text-xl ml-2">Upcoming Appointments</Text>
-      {
-        bookings &&
-        bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)
-      }
+      {bookings && bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)}
     </View>
   )
 }

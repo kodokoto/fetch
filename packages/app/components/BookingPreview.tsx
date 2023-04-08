@@ -59,7 +59,9 @@ export default function BookingPreview(props: Booking) {
     >
       <Box className="bg-[#4c8ab9] rounded-2xl p-4 w-80 h-25 mb-2 flex-wrap flex-row justify-between">
         <Box className="float-left" style={{ flexDirection: 'row' }}>
-          <Avatar source={{uri: sitterData?.imageUrl}} className='w-12 h-12 md:w-48 md:h-auto float-left'>AT</Avatar>
+          <Avatar source={{ uri: sitterData?.imageUrl }} className="w-12 h-12 md:w-48 md:h-auto float-left">
+            AT
+          </Avatar>
           <Box className="ml-4 float-left">
             <Text className="font-bold text-lg">{sitterData?.name}</Text>
             <Text>{'test'}</Text>

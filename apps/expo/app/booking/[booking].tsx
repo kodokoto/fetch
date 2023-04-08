@@ -11,7 +11,6 @@ export default function Booking() {
   // convert to number
   const { data, error, isLoading } = api.booking.byId.useQuery(Number(bookingId))
 
-
   const navigation = useNavigation()
   // If the page was reloaded or navigated to directly, then the modal should be presented as
   // a full screen page. You may need to change the UI to account for this.
@@ -26,7 +25,7 @@ export default function Booking() {
       {!isPresented && <Link href="../">Dismiss</Link>}
       {/* <BookingDeatil /> */}
       <Text>this is booking {bookingId}</Text>
-      <BookingDetail{...data}/>
+      <BookingDetail {...data} />
       {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
       <StatusBar style="light" />
     </View>

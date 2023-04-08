@@ -7,7 +7,6 @@ import { Booking } from '@prisma/client'
 import { api } from '../utils/trpc'
 import { Sitter, User } from 'db'
 
-
 type AppointmentDetailProps = {
   id: number
   imageUrl: string
@@ -57,7 +56,7 @@ export default function BookingDetail(props: Booking) {
   const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(props.sitterId)
 
   // const userId = data.userId;
-  const { data: userData, error: userError, isLoading: isloadingUser} = api.user.bySitterId.useQuery(sitterData.userId)
+  const { data: userData, error: userError, isLoading: isloadingUser } = api.user.bySitterId.useQuery(sitterData.userId)
 
   const handleMessagePress = () => {
     router.push({
@@ -72,7 +71,9 @@ export default function BookingDetail(props: Booking) {
   if (error && userError) return <Text>{error.message}</Text>
   return (
     <>
-      <Avatar className="mx-auto mt-28 mb-20 w-32 h-32" source={{ uri: userData?.imageUrl}}>LB</Avatar>
+      <Avatar className="mx-auto mt-28 mb-20 w-32 h-32" source={{ uri: userData?.imageUrl }}>
+        LB
+      </Avatar>
       <Box className="rounded-2xl border-[#4c8ab9] border-solid border-2 bg-slate-100 h-116">
         <Box className="flex-wrap flex-row my-4 justify-between">
           <Box className="flex-start">
@@ -100,9 +101,7 @@ export default function BookingDetail(props: Booking) {
             </Button>
             <Box className="flex-end">
               <Text className="text-md">Date & Time</Text>
-              <Text className="text-lg font-bold">
-                {getTimeDescription(props.startDate, props.startDate)}
-              </Text>
+              <Text className="text-lg font-bold">{getTimeDescription(props.startDate, props.startDate)}</Text>
             </Box>
           </Box>
           <Divider my="2" _light={{ bg: '#4c8ab9' }} _dark={{ bg: '#4c8ab9' }} />

@@ -5,15 +5,14 @@ import { api } from 'app/utils/trpc'
 import { useUser } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
 
-
-export default function owner() {
+export default function OwnerProfileCreate() {
   const router = useRouter()
-  const { user, isLoaded } = useUser();
-  const mutation = api.owner.create.useMutation();
+  const { user, isLoaded } = useUser()
+  const mutation = api.owner.create.useMutation()
 
   const handleProfileCreation = async () => {
     console.log('create profile')
-    const {name} = await mutation.mutateAsync({
+    const { name } = await mutation.mutateAsync({
       userId: user.id,
       name: user.firstName,
       imageUrl: user.profileImageUrl,
@@ -21,16 +20,15 @@ export default function owner() {
     if (name) {
       router.push('/home')
     }
-    
   }
 
-  if (!isLoaded) return null;
+  if (!isLoaded) return null
 
   return (
     <View>
-        <Button onPress={handleProfileCreation}>
-            <Text>Create</Text>
-        </Button>
+      <Button onPress={handleProfileCreation}>
+        <Text>Create</Text>
+      </Button>
     </View>
   )
 }
