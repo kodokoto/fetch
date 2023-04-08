@@ -9,13 +9,13 @@ import { api } from 'app/utils/trpc'
 import { Message } from '@prisma/client'
 
 export default function Messages() {
-  const { senderId, receiverId, receiverName, receiverImgUrl } = useSearchParams()
+  const { ownerId, sitterId, receiverName, receiverImgUrl } = useSearchParams()
   const router = useRouter()
   // router.setParams({ headerTitle: String(receiverName)});
   const [filteredMessages, setfilteredMessages] = useState<FilteredMessages[]>([])
 
   const { data, error, isLoading } = api.message.betweenUsers.useQuery(
-    { senderId: Number(senderId), receiverId: Number(receiverId) },
+    { ownerId: Number(ownerId), sitterId: Number(sitterId) },
     {
       onSuccess: (data: Message[]) => {
         // filter out id from each message
@@ -23,8 +23,8 @@ export default function Messages() {
           return {
             content: message.content,
             createdAt: message.createdAt,
-            senderId: message.senderId,
-            receiverId: message.receiverId,
+            ownerId: message.ownerId,
+            sitterId: message.sitterId,
           }
         })
 
@@ -62,14 +62,14 @@ export default function Messages() {
   }, [currentMessageContent])
 
   const onSend = () => {
-    mutation.mutate({ content: currentMessageContent, senderId: Number(senderId), receiverId: Number(receiverId) })
+    mutation.mutate({ content: currentMessageContent, ownerId: Number(ownerId), sitterId: Number(sitterId) })
     setfilteredMessages([
       ...filteredMessages,
       {
         content: currentMessageContent,
         createdAt: new Date(),
-        senderId: Number(senderId),
-        receiverId: Number(receiverId),
+        ownerId: Number(ownerId),
+        sitterId: Number(sitterId),
       },
     ])
     setCurrentMessageContent('')
@@ -94,7 +94,7 @@ export default function Messages() {
           onContentSizeChange={() => this.scrollView.scrollToEnd({ animated: true })}
           keyboardShouldPersistTaps={'always'}
         >
-          <ChatLog uid={Number(senderId)} messages={filteredMessages} />
+          <ChatLog uid={Number(ownerId)} messages={filteredMessages} />
         </ScrollView>
       </KeyboardAwareScrollView>
       <View

@@ -10,8 +10,8 @@ type ChatLogProps = {
 export type FilteredMessages = {
   content: string
   createdAt: Date
-  senderId: number
-  receiverId: number
+  ownerId: number
+  sitterId: number
 }
 
 export default function ChatLog(props: ChatLogProps) {
@@ -38,7 +38,7 @@ export default function ChatLog(props: ChatLogProps) {
             day={weekday[new Date(message.createdAt).getDay()]}
             timestamp={message.createdAt}
             messageContent={message.content}
-            messageByAuthor={message.senderId == props.uid ? true : false}
+            messageByAuthor={message.ownerId == props.uid ? true : false}
           />
         )
       })}

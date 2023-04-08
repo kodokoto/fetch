@@ -1,5 +1,8 @@
-import { Stack } from 'expo-router'
+import { Slot, Stack } from 'expo-router'
 import Provider from 'app/provider'
+import { SignedIn, SignedOut } from '@clerk/clerk-expo'
+import SignInWithOAuth from 'app/components/SignInWithOAuth'
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 export default function root() {
   return (
@@ -12,19 +15,12 @@ export default function root() {
             headerShown: false,
           }}
         />
-        {/*Create a path for the Settings page which is in /(settings)/Settings.tsx*/}
         <Stack.Screen
-          name="settings"
+          name="booking/[booking]"
           options={{
-            // Hide the header for all other routes.
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="aboutus"
-          options={{
-            // Hide the header for all other routes.
-            headerShown: false,
+            // Set the presentation mode to modal for our modal route.
+            headerTitle: 'Booking',
+            presentation: 'modal',
           }}
         />
       </Stack>
