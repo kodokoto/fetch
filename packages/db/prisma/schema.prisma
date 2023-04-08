@@ -25,6 +25,19 @@ model Message {
   @@index([receiverId])
 }
 
+model Review {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  comment   String?
+  ownerId    Int
+  owner      Owner    @relation(fields: [ownerId], references: [id])
+  sitterId  Int
+  sitter    Sitter   @relation(fields: [sitterId], references: [id])
+
+  @@index([ownerId])
+  @@index([sitterId])
+}
+
 model User {
   id            Int       @id @default(autoincrement())
   email         String    @unique
@@ -48,6 +61,8 @@ model Owner {
   bookings  Booking[]
   userId    Int       @unique
   User      User      @relation(fields: [userId], references: [id])
+
+  review   Review[]
 }
 
 model Sitter {
@@ -59,6 +74,8 @@ model Sitter {
   services       Service[]
   userId         Int             @unique
   User           User            @relation(fields: [userId], references: [id])
+
+  review   Review[]
 }
 
 model Location {
@@ -155,6 +172,7 @@ model Booking {
   @@index([sitterId])
 }
 
+
 enum BookingFrequency {
   ONE_OFF
   WEEKLY
@@ -177,3 +195,8 @@ enum Day {
   Saturday
   Sunday
 }
+
+
+
+
+

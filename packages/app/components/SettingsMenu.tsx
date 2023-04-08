@@ -16,6 +16,7 @@ export default function SettingsMenu() {
     Linking.openURL(`mailto:${email}`);
   };
 
+
   return (
     <View>
       <Box bg="#fff" p={4} rounded="lg" shadow={1} className="w-11/12 mx-auto">

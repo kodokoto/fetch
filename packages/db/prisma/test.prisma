@@ -33,3 +33,15 @@ model Message {
   @@index([senderId])
   @@index([receiverId])
 }
+
+
+model Reviews {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  comment   String
+  bookingId Int
+  userId    Int
+  sitterId  Int
+
+  @@index([bookingId])
+}
