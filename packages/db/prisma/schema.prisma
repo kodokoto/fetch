@@ -25,23 +25,6 @@ model Message {
   @@index([sitterId])
 }
 
-// model User {
-//   id               Int       @id @default(autoincrement())
-//   email            String    @unique
-//   googleId         String    @unique
-//   name             String
-//   createdAt        DateTime  @default(now())
-//   updatedAt        DateTime  @updatedAt
-//   imageUrl         String
-//   ownerAccount     Owner?
-//   sitterAccount    Sitter?
-//   location         Location?
-//   sentMessages     Message[] @relation("sentMessages")
-//   receivedMessages Message[] @relation("receivedMessages")
-// }
-
-
-
 model Owner {
   id        Int       @id @default(autoincrement())
   createdAt DateTime  @default(now())
@@ -60,13 +43,13 @@ model Sitter {
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   bookings       Booking[]
-  availableTimes AvailableTime[]
   services       Service[]
   userId         String             @unique
   messages       Message[]       @relation("sitterMessages")
   name      String
   imageUrl  String
   description String?
+  proximityRadius Int @default(10)
 }
 
 model Location {
@@ -80,20 +63,17 @@ model Location {
   lat       Float
   lng       Float
   userId    Int      @unique
-  // User      User     @relation(fields: [userId], references: [id])
 }
 
 model AvailableTime {
   id        Int               @id @default(autoincrement())
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
-  time      DateTime
-  dayOfWeek Int
-  sitterId  Int
-  sitter    Sitter            @relation(fields: [sitterId], references: [id])
-  frequency BookingFrequency?
-
-  @@index([sitterId])
+  time      TimeOfDay
+  day       Day
+  serviceId  Int
+  service    Service            @relation(fields: [serviceId], references: [id])
+  @@index([serviceId])
 }
 
 model Pet {
@@ -132,9 +112,9 @@ model Service {
   updatedAt   DateTime    @updatedAt
   petType     PetType
   bookings    Booking[]
-  Sitter      Sitter?     @relation(fields: [sitterId], references: [id])
-  sitterId    Int?
-
+  Sitter      Sitter     @relation(fields: [sitterId], references: [id])
+  sitterId    Int
+  availableTimes AvailableTime[]
   @@index([sitterId])
 }
 
@@ -146,7 +126,7 @@ enum ServiceType {
 
 model Booking {
   id        Int               @id @default(autoincrement())
-  status    BookingStatus
+  status    BookingStatus     @default(PENDING)
   startDate DateTime
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
@@ -154,12 +134,14 @@ model Booking {
   ownerId   Int
   sitter    Sitter            @relation(fields: [sitterId], references: [id])
   sitterId  Int
-  services  Service[]
+  serviceId Int
+  services  Service         @relation(fields: [serviceId], references: [id])
   pets      Pet[]
   frequency BookingFrequency?
 
   @@index([ownerId])
   @@index([sitterId])
+  @@index([serviceId])
 }
 
 enum BookingFrequency {
@@ -176,11 +158,17 @@ enum BookingStatus {
 }
 
 enum Day {
-  Monday
-  Tuesday
-  Wednesday
-  Thursday
-  Friday
-  Saturday
-  Sunday
+  MONDAY
+  TEUSDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum TimeOfDay {
+  MORNING
+  AFTERNOON
+  EVENING
 }

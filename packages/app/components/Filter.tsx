@@ -9,7 +9,6 @@ import {
   HStack,
   CheckIcon,
   Slider,
-  NativeBaseProvider,
   VStack
 } from 'native-base'
 import { TouchableOpacity, Platform } from 'react-native';
@@ -19,8 +18,8 @@ import DatePicker from 'react-native-modal-datetime-picker'
 export type FilterSearchParams = {
   date: string
   service: string
-  frequency: string
-  proximity: number
+  availability: string
+  maxPrice: number
 }
 
 export default function Filter() {
@@ -32,8 +31,8 @@ export default function Filter() {
       params: {
         date: data.date,
         service: data.service,
-        frequency: data.frequency,
-        proximity: data.proximity,
+        availability: data.availability,
+        proximity: data.maxPrice,
       },
     })
   }
@@ -41,8 +40,8 @@ export default function Filter() {
   const [date, setDate] = React.useState(new Date())
   const [showDate, setShowDate] = React.useState(false)
   const [service, setService] = React.useState('')
-  const [frequency, setfrequency] = React.useState('')
-  const [proximity, setProximity] = React.useState(0)
+  const [availability, setAvailability] = React.useState('')
+  const [maxPrice, setMaxPrice] = React.useState(0)
 
   const onConfirmDate = (date: Date) => {
     setShowDate(false)
@@ -91,7 +90,7 @@ export default function Filter() {
           <FormControl.Label _text={{ bold: true }}>Open for frequency visit:</FormControl.Label>
           <Box maxW="full">
             <Select
-              selectedValue={frequency}
+              selectedValue={availability}
               minWidth="full"
               accessibilityLabel="Choose availability"
               placeholder="Choose availability"
@@ -100,10 +99,11 @@ export default function Filter() {
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
-              onValueChange={(itemValue) => setfrequency(itemValue)}
+              onValueChange={(itemValue) => setAvailability(itemValue)}
             >
-              <Select.Item label="Yes" value="yes" />
-              <Select.Item label="No" value="no" />
+              <Select.Item label="6am-11am" value="MORNING" />
+              <Select.Item label="11am-3pm" value="AFTERNOON" />
+              <Select.Item label="3pm-10pm" value="EVENING" />
             </Select>
           </Box>
           <FormControl.Label _text={{ bold: true }}>Proximity:</FormControl.Label>
@@ -113,10 +113,10 @@ export default function Filter() {
                 defaultValue={0}
                 minValue={0}
                 maxValue={100}
-                accessibilityLabel="distance"
+                accessibilityLabel="Max Price"
                 step={10}
                 onChange={(v) => {
-                  setProximity(Math.floor(v))
+                  setMaxPrice(Math.floor(v))
                 }}
                 className="w-3/4 max-w-300"
               >
@@ -125,7 +125,7 @@ export default function Filter() {
                 </Slider.Track>
                 <Slider.Thumb />
               </Slider>
-              <Text className="text-center ml-1">{proximity} Miles</Text>
+              <Text className="text-center ml-1">£{maxPrice}</Text>
             </HStack>
           </Box>
         </VStack>
@@ -138,7 +138,7 @@ export default function Filter() {
         />
         <Button
           className="w-[300px] m-auto mt-10"
-          onPress={() => handleSubmit({ date: date.toLocaleDateString(), frequency, service, proximity })}
+          onPress={() => handleSubmit({ date: date.toLocaleDateString(), availability, service, maxPrice })}
         >
           Submit
         </Button>

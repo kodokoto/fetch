@@ -15,20 +15,6 @@ export default function SearchResult(props) {
         marginLeft: 'auto',
         marginRight: 'auto'
     }}>
-        {/* {data ? (
-            <Image style={{
-                height: 50,
-                width:  50
-              }} source={{ uri: data.imageUrl }} />
-        ) : null}
-      <Text>{props.searchResult.userId}!!</Text>
-      <Text>{data ? data.name : null}</Text>
-      <Text>London</Text>
-      <Text>{props.searchResult.services}</Text>
-      <Text>{petType && petType.petType.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-            return letter.toUpperCase();})}
-      </Text>
-      <Text>{data ? data.imageUrl : null}</Text> */}
       <TouchableOpacity style={{
         borderWidth: 1,
         borderColor: 'black',
