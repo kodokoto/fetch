@@ -10,10 +10,11 @@ import {
   CheckIcon,
   Slider,
   NativeBaseProvider,
-  VStack,
+  VStack
 } from 'native-base'
+import { TouchableOpacity, Platform } from 'react-native';
 import { useRouter } from 'expo-router'
-import DateTime from '@react-native-community/datetimepicker'
+import DatePicker from 'react-native-modal-datetime-picker'
 
 export type FilterSearchParams = {
   date: string
@@ -44,8 +45,8 @@ export default function Filter() {
   const [proximity, setProximity] = React.useState(0)
 
   const onConfirmDate = (date: Date) => {
-    setDate(date)
     setShowDate(false)
+    setDate(date)
   }
 
   return (
@@ -54,14 +55,20 @@ export default function Filter() {
       <FormControl isRequired>
         <VStack space={4} className="mt-8 mx-8">
           <FormControl.Label className="text-bold">Time availabile:</FormControl.Label>
-          <Input
-            placeholder="Select day"
-            keyboardType="numeric"
-            onPressIn={() => {
+          <TouchableOpacity activeOpacity={1} onPress={() => {
               setShowDate(true)
+            }}>
+          <Input
+            _ios={{
+              onTouchStart: () => {
+                setShowDate(true)
+              }
             }}
+            placeholder="Select day"
+            editable={false}
             value={date.toLocaleDateString()}
           />
+          </TouchableOpacity>
           <FormControl.Label _text={{ bold: true }}>Service:</FormControl.Label>
           <Box maxW="full">
             <Select
@@ -78,7 +85,7 @@ export default function Filter() {
             >
               <Select.Item label="Walking" value="walking" />
               <Select.Item label="Pet care" value="petcare" />
-              <Select.Item label="House sitting" value="hs" />
+              <Select.Item label="House sitting" value="house_sitting" />
             </Select>
           </Box>
           <FormControl.Label _text={{ bold: true }}>Open for frequency visit:</FormControl.Label>
@@ -122,6 +129,13 @@ export default function Filter() {
             </HStack>
           </Box>
         </VStack>
+        <DatePicker
+          isVisible={showDate}
+          mode='date'
+          onConfirm={onConfirmDate}
+          onCancel={() => setShowDate(false)}
+          display={Platform.OS === 'ios' ? 'inline' : 'default'}
+        />
         <Button
           className="w-[300px] m-auto mt-10"
           onPress={() => handleSubmit({ date: date.toLocaleDateString(), frequency, service, proximity })}

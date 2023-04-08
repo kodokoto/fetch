@@ -3,26 +3,44 @@
 ## Prerequisites
 
 - node
+- yarn `npm install -g yarn`
 - git (ideally ssh'd into it)
 - android studio
+- xcode (osx only)
 - Expo go
 
 ## Installation
 
 clone the github repo then run the following commands:
 
+To intsall yarn:
+```
+npm install -g yarn
+```
+
+On windows, if this doesn't work, try running this in powershell as admin:
+```
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
+```
+
 ```
 cd fetch
-npm install
-npm run db-generate
+yarn install
+yarn db-generate
 ```
+
+If you use a simulator you need to add a flag to the `dev` script in `apps/expo/package.json`:
+
+i.e `"dev": "expo start --android",` or `"dev": "expo start --ios",`
+
+If you are using Expo go, you need to copy the `exp://` url from the terminal and paste it into the Expo go app.
 
 Ask me for the `.env` file and put it in the root directory.
 
 ## Usage
 
 ```
-npm run dev
+yarn dev
 ```
 
 Setup for [android](https://docs.expo.dev/workflow/android-studio-emulator/) and [ios](https://docs.expo.dev/workflow/ios-simulator/) simulators.
