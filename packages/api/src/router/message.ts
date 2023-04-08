@@ -9,16 +9,16 @@ export const messageRouter = router({
   betweenUsers: publicProcedure
     .input(
       z.object({
-        senderId: z.number(),
-        receiverId: z.number(),
+        ownerId: z.number(),
+        sitterId: z.number(),
       })
     )
     .query(({ input }) => {
       return prisma.message.findMany({
         where: {
           OR: [
-            { senderId: input.senderId, receiverId: input.receiverId },
-            { senderId: input.receiverId, receiverId: input.senderId },
+            { ownerId: input.ownerId, sitterId: input.sitterId },
+            { ownerId: input.sitterId, sitterId: input.ownerId },
           ],
         },
         orderBy: {
@@ -30,8 +30,8 @@ export const messageRouter = router({
   create: publicProcedure
     .input(
       z.object({
-        senderId: z.number(),
-        receiverId: z.number(),
+        ownerId: z.number(),
+        sitterId: z.number(),
         content: z.string(),
       })
     )
@@ -39,8 +39,8 @@ export const messageRouter = router({
       // console.log("create message");
       return prisma.message.create({
         data: {
-          senderId: input.senderId,
-          receiverId: input.receiverId,
+          ownerId: input.ownerId,
+          sitterId: input.sitterId,
           content: input.content,
         },
       })
@@ -48,16 +48,16 @@ export const messageRouter = router({
   latestBetweenUsers: publicProcedure
     .input(
       z.object({
-        senderId: z.number(),
-        receiverId: z.number(),
+        ownerId: z.number(),
+        sitterId: z.number(),
       })
     )
     .query(({ input }) => {
       return prisma.message.findFirst({
         where: {
           OR: [
-            { senderId: input.senderId, receiverId: input.receiverId },
-            { senderId: input.receiverId, receiverId: input.senderId },
+            { ownerId: input.ownerId, sitterId: input.sitterId },
+            { ownerId: input.sitterId, sitterId: input.ownerId },
           ],
         },
         orderBy: {

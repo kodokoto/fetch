@@ -1,20 +1,7 @@
 import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { prisma } from 'db'
-import { ServiceType, BookingFrequency } from '@prisma/client'
-
-function parseServiceStringToEnum(service: string): ServiceType {
-    switch (service) {
-      case 'walk':
-        return 'WALK'
-      case 'petcare':
-        return 'PET_CARE'
-      case 'house_sitting':
-        return 'HOUSE_SITTING'
-      default:
-        return 'WALK'
-    }
-  }
+import { ServiceType, TimeOfDay, Day } from '@prisma/client'
 
 export const serviceRouter = router({
     all: publicProcedure.query(() => {
@@ -30,8 +17,31 @@ export const serviceRouter = router({
   byService: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.service.findFirst({
         where: {
-          type: parseServiceStringToEnum(input) as ServiceType,
+          type: input as ServiceType,
         },
       })
+  }),
+  bySearchParams: publicProcedure.input(z.object({
+    date: z.string(),
+    service: z.string(),
+    availability: z.string(),
+    maxPrice: z.number(),
+  })).query(({ input }) => {
+    return prisma.service.findMany({
+      where: {
+        type: input.service as ServiceType,
+        price: {
+          lte: input.maxPrice,
+        },
+        availableTimes: {
+          some: {
+            AND: [
+              { day: input.availability as Day },
+              { time: input.availability as TimeOfDay }
+            ]
+          },
+        }
+      },
+    })
   })
 })
