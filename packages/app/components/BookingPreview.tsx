@@ -42,8 +42,6 @@ export default function BookingPreview(props: Booking) {
 
   const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(props.sitterId)
 
-  const { data: userData, error: userError, isLoading: isloadingUser} = api.user.bySitterId.useQuery(sitterData?.userId)
-
   const handlePress = () => {
     router.push({
       pathname: `/booking/${props.id}`,
@@ -51,8 +49,8 @@ export default function BookingPreview(props: Booking) {
     })
   }
 
-  if (isLoading && isloadingUser) return <Text>Loading...</Text>
-  if (error && userError) return <Text>{error.message}</Text>
+  if (isLoading) return <Text>Loading...</Text>
+  if (error) return <Text>{error.message}</Text>
 
   return (
     <Button
@@ -61,9 +59,11 @@ export default function BookingPreview(props: Booking) {
     >
       <Box className="bg-[#4c8ab9] rounded-2xl p-4 w-80 h-25 mb-2 flex-wrap flex-row justify-between">
         <Box className="float-left" style={{ flexDirection: 'row' }}>
-          <Avatar source={{uri: userData?.imageUrl}} className='w-12 h-12 md:w-48 md:h-auto float-left'>AT</Avatar>
+          <Avatar source={{ uri: sitterData?.imageUrl }} className="w-12 h-12 md:w-48 md:h-auto float-left">
+            AT
+          </Avatar>
           <Box className="ml-4 float-left">
-            <Text className="font-bold text-lg">{userData?.name}</Text>
+            <Text className="font-bold text-lg">{sitterData?.name}</Text>
             <Text>{'test'}</Text>
             {/* <Text>{props.dateDescription}</Text> */}
           </Box>

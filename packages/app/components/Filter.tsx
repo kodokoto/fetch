@@ -1,48 +1,38 @@
 import React from 'react'
-import {
-  Box,
-  Select,
-  FormControl,
-  Text,
-  Button,
-  Input,
-  HStack,
-  CheckIcon,
-  Slider,
-  NativeBaseProvider,
-  VStack
-} from 'native-base'
-import { TouchableOpacity } from 'react-native';
+import { Box, Select, FormControl, Text, Button, Input, HStack, CheckIcon, Slider, VStack } from 'native-base'
+import { TouchableOpacity, Platform } from 'react-native'
 import { useRouter } from 'expo-router'
 import DatePicker from 'react-native-modal-datetime-picker'
+import { TimeOfDay, Day, ServiceType } from '@prisma/client'
 
 export type FilterSearchParams = {
-  date: string
   service: string
-  frequency: string
-  proximity: number
+  date: Day
+  availability: TimeOfDay
+  maxPrice: number
 }
 
 export default function Filter() {
   const router = useRouter()
 
   const handleSubmit = (data: FilterSearchParams) => {
+    console.log('Data: ' + JSON.stringify(data))
     router.push({
       pathname: '/results',
       params: {
         date: data.date,
         service: data.service,
-        frequency: data.frequency,
-        proximity: data.proximity,
+        availability: data.availability,
+        maxPrice: data.maxPrice,
       },
     })
   }
 
   const [date, setDate] = React.useState(new Date())
   const [showDate, setShowDate] = React.useState(false)
-  const [service, setService] = React.useState('')
-  const [frequency, setfrequency] = React.useState('')
-  const [proximity, setProximity] = React.useState(0)
+  const [service, setService] = React.useState<ServiceType>('WALK')
+  const [availability, setAvailability] = React.useState<TimeOfDay>('ANY')
+  const [maxPrice, setMaxPrice] = React.useState(0)
 
   const onConfirmDate = (date: Date) => {
     setShowDate(false)
@@ -55,14 +45,22 @@ export default function Filter() {
       <FormControl isRequired>
         <VStack space={4} className="mt-8 mx-8">
           <FormControl.Label className="text-bold">Time availabile:</FormControl.Label>
-          <TouchableOpacity activeOpacity={1} onPress={() => {
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
               setShowDate(true)
-            }}>
-          <Input
-            placeholder="Select day"
-            editable={false}
-            value={date.toLocaleDateString()}
-          />
+            }}
+          >
+            <Input
+              _ios={{
+                onTouchStart: () => {
+                  setShowDate(true)
+                },
+              }}
+              placeholder="Select day"
+              editable={false}
+              value={date.toLocaleDateString()}
+            />
           </TouchableOpacity>
           <FormControl.Label _text={{ bold: true }}>Service:</FormControl.Label>
           <Box maxW="full">
@@ -76,17 +74,17 @@ export default function Filter() {
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
-              onValueChange={(itemValue) => setService(itemValue)}
+              onValueChange={(itemValue) => setService(itemValue as ServiceType)}
             >
-              <Select.Item label="Walking" value="walking" />
-              <Select.Item label="Pet care" value="petcare" />
-              <Select.Item label="House sitting" value="house_sitting" />
+              <Select.Item label="Walking" value="WALK" />
+              <Select.Item label="Pet care" value="PET_CARE" />
+              <Select.Item label="House sitting" value="HOUSE_SITTING" />
             </Select>
           </Box>
           <FormControl.Label _text={{ bold: true }}>Open for frequency visit:</FormControl.Label>
           <Box maxW="full">
             <Select
-              selectedValue={frequency}
+              selectedValue={availability}
               minWidth="full"
               accessibilityLabel="Choose availability"
               placeholder="Choose availability"
@@ -95,10 +93,11 @@ export default function Filter() {
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
-              onValueChange={(itemValue) => setfrequency(itemValue)}
+              onValueChange={(itemValue) => setAvailability(itemValue as TimeOfDay)}
             >
-              <Select.Item label="Yes" value="yes" />
-              <Select.Item label="No" value="no" />
+              <Select.Item label="6am-11am" value="MORNING" />
+              <Select.Item label="11am-3pm" value="AFTERNOON" />
+              <Select.Item label="3pm-10pm" value="EVENING" />
             </Select>
           </Box>
           <FormControl.Label _text={{ bold: true }}>Proximity:</FormControl.Label>
@@ -108,10 +107,10 @@ export default function Filter() {
                 defaultValue={0}
                 minValue={0}
                 maxValue={100}
-                accessibilityLabel="distance"
+                accessibilityLabel="Max Price"
                 step={10}
                 onChange={(v) => {
-                  setProximity(Math.floor(v))
+                  setMaxPrice(Math.floor(v))
                 }}
                 className="w-3/4 max-w-300"
               >
@@ -120,19 +119,30 @@ export default function Filter() {
                 </Slider.Track>
                 <Slider.Thumb />
               </Slider>
-              <Text className="text-center ml-1">{proximity} Miles</Text>
+              <Text className="text-center ml-1">£{maxPrice}</Text>
             </HStack>
           </Box>
         </VStack>
         <DatePicker
           isVisible={showDate}
-          mode='date'
+          mode="date"
           onConfirm={onConfirmDate}
           onCancel={() => setShowDate(false)}
+          display={Platform.OS === 'ios' ? 'inline' : 'default'}
         />
         <Button
           className="w-[300px] m-auto mt-10"
-          onPress={() => handleSubmit({ date: date.toLocaleDateString(), frequency, service, proximity })}
+          onPress={() =>
+            handleSubmit({
+              date: date
+                .toLocaleDateString('en-us', { weekday: 'long' })
+                .replace(/[^a-z]/gi, '')
+                .toUpperCase() as Day,
+              availability,
+              service,
+              maxPrice,
+            })
+          }
         >
           Submit
         </Button>
