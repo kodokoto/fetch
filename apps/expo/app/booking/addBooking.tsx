@@ -10,51 +10,64 @@ import {
   FormControl,
   Text,
   Button,
-  Input,
   CheckIcon,
   VStack
 } from 'native-base'
-import { useRouter } from 'expo-router'
 
 
 export default function AddBooking() {
-    const { sitterId, date, time  } = useSearchParams()
+    const { sitterId, date, availability, dateTime  } = useSearchParams()
+
+    // const searchParamsObject = {
+    //   dateTime: String(dateTime),
+    //   availability: String(availability),
+    //   date: String(date),
+    // }
     // convert to number
     const { isLoaded, user } = useUser()
     const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(Number(sitterId))
-    const {data: availableData, error: availableError, isLoading: isLoadingAvailability} = api.availableTime.bySitterId.useQuery(Number(sitterId))
-    const { data: sitterUserData, error: sitterError, isLoading: isloadingSitter} = api.user.bySitterId.useQuery(sitterData?.userId)
     const { data: ownerData, error: ownerError, isLoading: isloadingOwner} = api.owner.byId.useQuery(Number(user.id))
     const { data: pets, error: petError, isLoading: isloadingPet} = api.pet.byOwnerId.useQuery(Number(ownerData.id))
     const {data: services, error: serviceError, isLoading: isLoadingService} = api.service.bySitterIdArray.useQuery(Number(sitterId))
-    // const { data: ownerData, error: ownerError, isLoading: isloadingOwner} = api.owner.byId.useQuery(user.)
     const navigation = useNavigation()
 
     const mutation = api.booking.create.useMutation()
 
 
     const handleSubmit = () => {
-      // const pet = selectedPets.map((id) => ({id}))
       mutation.mutate({
-        startDate: dateTime,
+        startDate: bookingDateTime,
         sitterId: Number(sitterId),
         ownerId: ownerData.id,
         services: service,
         frequency: frequency,
         pets: selectedPets
       })
-      setService(''),
+      setService(null),
       setfrequency(''),
       setSelectedPet([]);
     }
-
-    const dateTimeString = `${date}T${time}:00`;
-    const [dateTime, setDate] = React.useState(new Date())
-    const [service, setService] = React.useState('')
+    
+ 
+    const [time, setTime] = React.useState('');
+    
+    const [bookingDateTime, setDate] = React.useState(new Date())
+    const [service, setService] = React.useState(null)
     const [selectedPets, setSelectedPet] = React.useState([])
     const [petId, setPetId] = React.useState(new Number)
     const [frequency, setfrequency] = React.useState('')
+
+    if(availability === 'MORNING'){
+      setTime('6');
+    } else if(availability === 'AFTERNOON'){
+      setTime('11')
+    } else if(availability === 'EVENING'){
+      setTime('15')
+    }
+    const dateTimeString = `${dateTime}T${time}:00:00`;
     setDate(new Date(dateTimeString))
+
+
     // If the page was reloaded or navigated to directly, then the modal should be presented as
     // a full screen page. You may need to change the UI to account for this.
     const isPresented = navigation.canGoBack()
@@ -67,10 +80,10 @@ export default function AddBooking() {
         {!isPresented && <Link href="../">Dismiss</Link>}
         <Box>
           <Text>Sitter Name</Text>
-          <Text>{sitterUserData.name}</Text>
+          <Text>{sitterData.name}</Text>
         </Box>
         <Text >Date: {date}</Text>
-        <Text>Time: {time}</Text>
+        <Text>Time: {availability}</Text>
         {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
         <StatusBar style="light" />
         <Box>
@@ -80,7 +93,7 @@ export default function AddBooking() {
               <FormControl.Label _text={{ bold: true }}>Service:</FormControl.Label>
               <Box maxW="full">
                 <Select
-                  selectedValue={service}
+                  selectedValue={String(service)}
                   minWidth="full"
                   accessibilityLabel="Choose Service"
                   placeholder="Choose Service"
@@ -89,10 +102,10 @@ export default function AddBooking() {
                     endIcon: <CheckIcon size="5" />,
                   }}
                   mt={1}
-                  onValueChange={(itemValue) => setService(itemValue)}
+                  onValueChange={(itemValue) => setService(Number(itemValue))}
                 >
                   {services.map((service) => (
-                    <option key={service.id} value={service.type}>
+                    <option key={service.id} value={service.id}>
                       {service.type}({service.petType}) - ${service.price} 
                     </option>
                   ))}
@@ -145,11 +158,10 @@ export default function AddBooking() {
                   mt={1}
                   onValueChange={(itemValue) => setfrequency(itemValue)}
                 >
-                  {availableData.map((frequency) => (
-                    <option key={frequency.frequency} value={frequency.frequency}>
-                      {frequency.frequency}
-                    </option>
-                  ))}
+                  <Select.Item label="one-off" value="ONE_OFF" />
+                  <Select.Item label="every week" value="WEEKLY" />
+                  <Select.Item label="every two week" value="BI_WEEKLY" />
+                  <Select.Item label="every month" value="MONTHLY" />
                 </Select>
               </Box>
             </VStack>

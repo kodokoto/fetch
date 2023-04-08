@@ -59,7 +59,7 @@ export const bookingRouter = router({
         startDate: z.date(),
         ownerId: z.number(),
         sitterId: z.number(),
-        services: z.string(),
+        services: z.number(),
         frequency: z.string(),
         pets: z.array(z.object({
           id: z.number(),
@@ -69,7 +69,6 @@ export const bookingRouter = router({
     )
     .mutation(({ input }) => {
       const { startDate, ownerId, sitterId, services, frequency, pets } = input
-      const parsedService = parseServiceStringToEnum(services)
       const parsedFrequency = parseFrequencyStringToEnum(frequency)
 
       return prisma.booking.create({
@@ -85,7 +84,11 @@ export const bookingRouter = router({
               id: sitterId,
             },
           },
-          services: parsedService,
+          services: {
+            connect: {
+              id: services
+            }
+          },
           frequency: parsedFrequency,
           pets: {
             connect: pets.map((pet) => ({
