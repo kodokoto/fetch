@@ -17,32 +17,16 @@ export default function Home() {
 
   const { data: ownerProfile, isLoading: ownerProfileLoading } = api.owner.byUserId.useQuery(userId, { enabled: !!userId });
   const { data: sitterProfile, isLoading: sitterProfileLoading } = api.sitter.byUserId.useQuery(userId, { enabled: !!userId });
-  const { data, error, isLoading } = api.booking.byOwnerId.useQuery(ownerProfile?.id, { enabled: !!ownerProfile?.id })
+  const { data: bookings, isLoading: bookingsLoading } = api.booking.byOwnerId.useQuery(ownerProfile?.id, { enabled: !!ownerProfile?.id })
 
   if (!isLoaded) return null
 
-  console.log('checking if loading')
-  if (!!ownerProfileLoading || !!sitterProfileLoading) return <Text>{user?.id}</Text>
-  console.log('finised loading')
-  // if there is no owner profile or sitter profile, redirect to /create
-  console.log("checking if profile exists ")
+  if (!!ownerProfileLoading || !!sitterProfileLoading) return <Text>Loading...</Text>
   if (!ownerProfile && !sitterProfile) {
-    console.log("no profile exists")
     return <Redirect href="/create" />
   }
 
-  console.log("finished loading")
-
-  
-  console.log('profile exists')
-  if (isLoading) return <Text>Loading...</Text>
-
-
-
-
-  // if (isLoading) return <Text>Loading...</Text>
-  // if (error) return <Text>{error.message}</Text>
-  console.log()
+  if (bookingsLoading) return <Text>Loading...</Text>
 
   return (
     <View>
@@ -51,13 +35,9 @@ export default function Home() {
         <ProfileIcon iconUrl={ownerProfile.imageUrl} />
       </Box>
       <Text className="font-bold text-xl ml-2">Upcoming Appointments</Text>
-      {isLoading ? (
-        <Text>Loading...</Text>
-      ) : error ? (
-        <Text>{error.message}</Text>
-      ) : (
-        data.map((data, index) => <BookingPreview key={index} {...data} />)
-      )}
+      {
+        bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)
+      }
     </View>
   )
 }
