@@ -13,7 +13,7 @@ import {
   VStack,
 } from 'native-base'
 import { useRouter } from 'expo-router'
-import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import DateTime from '@react-native-community/datetimepicker'
 
 export type FilterSearchParams = {
   date: string
@@ -122,15 +122,6 @@ export default function Filter() {
             </HStack>
           </Box>
         </VStack>
-        <DateTimePickerModal
-          isVisible={showDate}
-          mode={'date'}
-          onConfirm={onConfirmDate}
-          display="inline"
-          onCancel={() => setShowDate(false)}
-          is24Hour={true}
-          minimumDate={new Date()}
-        />
         <Button
           className="w-[300px] m-auto mt-10"
           onPress={() => handleSubmit({ date: date.toLocaleDateString(), frequency, service, proximity })}

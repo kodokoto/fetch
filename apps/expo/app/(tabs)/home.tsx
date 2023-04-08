@@ -22,7 +22,7 @@ export default function Home() {
   if (!isLoaded) return null
 
   console.log('checking if loading')
-  if (ownerProfileLoading || sitterProfileLoading) return <Text>{user.id}</Text>
+  if (!!ownerProfileLoading || !!sitterProfileLoading) return <Text>{user?.id}</Text>
   console.log('finised loading')
   // if there is no owner profile or sitter profile, redirect to /create
   console.log("checking if profile exists ")
