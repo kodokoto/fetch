@@ -14,11 +14,13 @@
 clone the github repo then run the following commands:
 
 To intsall yarn:
+
 ```
 npm install -g yarn
 ```
 
 On windows, if this doesn't work, try running this in powershell as admin:
+
 ```
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 ```

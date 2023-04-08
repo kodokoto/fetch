@@ -1,0 +1,153 @@
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider     = "mysql"
+//   url          = env("DATABASE_URL")
+//   relationMode = "prisma"
+// }
+
+// model Message {
+//   id        Int      @id @default(autoincrement())
+//   content   String
+//   senderId  String
+//   receiverId String
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@index([senderId])
+//   @@index([receiverId])
+// }
+
+// model Owner {
+//   id        Int       @id @default(autoincrement())
+//   createdAt DateTime  @default(now())
+//   updatedAt DateTime  @updatedAt
+//   pets      Pet[]
+//   bookings  Booking[]
+//   userId    String    @unique
+// }
+
+// model Sitter {
+//   id             Int             @id @default(autoincrement())
+//   createdAt      DateTime        @default(now())
+//   updatedAt      DateTime        @updatedAt
+//   bookings       Booking[]
+//   availableTimes AvailableTime[]
+//   services       Service[]
+//   userId         String          @unique
+// }
+
+// model Location {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   address   String
+//   city      String
+//   state     String
+//   zip       String
+//   lat       Float
+//   lng       Float
+//   userId    String   @unique
+// }
+
+
+// model AvailableTime {
+//   id        Int               @id @default(autoincrement())
+//   createdAt DateTime          @default(now())
+//   updatedAt DateTime          @updatedAt
+//   time      DateTime
+//   dayOfWeek Int
+//   sitterId  Int
+//   sitter    Sitter            @relation(fields: [sitterId], references: [id])
+//   frequency BookingFrequency?
+
+//   @@index([sitterId])
+// }
+
+// model Pet {
+//   id          Int       @id @default(autoincrement())
+//   name        String
+//   createdAt   DateTime  @default(now())
+//   updatedAt   DateTime  @updatedAt
+//   ownerId     String
+//   bookings    Booking[]
+//   description String?
+
+//   @@index([ownerId])
+// }
+
+// enum Role {
+//   OWNER
+//   SITTER
+// }
+
+// enum PetType {
+//   DOG
+//   CAT
+//   BIRD
+//   FISH
+//   OTHER
+// }
+
+// model Service {
+//   id          Int         @id @default(autoincrement())
+//   type        ServiceType
+//   price       Float
+//   description String
+//   duration    Int // in minutes
+//   createdAt   DateTime    @default(now())
+//   updatedAt   DateTime    @updatedAt
+//   petType     PetType
+//   bookings    Booking[]
+//   Sitter      Sitter?     @relation(fields: [sitterId], references: [id])
+//   sitterId    Int?
+
+//   @@index([sitterId])
+// }
+
+// enum ServiceType {
+//   WALK
+//   PET_CARE
+//   HOUSE_SITTING
+// }
+
+// model Booking {
+//   id        Int               @id @default(autoincrement())
+//   status    BookingStatus
+//   startDate DateTime
+//   createdAt DateTime          @default(now())
+//   updatedAt DateTime          @updatedAt
+//   ownerId   Int
+//   sitterId  Int
+//   services  Service[]
+//   pets      Pet[]
+//   frequency BookingFrequency?
+
+//   @@index([ownerId])
+//   @@index([sitterId])
+// }
+
+// enum BookingFrequency {
+//   ONE_OFF
+//   WEEKLY
+//   BI_WEEKLY
+//   MONTHLY
+// }
+
+// enum BookingStatus {
+//   PENDING
+//   ACCEPTED
+//   REJECTED
+// }
+
+// enum Day {
+//   Monday
+//   Tuesday
+//   Wednesday
+//   Thursday
+//   Friday
+//   Saturday
+//   Sunday
+// } 

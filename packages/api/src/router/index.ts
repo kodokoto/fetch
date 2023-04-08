@@ -4,6 +4,7 @@ import { ownerRouter } from './owner'
 import { sitterRouter } from './sitter'
 import { messageRouter } from './message'
 import { userRouter } from './user'
+import { serviceRouter } from './service'
 
 export const appRouter = router({
   booking: bookingRouter,
@@ -11,6 +12,7 @@ export const appRouter = router({
   sitter: sitterRouter,
   message: messageRouter,
   user: userRouter,
+  service: serviceRouter,
 })
 
 export type AppRouter = typeof appRouter

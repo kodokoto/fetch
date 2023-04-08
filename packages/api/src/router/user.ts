@@ -1,10 +1,16 @@
 import { router, publicProcedure } from '../trpc'
-import { z } from 'zod'
 import { prisma } from 'db'
+import { z } from 'zod'
+import clerk from '@clerk/clerk-sdk-node'
+
+const getUser = async (userId: string) => {
+  const user = await clerk.users.getUser(userId)
+  return user
+}
 
 export const userRouter = router({
   all: publicProcedure.query(() => {
-    return prisma.user.findMany()
+    return clerk.users.getUserList()
   }),
   byId: publicProcedure.input(z.number()).query(({ input }) => {
     return prisma.user.findFirst({
@@ -17,6 +23,17 @@ export const userRouter = router({
     return prisma.user.findFirst({
       where: {
         email: input,
+      },
+    })
+  }),
+  bySitterId: publicProcedure.input(z.number()).query(({ input }) => {
+    return prisma.user.findFirst({
+      where: {
+        sitterAccount: {
+          id: {
+            equals: input,
+          },
+        },
       },
     })
   }),

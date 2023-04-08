@@ -40,7 +40,7 @@ export default function BookingPreview(props: Booking) {
   const router = useRouter()
   console.log(props)
 
-  const { data, error, isLoading } = api.sitter.byId.useQuery(props.sitterId)
+  const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(props.sitterId)
 
   const handlePress = () => {
     router.push({
@@ -57,14 +57,18 @@ export default function BookingPreview(props: Booking) {
       onPress={handlePress}
       className="m-auto rounded-2xl w-80 bg-[#4c8ab9] mt-6 h-30 hover:bg-[#4c8ab9]  border-solid border-transparent border-2"
     >
-      <Box className="bg-[#4c8ab9] rounded-2xl p-4 w-80 h-25 mb-2" style={{ flexDirection: 'row' }}>
-        {/* <Avatar source={{uri: data.imageUrl}} className='w-12 h-12 md:w-48 md:h-auto float-left'></Avatar> */}
-        <Box className="ml-4 float-left">
-          <Text className="font-bold text-lg">{data.id}</Text>
-          <Text>{'test'}</Text>
-          {/* <Text>{props.dateDescription}</Text> */}
+      <Box className="bg-[#4c8ab9] rounded-2xl p-4 w-80 h-25 mb-2 flex-wrap flex-row justify-between">
+        <Box className="float-left" style={{ flexDirection: 'row' }}>
+          <Avatar source={{ uri: sitterData?.imageUrl }} className="w-12 h-12 md:w-48 md:h-auto float-left">
+            AT
+          </Avatar>
+          <Box className="ml-4 float-left">
+            <Text className="font-bold text-lg">{sitterData?.name}</Text>
+            <Text>{'test'}</Text>
+            {/* <Text>{props.dateDescription}</Text> */}
+          </Box>
         </Box>
-        <Text className="ml-24 mr-12 mt-0">{parseBookingFrequency(props.frequency)}</Text>
+        <Text className="flex-end">{parseBookingFrequency(props.frequency)}</Text>
       </Box>
       <Box className="ml-4 flex-wrap flex-row">
         <Ionicons size={24} className="flex-start" name="ios-calendar-outline"></Ionicons>

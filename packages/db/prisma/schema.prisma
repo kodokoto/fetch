@@ -14,28 +14,15 @@ datasource db {
 model Message {
   id        Int      @id @default(autoincrement())
   content   String
-  sender    User     @relation("sentMessages", fields: [senderId], references: [id])
-  senderId  Int
-  receiver  User     @relation("receivedMessages", fields: [receiverId], references: [id])
-  receiverId Int
+  owner     Owner    @relation("ownerMessages", fields: [ownerId], references: [id])
+  ownerId   Int
+  sitter    Sitter   @relation("sitterMessages", fields: [sitterId], references: [id])
+  sitterId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([senderId])
   @@index([receiverId])
-}
-
-model Review {
-  id        Int      @id @default(autoincrement())
-  rating    Int
-  comment   String?
-  ownerId    Int
-  owner      Owner    @relation(fields: [ownerId], references: [id])
-  sitterId  Int
-  sitter    Sitter   @relation(fields: [sitterId], references: [id])
-
-  @@index([ownerId])
-  @@index([sitterId])
 }
 
 model User {
@@ -61,8 +48,6 @@ model Owner {
   bookings  Booking[]
   userId    Int       @unique
   User      User      @relation(fields: [userId], references: [id])
-
-  review   Review[]
 }
 
 model Sitter {
@@ -74,8 +59,6 @@ model Sitter {
   services       Service[]
   userId         Int             @unique
   User           User            @relation(fields: [userId], references: [id])
-
-  review   Review[]
 }
 
 model Location {
@@ -89,21 +72,18 @@ model Location {
   lat       Float
   lng       Float
   userId    Int      @unique
-  User      User     @relation(fields: [userId], references: [id])
 }
 
-
 model AvailableTime {
-  id        Int               @id @default(autoincrement())
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-  time      DateTime
-  dayOfWeek Int
-  sitterId  Int
-  sitter    Sitter            @relation(fields: [sitterId], references: [id])
-  frequency BookingFrequency?
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  time      TimeOfDay
+  day       Day
+  serviceId Int
+  service   Service   @relation(fields: [serviceId], references: [id])
 
-  @@index([sitterId])
+  @@index([serviceId])
 }
 
 model Pet {
@@ -133,17 +113,18 @@ enum PetType {
 }
 
 model Service {
-  id          Int         @id @default(autoincrement())
-  type        ServiceType
-  price       Float
-  description String
-  duration    Int // in minutes
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  petType     PetType
-  bookings    Booking[]
-  Sitter      Sitter?     @relation(fields: [sitterId], references: [id])
-  sitterId    Int?
+  id             Int             @id @default(autoincrement())
+  type           ServiceType
+  price          Float
+  description    String
+  duration       Int // in minutes
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  petType        PetType
+  bookings       Booking[]
+  Sitter         Sitter          @relation(fields: [sitterId], references: [id])
+  sitterId       Int
+  availableTimes AvailableTime[]
 
   @@index([sitterId])
 }
@@ -156,7 +137,7 @@ enum ServiceType {
 
 model Booking {
   id        Int               @id @default(autoincrement())
-  status    BookingStatus
+  status    BookingStatus     @default(PENDING)
   startDate DateTime
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
@@ -164,12 +145,14 @@ model Booking {
   ownerId   Int
   sitter    Sitter            @relation(fields: [sitterId], references: [id])
   sitterId  Int
-  services  Service[]
+  serviceId Int
+  services  Service           @relation(fields: [serviceId], references: [id])
   pets      Pet[]
   frequency BookingFrequency?
 
   @@index([ownerId])
   @@index([sitterId])
+  @@index([serviceId])
 }
 
 
@@ -187,13 +170,20 @@ enum BookingStatus {
 }
 
 enum Day {
-  Monday
-  Tuesday
-  Wednesday
-  Thursday
-  Friday
-  Saturday
-  Sunday
+  MONDAY
+  TEUSDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum TimeOfDay {
+  ANY
+  MORNING
+  AFTERNOON
+  EVENING
 }
 
 
