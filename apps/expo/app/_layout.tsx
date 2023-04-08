@@ -1,10 +1,21 @@
-import { Stack } from 'expo-router'
+import { Slot } from 'expo-router'
 import Provider from 'app/provider'
+import { SignedIn, SignedOut } from '@clerk/clerk-expo'
+import SignInWithOAuth from 'app/components/SignInWithOAuth'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 export default function root() {
   return (
     <Provider>
-      <Stack>
+        <SafeAreaProvider>
+        <SignedIn>
+          <Slot />
+        </SignedIn>
+        <SignedOut>
+          <SignInWithOAuth />
+        </SignedOut>
+        </SafeAreaProvider>
+      {/* <Stack>
         <Stack.Screen
           name="(tabs)"
           options={{
@@ -26,7 +37,7 @@ export default function root() {
             headerShown: false,
           }}
         />
-      </Stack>
+      </Stack> */}
     </Provider>
   )
 }
