@@ -1,7 +1,7 @@
 import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { prisma } from 'db'
-import { ServiceType, BookingFrequency } from '@prisma/client'
+import { ServiceType, BookingFrequency,TimeOfDay, Day } from '@prisma/client'
 
 function parseServiceStringToEnum(service: string): ServiceType {
   switch (service) {
@@ -42,27 +42,58 @@ export const sitterRouter = router({
       },
     })
   }),
+  byUserId: publicProcedure.input(z.string()).query(({ input }) => {
+    return prisma.sitter.findFirst({
+      where: {
+        userId: input,
+      },
+    })
+  }),
+  contacts: publicProcedure
+    .input(z.number())
+    .query(({ input }) => {
+      return prisma.owner.findMany({
+        where: {
+          messages: {
+            some: {
+              sitterId: input,
+            },
+          }
+        },
+    })
+  }),
+
   bySearchParams: publicProcedure
     .input(
       z.object({
-        service: z.string(),
-        proximity: z.string(),
-        frequency: z.string(),
         date: z.string(),
+        service: z.string(),
+        availability: z.string(),
+        maxPrice: z.number(),
       })
     )
     .query(({ input }) => {
       return prisma.sitter.findMany({
         where: {
-          AND: [
-            {
-              services: {
-                some: {
-                  type: parseServiceStringToEnum(input.service) as ServiceType,
-                },
+          services: {
+            some: {
+              type: parseServiceStringToEnum(input.service),
+              price: {
+                lte: input.maxPrice,
               },
-            },
-          ],
+              availableTimes: {
+                some: {
+                  AND: [
+                    { day: input.date as Day },
+                    { time: input.availability as TimeOfDay }
+                  ]
+                },
+              }
+            }
+          },
+        },
+        include: {
+          services: true,
         },
       })
     }),
