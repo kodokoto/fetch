@@ -21,35 +21,44 @@ model Message {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([ownerId])
-  @@index([sitterId])
+  @@index([senderId])
+  @@index([receiverId])
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  googleId      String    @unique
+  name          String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  imageUrl      String
+  ownerAccount  Owner?
+  sitterAccount Sitter?
+  location      Location?
+  sentMessages   Message[] @relation("sentMessages")
+  receivedMessages Message[] @relation("receivedMessages")
 }
 
 model Owner {
-  id          Int       @id @default(autoincrement())
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  pets        Pet[]
-  bookings    Booking[]
-  userId      String    @unique
-  messages    Message[] @relation("ownerMessages")
-  name        String
-  imageUrl    String
-  description String?
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  pets      Pet[]
+  bookings  Booking[]
+  userId    Int       @unique
+  User      User      @relation(fields: [userId], references: [id])
 }
 
 model Sitter {
-  id              Int       @id @default(autoincrement())
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  bookings        Booking[]
-  services        Service[]
-  userId          String    @unique
-  messages        Message[] @relation("sitterMessages")
-  name            String
-  imageUrl        String
-  description     String?
-  proximityRadius Int       @default(10)
+  id             Int             @id @default(autoincrement())
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  bookings       Booking[]
+  availableTimes AvailableTime[]
+  services       Service[]
+  userId         Int             @unique
+  User           User            @relation(fields: [userId], references: [id])
 }
 
 model Location {
@@ -146,6 +155,7 @@ model Booking {
   @@index([serviceId])
 }
 
+
 enum BookingFrequency {
   ONE_OFF
   WEEKLY
@@ -175,3 +185,8 @@ enum TimeOfDay {
   AFTERNOON
   EVENING
 }
+
+
+
+
+
