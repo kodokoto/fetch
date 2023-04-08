@@ -7,10 +7,8 @@ import { Text } from 'native-base'
 import SignInOrSignUpScreen from 'app/screens/SignInOrSignUpScreen'
 
 export default function index() {
-  const { signOut } = useClerk()
   return (
     <>
-      <SafeAreaView>
         <SignedIn>
           <Redirect href="/home" />
         </SignedIn>
@@ -18,7 +16,6 @@ export default function index() {
           {/* <SignInOrSignUpScreen /> */}
           <SignInWithOAuth />
         </SignedOut>
-      </SafeAreaView>
     </>
   )
 }

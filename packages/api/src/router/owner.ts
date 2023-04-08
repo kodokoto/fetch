@@ -61,8 +61,8 @@ export const ownerRouter = router({
       name: z.string(),
       imageUrl: z.string(),
     }))
-    .mutation( ({ input }) => {
-      return prisma.owner.create({
+    .mutation( async ({ input }) => {
+      return await prisma.owner.create({
         data: {
           userId: input.userId,
           name: input.name,

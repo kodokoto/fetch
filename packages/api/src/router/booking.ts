@@ -9,14 +9,17 @@ export const bookingRouter = router({
   byId: publicProcedure.input(z.number()).query(({ input }) => {
     return prisma.booking.findFirst({ where: { id: input } })
   }),
-  byOwnerEmail: publicProcedure.input(z.string()).query(({ input }) => {
+  byOwnerId: publicProcedure.input(z.number()).query(({ input }) => {
     return prisma.booking.findMany({
       where: {
-        owner: {
-          User: {
-            email: input,
-          },
-        },
+        ownerId: input,
+      },
+    })
+  }),
+  bySitterId: publicProcedure.input(z.number()).query(({ input }) => {
+    return prisma.booking.findMany({
+      where: {
+        sitterId: input,
       },
     })
   }),

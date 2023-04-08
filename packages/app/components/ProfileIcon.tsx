@@ -23,10 +23,9 @@ export default function ProfileIcon(props: User) {
       >
         <Menu.Item onPress={() => router.push('EditProfile')}>Edit Profile</Menu.Item>
         <Menu.Item onPress={() => router.push('Setting')}>Setting</Menu.Item>
-        <Menu.Item onPress={() =>{ 
+        <Menu.Item onPress={() =>
           signOut()
-          router.push('/')
-        }}>Sign out</Menu.Item>
+        }>Sign out</Menu.Item>
         <Menu.Item>Help</Menu.Item>
       </Menu>
     </Box>

@@ -20,6 +20,12 @@ export default function root() {
             presentation: 'modal',
           }}
         />
+        <Stack.Screen
+          name="create"
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
     </Provider>
   )
