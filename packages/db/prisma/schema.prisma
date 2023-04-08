@@ -12,44 +12,44 @@ datasource db {
 }
 
 model Message {
-  id         Int      @id @default(autoincrement())
-  content    String
-  owner      Owner     @relation("ownerMessages", fields: [ownerId], references: [id])
+  id        Int      @id @default(autoincrement())
+  content   String
+  owner     Owner    @relation("ownerMessages", fields: [ownerId], references: [id])
   ownerId   Int
-  sitter   Sitter     @relation("sitterMessages", fields: [sitterId], references: [id])
-  sitterId Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  sitter    Sitter   @relation("sitterMessages", fields: [sitterId], references: [id])
+  sitterId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([ownerId])
   @@index([sitterId])
 }
 
 model Owner {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  pets      Pet[]
-  bookings  Booking[]
-  userId    String       @unique
-  messages  Message[] @relation("ownerMessages")
-  name      String
-  imageUrl  String
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  pets        Pet[]
+  bookings    Booking[]
+  userId      String    @unique
+  messages    Message[] @relation("ownerMessages")
+  name        String
+  imageUrl    String
   description String?
 }
 
 model Sitter {
-  id             Int             @id @default(autoincrement())
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  bookings       Booking[]
-  services       Service[]
-  userId         String             @unique
-  messages       Message[]       @relation("sitterMessages")
-  name      String
-  imageUrl  String
-  description String?
-  proximityRadius Int @default(10)
+  id              Int       @id @default(autoincrement())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  bookings        Booking[]
+  services        Service[]
+  userId          String    @unique
+  messages        Message[] @relation("sitterMessages")
+  name            String
+  imageUrl        String
+  description     String?
+  proximityRadius Int       @default(10)
 }
 
 model Location {
@@ -66,13 +66,14 @@ model Location {
 }
 
 model AvailableTime {
-  id        Int               @id @default(autoincrement())
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   time      TimeOfDay
   day       Day
-  serviceId  Int
-  service    Service            @relation(fields: [serviceId], references: [id])
+  serviceId Int
+  service   Service   @relation(fields: [serviceId], references: [id])
+
   @@index([serviceId])
 }
 
@@ -103,18 +104,19 @@ enum PetType {
 }
 
 model Service {
-  id          Int         @id @default(autoincrement())
-  type        ServiceType
-  price       Float
-  description String
-  duration    Int // in minutes
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  petType     PetType
-  bookings    Booking[]
-  Sitter      Sitter     @relation(fields: [sitterId], references: [id])
-  sitterId    Int
+  id             Int             @id @default(autoincrement())
+  type           ServiceType
+  price          Float
+  description    String
+  duration       Int // in minutes
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  petType        PetType
+  bookings       Booking[]
+  Sitter         Sitter          @relation(fields: [sitterId], references: [id])
+  sitterId       Int
   availableTimes AvailableTime[]
+
   @@index([sitterId])
 }
 
@@ -135,7 +137,7 @@ model Booking {
   sitter    Sitter            @relation(fields: [sitterId], references: [id])
   sitterId  Int
   serviceId Int
-  services  Service         @relation(fields: [serviceId], references: [id])
+  services  Service           @relation(fields: [serviceId], references: [id])
   pets      Pet[]
   frequency BookingFrequency?
 

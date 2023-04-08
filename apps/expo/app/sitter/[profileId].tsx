@@ -130,17 +130,20 @@ export default function SitterProfile() {
             <Text className="text-black-500">Book</Text>
           </Button>
           {/* redirects user to messaging page */}
-          <Button onPress={() =>
-          router.push({
-            pathname: '/messages',
-            params: {
-              senderId: currentUserId,
-              receiverId: userId,
-              receiverName: name,
-              receiverImageUrl: imageUrl,
-            },
-          })
-        } className="border-gray-500 border-2 bg-white">
+          <Button
+            onPress={() =>
+              router.push({
+                pathname: '/messages',
+                params: {
+                  senderId: currentUserId,
+                  receiverId: userId,
+                  receiverName: name,
+                  receiverImageUrl: imageUrl,
+                },
+              })
+            }
+            className="border-gray-500 border-2 bg-white"
+          >
             <Text className="text-black-500">Message</Text>
           </Button>
           {/* redirects user to report page */}

@@ -12,7 +12,7 @@ export const appRouter = router({
   sitter: sitterRouter,
   message: messageRouter,
   user: userRouter,
-  service: serviceRouter
+  service: serviceRouter,
 })
 
 export type AppRouter = typeof appRouter
