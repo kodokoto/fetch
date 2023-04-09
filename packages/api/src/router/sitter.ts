@@ -3,34 +3,6 @@ import { z } from 'zod'
 import { prisma } from 'db'
 import { ServiceType, BookingFrequency, TimeOfDay, Day } from '@prisma/client'
 
-function parseServiceStringToEnum(service: string): ServiceType {
-  switch (service) {
-    case 'walk':
-      return 'WALK'
-    case 'petcare':
-      return 'PET_CARE'
-    case 'house_sitting':
-      return 'HOUSE_SITTING'
-    default:
-      return 'WALK'
-  }
-}
-
-function parseFrequencyStringToEnum(frequency: string): BookingFrequency {
-  switch (frequency) {
-    case 'one-off':
-      return 'ONE_OFF'
-    case 'every week':
-      return 'WEEKLY'
-    case 'every two weeks':
-      return 'BI_WEEKLY'
-    case 'every month':
-      return 'MONTHLY'
-    default:
-      return 'ONE_OFF'
-  }
-}
-
 export const sitterRouter = router({
   all: publicProcedure.query(() => {
     return prisma.sitter.findMany()
@@ -52,6 +24,25 @@ export const sitterRouter = router({
       },
     })
   }),
+  byIdWith: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        include: z.array(z.enum(['images', 'services', 'reviews'])),
+      })
+    )
+    .query(({ input }) => {
+      return prisma.sitter.findFirst({
+        where: {
+          id: input.id,
+        },
+        include: {
+          images: input.include.includes('images'),
+          services: input.include.includes('services'),
+          reviews: input.include.includes('reviews'),
+        },
+      })
+    }),
   byUserId: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.sitter.findFirst({
       where: {
@@ -85,7 +76,7 @@ export const sitterRouter = router({
         where: {
           services: {
             some: {
-              type: parseServiceStringToEnum(input.service),
+              type: input.service as ServiceType,
               price: {
                 lte: input.maxPrice,
               },

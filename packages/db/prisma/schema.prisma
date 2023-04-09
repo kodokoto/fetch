@@ -11,6 +11,7 @@ datasource db {
   relationMode = "prisma"
 }
 
+
 model Owner {
   id          Int       @id @default(autoincrement())
   createdAt   DateTime  @default(now())
@@ -22,6 +23,8 @@ model Owner {
   name        String
   imageUrl    String
   description String?
+  reviews     Review[]
+  location    String   @default("London, UK")
 }
 
 model Sitter {
@@ -38,6 +41,8 @@ model Sitter {
   bio             String    @default("Hello! I'm a new sitter.")
   description     String    @default("I dont have a description yet.")
   proximityRadius Int       @default(10)
+  reviews         Review[]
+  location    String   @default("London, UK")
 }
 
 model Image {
@@ -163,6 +168,21 @@ model Service {
   bookings       Booking[]
 
   @@index([sitterId])
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rating    Int
+  content   String
+  fromId    Int
+  from      Owner   @relation(fields: [fromId], references: [id])
+  toId      Int
+  to        Sitter @relation(fields: [toId], references: [id])
+
+  @@index([fromId])
+  @@index([toId])
 }
 
 enum ServiceType {
