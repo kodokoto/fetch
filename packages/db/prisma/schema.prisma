@@ -11,19 +11,6 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Message {
-  id        Int      @id @default(autoincrement())
-  content   String
-  owner     Owner    @relation("ownerMessages", fields: [ownerId], references: [id])
-  ownerId   Int
-  sitter    Sitter   @relation("sitterMessages", fields: [sitterId], references: [id])
-  sitterId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([ownerId])
-  @@index([sitterId])
-}
 
 model Owner {
   id          Int       @id @default(autoincrement())
@@ -36,6 +23,9 @@ model Owner {
   name        String
   imageUrl    String
   description String?
+  reviews     Review[]
+  location    String   @default("London, UK")
+  reports     Report[]
 }
 
 model Sitter {
@@ -48,21 +38,24 @@ model Sitter {
   messages        Message[] @relation("sitterMessages")
   name            String
   imageUrl        String
-  description     String?
+  images          Image[]   
+  bio             String    @default("Hello! I'm a new sitter.")
+  description     String    @default("I dont have a description yet.")
   proximityRadius Int       @default(10)
+  reviews         Review[]
+  location    String   @default("London, UK")
+  reports         Report[]
 }
 
-model Location {
+model Image {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  address   String
-  city      String
-  state     String
-  zip       String
-  lat       Float
-  lng       Float
-  userId    Int      @unique
+  url       String
+  sitterId  Int
+  sitter    Sitter   @relation(fields: [sitterId], references: [id])
+
+  @@index([sitterId])
 }
 
 model AvailableTime {
@@ -75,6 +68,51 @@ model AvailableTime {
   service   Service   @relation(fields: [serviceId], references: [id])
 
   @@index([serviceId])
+}
+
+model ScheduledTime {
+  id        Int               @id @default(autoincrement())
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  time      TimeOfDay
+  day       Day
+  booking   Booking?
+  frequency BookingFrequency?
+  bookingId Int?              @unique
+}
+
+model Booking {
+  id              Int           @id @default(autoincrement())
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  status          BookingStatus @default(PENDING)
+  owner           Owner         @relation(fields: [ownerId], references: [id])
+  ownerId         Int
+  sitter          Sitter        @relation(fields: [sitterId], references: [id])
+  sitterId        Int
+  service         Service       @relation(fields: [serviceId], references: [id])
+  serviceId       Int
+  pet             Pet           @relation(fields: [petId], references: [id])
+  petId           Int
+  scheduledTime   ScheduledTime @relation(fields: [scheduledTimeId], references: [id])
+  scheduledTimeId Int           @unique
+
+  @@index([ownerId])
+  @@index([sitterId])
+  @@index([serviceId])
+  @@index([petId])
+}
+
+model Location {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  address   String
+  city      String
+  state     String
+  zip       String
+  lat       Float
+  lng       Float
 }
 
 model Pet {
@@ -90,24 +128,23 @@ model Pet {
   @@index([ownerId])
 }
 
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String
+  owner     Owner    @relation("ownerMessages", fields: [ownerId], references: [id])
+  ownerId   Int
+  sitter    Sitter   @relation("sitterMessages", fields: [sitterId], references: [id])
+  sitterId  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([ownerId])
+  @@index([sitterId])
+}
+
 enum Role {
   OWNER
   SITTER
-}
-
-model Report {
-  id          Int         @id @default(autoincrement())
-  reportType  ReportType
-  content     String
-}
-
-enum ReportType {
-  HARRASMENT
-  VIOLENCE
-  THREATENING_BEHAVIOUR
-  SPAM 
-  HATE
-  OTHER
 }
 
 enum PetType {
@@ -120,45 +157,64 @@ enum PetType {
 
 model Service {
   id             Int             @id @default(autoincrement())
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   type           ServiceType
   price          Float
   description    String
   duration       Int // in minutes
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
   petType        PetType
-  bookings       Booking[]
   Sitter         Sitter          @relation(fields: [sitterId], references: [id])
   sitterId       Int
   availableTimes AvailableTime[]
+  bookings       Booking[]
 
   @@index([sitterId])
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rating    Int
+  content   String
+  fromId    Int
+  from      Owner   @relation(fields: [fromId], references: [id])
+  toId      Int
+  to        Sitter @relation(fields: [toId], references: [id])
+
+  @@index([fromId])
+  @@index([toId])
+}
+
+model Report {
+  id          Int         @id @default(autoincrement())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  reportType  ReportType
+  content     String
+  fromId      Int
+  from        Owner       @relation(fields: [fromId], references: [id])
+  toId        Int
+  to          Sitter     @relation(fields: [toId], references: [id])
+
+  @@index([fromId])
+  @@index([toId])
+}
+
+enum ReportType {
+  HARRASMENT
+  VIOLENCE
+  THREATENING_BEHAVIOUR
+  SPAM 
+  HATE
+  OTHER
 }
 
 enum ServiceType {
   WALK
   PET_CARE
   HOUSE_SITTING
-}
-
-model Booking {
-  id        Int               @id @default(autoincrement())
-  status    BookingStatus     @default(PENDING)
-  startDate DateTime
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-  owner     Owner             @relation(fields: [ownerId], references: [id])
-  ownerId   Int
-  sitter    Sitter            @relation(fields: [sitterId], references: [id])
-  sitterId  Int
-  serviceId Int
-  services  Service           @relation(fields: [serviceId], references: [id])
-  pets      Pet[]
-  frequency BookingFrequency?
-
-  @@index([ownerId])
-  @@index([sitterId])
-  @@index([serviceId])
 }
 
 enum BookingFrequency {
