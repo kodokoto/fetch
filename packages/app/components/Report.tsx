@@ -3,25 +3,31 @@ import {
   Box,
   Select,
   FormControl,
-  Text,
   Button,
-  Input,
-  HStack,
-  CheckIcon,
-  Slider,
-  TextArea,
-  NativeBaseProvider,
+  CheckIcon, 
+  TextArea, 
   VStack
 } from 'native-base'
-import { TouchableOpacity } from 'react-native';
+
 import { useRouter } from 'expo-router'
+import { api } from 'app/utils/trpc'
+import { useUser } from '@clerk/clerk-expo'
+import { ReportType } from 'db';
+
+
 
 
 export default function Report() {
   const router = useRouter()
+  const { user, isLoaded } = useUser()
+  const mutation = api.report.create.useMutation()
 
   const handleSubmit = () => {
-    <Text>Hmmg</Text>
+    mutation.mutate({
+      reportType: type,
+      reportContent: textAreaValue
+    })
+
   }
 
 
@@ -37,7 +43,7 @@ export default function Report() {
           <FormControl.Label _text={{ bold: true }}>Type:</FormControl.Label>
           <Box maxW="full">
             <Select
-              selectedValue={type}
+              selectedValue={String(type)}
               minWidth="full"
               accessibilityLabel="Choose report type"
               placeholder="Choose report type"
@@ -48,13 +54,12 @@ export default function Report() {
               mt={1}
               onValueChange={(itemValue) => setType(itemValue)}
             >
-              <Select.Item label="Harrasment" value="harrasment" />
-              <Select.Item label="Sexualisation" value="sexualisation" />
-              <Select.Item label="Violence" value="violence" />
-              <Select.Item label="Spam" value="spam" />
-              <Select.Item label="Hate" value="hate" />
-              <Select.Item label="Threatening behaviour" value="threatening_behaviour" />
-              <Select.Item label="Other" value="other" />
+              <Select.Item label="Harrasment" value="HARRASMENT" />
+              <Select.Item label="Violence" value="VIOLENCE" />
+              <Select.Item label="Spam" value="SPAM" />
+              <Select.Item label="Hate" value="HATE" />
+              <Select.Item label="Threatening behaviour" value="THREATENING_BEHAVIOUR" />
+              <Select.Item label="Other" value="OTHER" />
             </Select>
           </Box>
           <FormControl.Label _text={{ bold: true }}>Description:</FormControl.Label>

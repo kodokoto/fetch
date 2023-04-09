@@ -95,6 +95,21 @@ enum Role {
   SITTER
 }
 
+model Report {
+  id          Int         @id @default(autoincrement())
+  reportType  ReportType
+  content     String
+}
+
+enum ReportType {
+  HARRASMENT
+  VIOLENCE
+  THREATENING_BEHAVIOUR
+  SPAM 
+  HATE
+  OTHER
+}
+
 enum PetType {
   DOG
   CAT

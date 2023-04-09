@@ -147,7 +147,11 @@ export default function SitterProfile() {
             <Text className="text-black-500">Message</Text>
           </Button>
           {/* redirects user to report page */}
-          <Button className="border-gray-500 border-2 bg-white">
+          <Button className="border-gray-500 border-2 bg-white"
+          onPress={() =>
+            router.push({
+              pathname: '/reportpage'
+            })}>
             <Text className="text-red-500">Report</Text>
           </Button>
         </View>
