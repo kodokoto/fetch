@@ -25,13 +25,14 @@ export default function SearchResult(props: Sitter) {
           justifyContent: 'center',
           flexDirection: 'row',
           width: 300,
+          height: 100,
           padding: 5,
           borderRadius: 10,
           marginTop: 15,
         }}
         onPress={() =>
           router.push({
-            pathname: `/sitter/${props.id}`,
+            pathname: `/booking/addBooking`,
             params: {
               userId: props.id,
               date: date,
@@ -80,7 +81,7 @@ export default function SearchResult(props: Sitter) {
             marginLeft: 'auto',
           }}
         >
-          {petType.price}
+          {petType? petType.price : null}
         </Text>
       </TouchableOpacity>
     </View>
