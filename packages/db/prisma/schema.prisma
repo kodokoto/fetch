@@ -25,6 +25,7 @@ model Owner {
   description String?
   reviews     Review[]
   location    String   @default("London, UK")
+  reports     Report[]
 }
 
 model Sitter {
@@ -43,6 +44,7 @@ model Sitter {
   proximityRadius Int       @default(10)
   reviews         Review[]
   location    String   @default("London, UK")
+  reports         Report[]
 }
 
 model Image {
@@ -183,6 +185,30 @@ model Review {
 
   @@index([fromId])
   @@index([toId])
+}
+
+model Report {
+  id          Int         @id @default(autoincrement())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  reportType  ReportType
+  content     String
+  fromId      Int
+  from        Owner       @relation(fields: [fromId], references: [id])
+  toId        Int
+  to          Sitter     @relation(fields: [toId], references: [id])
+
+  @@index([fromId])
+  @@index([toId])
+}
+
+enum ReportType {
+  HARRASMENT
+  VIOLENCE
+  THREATENING_BEHAVIOUR
+  SPAM 
+  HATE
+  OTHER
 }
 
 enum ServiceType {

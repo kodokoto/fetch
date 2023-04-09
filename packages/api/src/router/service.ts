@@ -1,7 +1,7 @@
 import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { prisma } from 'db'
-import { ServiceType, TimeOfDay, Day } from '@prisma/client'
+import { ServiceType, TimeOfDay, Day, BookingFrequency, PetType } from '@prisma/client'
 
 export const serviceRouter = router({
   all: publicProcedure.query(() => {
@@ -68,6 +68,47 @@ export const serviceRouter = router({
             some: {
               AND: [{ day: input.availability as Day }, { time: input.availability as TimeOfDay }],
             },
+          },
+        },
+      })
+    }),
+    create: publicProcedure
+    .input(
+      z.object({
+        sitterId: z.number(),
+        type: z.string(),
+        price: z.number(),
+        petType: z.string(),
+        description: z.string(),
+        duration: z.number(),
+        availableTimes: z.array(
+          z.object({
+            day: z.string(),
+            time: z.string(),
+            frequency: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await prisma.service.create({
+        data: {
+          Sitter: {
+            connect: {
+              id: input.sitterId,
+            }
+          },
+          duration: input.duration,
+          description: input.description,
+          petType: input.petType as PetType,
+          type: input.type as ServiceType,
+          price: input.price,
+          availableTimes: {
+            create: input.availableTimes.map((time) => ({
+              day: time.day as Day,
+              time: time.time as TimeOfDay,
+              frequency: time.frequency as BookingFrequency,
+            })),
           },
         },
       })
