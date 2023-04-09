@@ -9,7 +9,7 @@ import {
   VStack
 } from 'native-base'
 
-import { useRouter } from 'expo-router'
+import { useRouter, useSearchParams } from 'expo-router'
 import { api } from 'app/utils/trpc'
 import { useUser } from '@clerk/clerk-expo'
 import { ReportType } from 'db';
@@ -19,13 +19,17 @@ import { ReportType } from 'db';
 
 export default function Report() {
   const router = useRouter()
+  const { sitterId } = useSearchParams()
   const { user, isLoaded } = useUser()
+  const ownerid = 1
   const mutation = api.report.create.useMutation()
 
   const handleSubmit = () => {
     mutation.mutate({
       reportType: type,
-      reportContent: textAreaValue
+      reportContent: textAreaValue,
+      fromId: ownerid,
+      toId: Number(sitterId)
     })
 
   }
