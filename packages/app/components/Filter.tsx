@@ -100,7 +100,7 @@ export default function Filter() {
               <Select.Item label="3pm-10pm" value="EVENING" />
             </Select>
           </Box>
-          <FormControl.Label _text={{ bold: true }}>Proximity:</FormControl.Label>
+          <FormControl.Label _text={{ bold: true }}>Price:</FormControl.Label>
           <Box alignItems="center" w="100%">
             <HStack>
               <Slider
