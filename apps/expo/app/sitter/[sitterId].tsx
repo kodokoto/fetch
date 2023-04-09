@@ -43,8 +43,31 @@ export default function SitterProfile() {
                       source={{ uri: sitterData.imageUrl }}
                       className='w-16 h-16 rounded-full border-white border-2'
                   />
-                  <Text className='text-2xl font-bold'>{sitterData.name}</Text>
-                  <Text>{sitterData.bio}</Text>
+                  <View className='flex-row justify-between'>
+                    <View>
+                      <Text className='text-2xl font-bold'>{sitterData.name}</Text>
+                      <Text>{sitterData.bio}</Text>
+                    </View>
+                    {
+                      session.currentProfile === Profile.OWNER
+                      ? <View className='flex flex-row gap-2'>
+                          <Button className='bg-transparent' onPress={() => {
+                            router.push({
+                              pathname: '/report',
+                              params: {
+                                sitterId: sitterData.id,
+                              }
+                            }) 
+                          }}>
+                        <Text className='text-red-500'>Report</Text>
+                      </Button>
+                    </View>
+                    : null
+                    }
+                    
+                  </View>
+                  {/* <Text>{sitterData.location}</Text> */}
+                  {/* <Text>{sitterData.rating}</Text> */}
               </View> 
               <ProfileTabs {...{
                 description: sitterData.description,
