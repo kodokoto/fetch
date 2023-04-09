@@ -4,7 +4,7 @@ import { Box, Menu, Avatar, Pressable } from 'native-base'
 import { useClerk, useUser } from '@clerk/clerk-expo'
 import { Ionicons } from '@expo/vector-icons'
 import { View, Text } from 'react-native'
-import { sessionAtom } from 'app/utils/storage'
+import { Profile, sessionAtom } from 'app/utils/storage'
 import { useAtom } from 'jotai'
 import { api } from 'app/utils/trpc'
 
@@ -31,7 +31,7 @@ export default function ProfileIcon(props: User) {
     }
   }
 
-  const switchProfile = (profile: string) => {
+  const switchProfile = (profile: Profile) => {
     setSession({currentProfile: profile, ownerId: session.ownerId, sitterId: session.sitterId})
   }
 
@@ -61,7 +61,7 @@ export default function ProfileIcon(props: User) {
           {
             ownerProfile != null
             ? <Menu.ItemOption value={'Owner'} onPress={() => {
-              switchProfile('Owner')
+              switchProfile(Profile.OWNER)
               router.push('/home')
             }}>Owner</Menu.ItemOption>
             : <Menu.ItemOption value={'Add Sitter'} onPress={() => {
@@ -76,7 +76,7 @@ export default function ProfileIcon(props: User) {
           {
             sitterProfile != null
             ? <Menu.ItemOption value={'Sitter'} onPress={() => {
-              switchProfile('Sitter')
+              switchProfile(Profile.SITTER)
               router.push('/home')
             }}>Sitter</Menu.ItemOption>
             : <Menu.ItemOption value={'Add Sitter'} onPress={() => {

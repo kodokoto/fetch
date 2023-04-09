@@ -5,7 +5,7 @@ import { api } from 'app/utils/trpc'
 import { useUser } from '@clerk/clerk-expo'
 import { useRouter } from 'expo-router'
 import { useAtom } from 'jotai'
-import { sessionAtom } from 'app/utils/storage'
+import { Profile, sessionAtom } from 'app/utils/storage'
 
 
 export default function SitterProfileCreate() {
@@ -22,7 +22,7 @@ export default function SitterProfileCreate() {
         imageUrl: user.profileImageUrl,
       }).then(
         (sitterProfile) =>{
-          setSession({currentProfile: 'Sitter', ownerId: session.ownerId, sitterId: sitterProfile.id})
+          setSession({currentProfile: Profile.SITTER, ownerId: session.ownerId, sitterId: sitterProfile.id})
           router.push('/home')
         } 
       )

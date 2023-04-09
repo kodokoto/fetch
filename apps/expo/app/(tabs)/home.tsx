@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect } from 'expo-router'
 import { useAtom } from 'jotai'
-import { sessionAtom } from 'app/utils/storage'
+import { Profile, sessionAtom } from 'app/utils/storage'
 import OwnerHomeScreen from 'app/screens/OwnerHomeScreen'
 import SitterHomeScreen from 'app/screens/SitterHomeScreen'
 
@@ -9,11 +9,11 @@ export default function Home() {
 
   const [session, _] = useAtom(sessionAtom);
 
-  if (session.currentProfile === "Owner") {
+  if (session.currentProfile === Profile.OWNER) {
     return <OwnerHomeScreen />
-  } else if (session.currentProfile === "Sitter") {
+  } 
+  if (session.currentProfile === Profile.SITTER) {
     return <SitterHomeScreen />
-  } else {
-    return <Redirect href="/create" />
-  }
+  } 
+  return <Redirect href="/create" />
 }
