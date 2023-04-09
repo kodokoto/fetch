@@ -5,6 +5,7 @@ import { sitterRouter } from './sitter'
 import { messageRouter } from './message'
 import { userRouter } from './user'
 import { serviceRouter } from './service'
+import { petRouter } from './pet'
 import { reportRouter } from './report'
 
 
@@ -15,6 +16,7 @@ export const appRouter = router({
   message: messageRouter,
   user: userRouter,
   service: serviceRouter,
+  pet: petRouter,
   report: reportRouter
 })
 

@@ -3,12 +3,12 @@ import { api } from '../utils/trpc'
 import { Avatar } from 'native-base'
 import SettingsComponent from 'app/components/SettingsMenu'
 import { useRouter } from 'expo-router'
+import { Sitter } from 'db'
 
-export default function SearchResult(props) {
+export default function SearchResult(props: Sitter) {
   const router = useRouter()
-  console.log(props.searchResult)
-  const { data } = api.user.byId.useQuery(props.searchResult.userId, { enabled: !!props.searchResult.userId })
-  const petType = api.service.bySitterId.useQuery(props.searchResult.id).data
+
+  const petType = api.service.bySitterId.useQuery(searchResult.id).data
   console.log('Pet Type: ' + JSON.stringify(petType))
   return (
     <View

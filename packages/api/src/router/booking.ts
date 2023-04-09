@@ -1,6 +1,7 @@
 import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { prisma } from 'db'
+import { Day, TimeOfDay, BookingFrequency } from '@prisma/client'
 
 export const bookingRouter = router({
   all: publicProcedure.query(() => {
@@ -23,4 +24,49 @@ export const bookingRouter = router({
       },
     })
   }),
+  create : publicProcedure
+    .input(z.object({
+      ownerId: z.number(),
+      sitterId: z.number(),
+      serviceId: z.number(),
+      petId: z.number(),
+      scheduledTime: z.object({
+        time: z.string(),
+        day: z.string(),
+        frequency: z.string(),
+      }),
+    }))
+    .mutation(async ({ input }) => {
+      return await prisma.booking.create({
+        data: {
+          owner: {
+            connect: {
+              id: input.ownerId,
+            }
+          },
+          sitter: {
+            connect: {
+              id: input.sitterId,
+            }
+          },
+          service: {
+            connect: {
+              id: input.serviceId,
+            }
+          },
+          scheduledTime: {
+            create: {
+              time: input.scheduledTime.time as TimeOfDay,
+              day: input.scheduledTime.day as Day,
+              frequency: input.scheduledTime.frequency as BookingFrequency,
+            },
+          },
+          pet: {
+            connect: {
+              id: input.petId,
+            },
+          },
+        },
+      })
+    })
 })

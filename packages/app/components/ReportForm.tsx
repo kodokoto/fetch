@@ -12,16 +12,15 @@ import {
 import { useRouter, useSearchParams } from 'expo-router'
 import { api } from 'app/utils/trpc'
 import { useUser } from '@clerk/clerk-expo'
-import { ReportType } from 'db';
+import { useAtom } from 'jotai'
+import { sessionAtom } from 'app/utils/storage'
 
-
-
-
-export default function Report() {
+export default function ReportForm() {
   const router = useRouter()
   const { sitterId } = useSearchParams()
   const { user, isLoaded } = useUser()
-  const ownerid = 1
+  const [session, setSession] = useAtom(sessionAtom)
+  const ownerid = session.ownerId
   const mutation = api.report.create.useMutation()
 
   const handleSubmit = () => {
@@ -31,14 +30,10 @@ export default function Report() {
       fromId: ownerid,
       toId: Number(sitterId)
     })
-
   }
-
 
   const [type, setType] = React.useState('')
   const [textAreaValue, setTextAreaValue] = React.useState('');
-
-
 
   return (
     <Box>
@@ -68,10 +63,10 @@ export default function Report() {
           </Box>
           <FormControl.Label _text={{ bold: true }}>Description:</FormControl.Label>
           <Box maxW="full">
-            <TextArea h={20} value={textAreaValue} 
+            <TextArea h={20} value={textAreaValue}
             onChangeText={text => setTextAreaValue(text)}
-            placeholder="Please enter incident details" 
-            w="100%" maxW="full" />
+            placeholder="Please enter incident details"
+            w="100%" maxW="full" autoCompleteType={undefined} />
           </Box>
         </VStack>
         
