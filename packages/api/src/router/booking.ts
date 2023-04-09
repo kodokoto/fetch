@@ -2,7 +2,6 @@ import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { prisma } from 'db'
 import { ServiceType, BookingFrequency } from '@prisma/client'
-import { petRouter } from './pet'
 
 function parseServiceStringToEnum(service: string): ServiceType {
   switch (service) {
@@ -61,10 +60,7 @@ export const bookingRouter = router({
         sitterId: z.number(),
         services: z.number(),
         frequency: z.string(),
-        pets: z.array(z.object({
-          id: z.number(),
-        })
-        ),
+        pets: z.number()
       })
     )
     .mutation(({ input }) => {
@@ -91,9 +87,9 @@ export const bookingRouter = router({
           },
           frequency: parsedFrequency,
           pets: {
-            connect: pets.map((pet) => ({
-              id: pet.id,
-            })),
+            connect: {
+              id: pets
+            }
           },
         },
       })

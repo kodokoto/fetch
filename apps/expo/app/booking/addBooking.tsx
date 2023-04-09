@@ -18,10 +18,16 @@ import {
 export default function AddBooking() {
     const { sitterId, service, date, availability, dateTime  } = useSearchParams()
 
+    const [time, setTime] = React.useState('');
+    
+    const [bookingDateTime, setDate] = React.useState(new Date())
+    const [selectedPets, setSelectedPet] = React.useState('')
+    const [frequency, setfrequency] = React.useState('')
     const { isLoaded, user } = useUser()
     const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(Number(sitterId))
     const { data: ownerData} = api.owner.byId.useQuery(Number(user.id))
     const { data: pets} = api.pet.byOwnerId.useQuery(Number(ownerData.id))
+    const {data : pet} = api.pet.byId.useQuery(Number(selectedPets))
     const {data: services} = api.service.byService.useQuery(String(service))
     const navigation = useNavigation()
 
@@ -35,19 +41,11 @@ export default function AddBooking() {
         ownerId: ownerData.id,
         services: services.id,
         frequency: frequency,
-        pets: selectedPets
+        pets: pet.id
       })
       setfrequency(''),
-      setSelectedPet([]);
+      setSelectedPet('');
     }
-    
- 
-    const [time, setTime] = React.useState('');
-    
-    const [bookingDateTime, setDate] = React.useState(new Date())
-    const [selectedPets, setSelectedPet] = React.useState([])
-    const [petId, setPetId] = React.useState(new Number)
-    const [frequency, setfrequency] = React.useState('')
 
     if(availability === 'MORNING'){
       setTime('6');
@@ -77,6 +75,7 @@ export default function AddBooking() {
         <Text >Date: {date}</Text>
         <Text>Time: {availability}</Text>
         <Text>Service: {service}</Text>
+        <Text>Price: {services.price}</Text>
         {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
         <StatusBar style="light" />
         <Box>
@@ -86,7 +85,7 @@ export default function AddBooking() {
               <FormControl.Label _text={{ bold:true }}>Pet</FormControl.Label>
               <Box maxW='full'>
               <Select
-                  selectedValue={String(petId)}
+                  selectedValue={selectedPets}
                   minWidth="full"
                   accessibilityLabel="Choose Pet"
                   placeholder="Choose Pet"
@@ -95,24 +94,10 @@ export default function AddBooking() {
                     endIcon: <CheckIcon size="5" />,
                   }}
                   mt={1}
-                  onValueChange={(itemValue) => {
-                    const index = selectedPets.indexOf(Number(itemValue))
-                    if (index === -1) {
-                      // add the pet ID to the array if it's not already there
-                      setSelectedPet([...selectedPets, Number(itemValue)])
-                    } else {
-                      // remove the pet ID from the array if it's already there
-                      const newSelectedPets = [...selectedPets]
-                      newSelectedPets.splice(index, 1)
-                      setSelectedPet(newSelectedPets)
-                    }
-                    setPetId(Number(itemValue))
-                  }}
+                  onValueChange={(itemValue) => {setSelectedPet(itemValue)}}
                 >
                   {pets? pets.map((pet) => (
-                    <option key={pet.id} value={pet.id}>
-                      {pet.name}
-                    </option>
+                    <Select.Item label={pet.name} value={String(pet.id)}/>
                   )) : null}
                 </Select>
               </Box>
