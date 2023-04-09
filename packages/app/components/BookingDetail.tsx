@@ -5,21 +5,6 @@ import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { Booking } from '@prisma/client'
 import { api } from '../utils/trpc'
-import { Sitter, User } from 'db'
-
-type AppointmentDetailProps = {
-  id: number
-  imageUrl: string
-  sitterName: string
-  username: string
-  pet: string
-  price: number
-  appointment: string
-  dateDescription: string
-  timeDescription: string
-  bookingFrequency: string
-  mostRecentMessage: string
-}
 
 function getDateDescription(date: Date) {
   // desired output format: "Monday, 1 April"
@@ -55,8 +40,9 @@ export default function BookingDetail(props: Booking) {
 
   const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(props.sitterId)
 
+  const sitterId = sitterData?.id
   // const userId = data.userId;
-  const { data: userData, error: userError, isLoading: isloadingUser } = api.user.bySitterId.useQuery(sitterData.userId)
+  const { data: userData, error: userError, isLoading: isloadingUser } = api.user.bySitterId.useQuery(sitterData.id, { enabled: !!sitterId })
 
   const handleMessagePress = () => {
     router.push({
