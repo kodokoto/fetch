@@ -16,6 +16,7 @@
     "db-generate": "turbo db-generate",
     "db-seed": "turbo db-seed",
     "db-push": "turbo db-push",
+    "studio": "turbo studio",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo lint",
     "type-check": "turbo type-check"

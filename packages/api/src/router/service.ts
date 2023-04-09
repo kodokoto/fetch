@@ -85,7 +85,6 @@ export const serviceRouter = router({
           z.object({
             day: z.string(),
             time: z.string(),
-            frequency: z.string(),
           })
         ),
       })
@@ -107,7 +106,6 @@ export const serviceRouter = router({
             create: input.availableTimes.map((time) => ({
               day: time.day as Day,
               time: time.time as TimeOfDay,
-              frequency: time.frequency as BookingFrequency,
             })),
           },
         },

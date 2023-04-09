@@ -31,14 +31,5 @@ export default function Results() {
         <Text>No Results</Text>
       )}
     </View>
-    //   {searchResults ? searchResults.map(searchResult => {
-    //     return (<SearchResult searchResult={searchResult} key={searchResult.id} />)
-    //   }) : null}
-    //   {/* <Text>{date}</Text>
-    //         <Text>{service}</Text>
-    //         <Text>{recurring}</Text>
-    //         <Text>{maxPrice}</Text> */}
-    //   {/* <SearchResults {...{date, service, frequency, maxPrice}} /> */}
-    // </View>
   )
 }

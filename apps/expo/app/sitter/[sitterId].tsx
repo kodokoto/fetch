@@ -9,8 +9,9 @@ import ProfileCarousel from 'app/components/ProfileCarousel'
 import ProfileTabs from 'app/components/ProfileTabs'
 
 export default function SitterProfile() {
-  const { sitterId } = useSearchParams()
+  const { sitterId, serviceType, day, dayTime } = useSearchParams()
   const router = useRouter()
+  console.log("serviceTpe", serviceType)
 
   const [session, setSession] = useAtom(sessionAtom)
 
@@ -66,8 +67,6 @@ export default function SitterProfile() {
                     }
                     
                   </View>
-                  {/* <Text>{sitterData.location}</Text> */}
-                  {/* <Text>{sitterData.rating}</Text> */}
               </View> 
               <ProfileTabs {...{
                 description: sitterData.description,
@@ -80,13 +79,16 @@ export default function SitterProfile() {
 
     </ScrollView>
     {
-      session.currentProfile === Profile.OWNER 
+      serviceType && day && dayTime && session.currentProfile === Profile.OWNER 
       ? <View className='absolute bottom-0 w-full h-20 bg-transparent'>
           <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
             onPress={() => router.push({
               pathname: '/booking/create',
               params: {
-
+                sitterId,
+                serviceType,
+                day,
+                dayTime,
               }
             })}
           >
