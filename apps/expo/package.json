@@ -28,6 +28,7 @@
     "expo-secure-store": "~12.1.1",
     "expo-status-bar": "~1.4.4",
     "expo-web-browser": "~12.1.1",
+    "jotai": "^2.0.3",
     "native-base": "^3.4.28",
     "nativewind": "^2.0.11",
     "react": "18.2.0",

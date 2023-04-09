@@ -1,7 +1,12 @@
 import React from 'react'
 import { useRouter } from 'expo-router'
 import { Box, Menu, Avatar, Pressable } from 'native-base'
-import { useClerk } from '@clerk/clerk-expo'
+import { useClerk, useUser } from '@clerk/clerk-expo'
+import { Ionicons } from '@expo/vector-icons'
+import { View, Text } from 'react-native'
+import { sessionAtom } from 'app/utils/storage'
+import { useAtom } from 'jotai'
+import { api } from 'app/utils/trpc'
 
 type User = {
   iconUrl: string
@@ -10,6 +15,27 @@ type User = {
 export default function ProfileIcon(props: User) {
   const router = useRouter()
   const { signOut } = useClerk()
+  const { user, isLoaded } = useUser()
+  const [session, setSession] = useAtom(sessionAtom)
+  const userId = user?.id
+  const { data: ownerProfile } = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
+  const { data: sitterProfile } = api.sitter.byUserId.useQuery(userId, { enabled: !!userId })
+
+  const getDefaultValue = () => {
+    if (session.currentProfile === 'Owner') {
+      return 'Owner'
+    } else if (session.currentProfile === 'Sitter') {
+      return 'Sitter'
+    } else {
+      return 'Owner'
+    }
+  }
+
+  const switchProfile = (profile: string) => {
+    setSession({currentProfile: profile, ownerId: session.ownerId, sitterId: session.sitterId})
+  }
+
+
   return (
     <Box className="items-end">
       <Menu
@@ -21,16 +47,48 @@ export default function ProfileIcon(props: User) {
           )
         }}
       >
-        <Menu.Item onPress={() => router.push('EditProfile')}>Edit Profile</Menu.Item>
-        <Menu.Item onPress={() => router.push('Setting')}>Setting</Menu.Item>
-        <Menu.Item
-          onPress={() => {
-            signOut()
-          }}
-        >
-          Sign out
-        </Menu.Item>
-        <Menu.Item>Help</Menu.Item>
+          <Menu.Item onPress={() => router.push('EditProfile')}>Edit Profile</Menu.Item>
+          <Menu.Item onPress={() => router.push('Setting')}>Setting</Menu.Item>
+          <Menu.Item
+            onPress={() => {
+              signOut()
+            }}
+          >
+            Sign out
+          </Menu.Item>
+          <Menu.Item>Help</Menu.Item>
+        <Menu.OptionGroup title='Profiles' defaultValue={getDefaultValue()} type='checkbox'>
+          {
+            ownerProfile != null
+            ? <Menu.ItemOption value={'Owner'} onPress={() => {
+              switchProfile('Owner')
+              router.push('/home')
+            }}>Owner</Menu.ItemOption>
+            : <Menu.ItemOption value={'Add Sitter'} onPress={() => {
+              router.push('/create/owner')
+            }}>
+            <View className='flex flex-row items-center'>
+              <Ionicons name="add-circle-outline" size={14}></Ionicons>
+              <Text className='ml-2'>Add Sitter</Text>
+            </View>
+          </Menu.ItemOption>
+          }
+          {
+            sitterProfile != null
+            ? <Menu.ItemOption value={'Sitter'} onPress={() => {
+              switchProfile('Sitter')
+              router.push('/home')
+            }}>Sitter</Menu.ItemOption>
+            : <Menu.ItemOption value={'Add Sitter'} onPress={() => {
+              router.push('/create/sitter')
+            }}>
+            <View className='flex flex-row items-center'>
+              <Ionicons name="add-circle-outline" size={14}></Ionicons>
+              <Text className='ml-2'>Add Sitter</Text>
+            </View>
+          </Menu.ItemOption>
+          }
+        </Menu.OptionGroup>
       </Menu>
     </Box>
   )
