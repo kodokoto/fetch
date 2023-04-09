@@ -32,6 +32,10 @@ export default function BookingDetail(props: Booking) {
   //   isLoading: isLoadingMessage,
   // } = api.message.latestBetweenUsers.useQuery({ ownerId: props.ownerId, sitterId: props.sitterId })
 
+  const sitterId = sitterData?.id
+  // const userId = data.userId;
+  const { data: userData, error: userError, isLoading: isloadingUser } = api.user.bySitterId.useQuery(sitterData.id, { enabled: !!sitterId })
+
   const handleMessagePress = () => {
     router.push({
       pathname: '/messages',
