@@ -24,7 +24,6 @@ export default function Booking() {
       {/* Use `../` as a simple way to navigate to the root. This is not analogous to "goBack". */}
       {!isPresented && <Link href="../">Dismiss</Link>}
       {/* <BookingDeatil /> */}
-      <Text>this is booking {bookingId}</Text>
       <BookingDetail {...data} />
       {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
       <StatusBar style="light" />

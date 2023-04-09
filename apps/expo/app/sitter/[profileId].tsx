@@ -9,18 +9,15 @@ import { useUser } from '@clerk/clerk-expo'
 import { api } from 'app/utils/trpc'
 
 export default function SitterProfile() {
-  const { name, userId, imageUrl } = useSearchParams()
+  const { userId, service, date, availability, dateTime } = useSearchParams()
   const { user, isLoaded } = useUser()
   const router = useRouter()
   const email = user?.primaryEmailAddress.emailAddress
 
-  const {
-    data: currentUser,
-    error,
-    isLoading,
-  } = api.user.byEmail.useQuery(user.primaryEmailAddress.emailAddress, { enabled: !!email })
 
-  const currentUserId = currentUser?.id
+  const {data: sitterUser, error: sitterError, isLoading: isLoadingSitter } = api.sitter.byId.useQuery(Number(userId))
+
+  const currentUserId = user?.id
   const mockSitter = {
     name: 'Leonard Lungu',
     rating: 4,
@@ -117,7 +114,7 @@ export default function SitterProfile() {
         <View className="flex-row">
           <View></View>
           <View>
-            <Text className="text-orange">{name}</Text>
+            <Text className="text-orange">{sitterUser.name}</Text>
             <Text>Pet Sitter</Text>
             <ProfileRating />
           </View>
@@ -126,7 +123,19 @@ export default function SitterProfile() {
           <Text className="text-2xl">About me</Text>
 
           {/* redirects user to booking page */}
-          <Button className="border-gray-500 border-2 bg-white">
+          <Button className="border-gray-500 border-2 bg-white"
+            onPress={() =>
+              router.push({
+                pathname: '/booking/addBooking',
+                params: {
+                  sitterId: userId,
+                  date: date,
+                  availability: availability,
+                  dateTime: dateTime,
+                  service: service
+                },
+              })
+            }>
             <Text className="text-black-500">Book</Text>
           </Button>
           {/* redirects user to messaging page */}
@@ -137,8 +146,8 @@ export default function SitterProfile() {
                 params: {
                   senderId: currentUserId,
                   receiverId: userId,
-                  receiverName: name,
-                  receiverImageUrl: imageUrl,
+                  receiverName: sitterUser.name,
+                  receiverImageUrl: sitterUser.imageUrl,
                 },
               })
             }

@@ -1,14 +1,13 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import { api } from '../utils/trpc'
 import { Avatar } from 'native-base'
-import SettingsComponent from 'app/components/SettingsMenu'
-import { useRouter } from 'expo-router'
+import { useRouter, useSearchParams } from 'expo-router'
+import { Sitter } from 'db'
 
-export default function SearchResult(props) {
+export default function SearchResult(props: Sitter) {
   const router = useRouter()
-  console.log(props.searchResult)
-  const { data } = api.user.byId.useQuery(props.searchResult.userId, { enabled: !!props.searchResult.userId })
-  const petType = api.service.bySitterId.useQuery(props.searchResult.id).data
+  const {date, service, availability, maxPrice, dateTime} = useSearchParams();
+  const petType = api.service.bySitterId.useQuery(props.id).data
   console.log('Pet Type: ' + JSON.stringify(petType))
   return (
     <View
@@ -32,16 +31,18 @@ export default function SearchResult(props) {
         }}
         onPress={() =>
           router.push({
-            pathname: `/sitter/${data.id}`,
+            pathname: `/sitter/${props.id}`,
             params: {
-              name: data.name,
-              userId: data.id,
-              imageUrl: data.imageUrl,
+              userId: props.id,
+              date: date,
+              availability: availability,
+              dateTime: dateTime,
+              service: service
             },
           })
         }
       >
-        {data ? (
+        {props ? (
           <Avatar
             style={{
               height: 50,
@@ -49,7 +50,7 @@ export default function SearchResult(props) {
               borderWidth: 1,
               borderColor: 'black',
             }}
-            source={{ uri: data.imageUrl }}
+            source={{ uri: props.imageUrl }}
           />
         ) : null}
         <View
@@ -62,7 +63,7 @@ export default function SearchResult(props) {
               fontSize: 20,
             }}
           >
-            {data ? data.name : null}
+            {props ? props.name : null}
           </Text>
           <Text>Location: London</Text>
           <Text>
@@ -79,7 +80,7 @@ export default function SearchResult(props) {
             marginLeft: 'auto',
           }}
         >
-          £200
+          {petType.price}
         </Text>
       </TouchableOpacity>
     </View>

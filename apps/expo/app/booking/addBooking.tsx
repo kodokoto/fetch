@@ -16,19 +16,13 @@ import {
 
 
 export default function AddBooking() {
-    const { sitterId, date, availability, dateTime  } = useSearchParams()
+    const { sitterId, service, date, availability, dateTime  } = useSearchParams()
 
-    // const searchParamsObject = {
-    //   dateTime: String(dateTime),
-    //   availability: String(availability),
-    //   date: String(date),
-    // }
-    // convert to number
     const { isLoaded, user } = useUser()
     const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(Number(sitterId))
-    const { data: ownerData, error: ownerError, isLoading: isloadingOwner} = api.owner.byId.useQuery(Number(user.id))
-    const { data: pets, error: petError, isLoading: isloadingPet} = api.pet.byOwnerId.useQuery(Number(ownerData.id))
-    const {data: services, error: serviceError, isLoading: isLoadingService} = api.service.bySitterIdArray.useQuery(Number(sitterId))
+    const { data: ownerData} = api.owner.byId.useQuery(Number(user.id))
+    const { data: pets} = api.pet.byOwnerId.useQuery(Number(ownerData.id))
+    const {data: services} = api.service.byService.useQuery(String(service))
     const navigation = useNavigation()
 
     const mutation = api.booking.create.useMutation()
@@ -39,11 +33,10 @@ export default function AddBooking() {
         startDate: bookingDateTime,
         sitterId: Number(sitterId),
         ownerId: ownerData.id,
-        services: service,
+        services: services.id,
         frequency: frequency,
         pets: selectedPets
       })
-      setService(null),
       setfrequency(''),
       setSelectedPet([]);
     }
@@ -52,7 +45,6 @@ export default function AddBooking() {
     const [time, setTime] = React.useState('');
     
     const [bookingDateTime, setDate] = React.useState(new Date())
-    const [service, setService] = React.useState(null)
     const [selectedPets, setSelectedPet] = React.useState([])
     const [petId, setPetId] = React.useState(new Number)
     const [frequency, setfrequency] = React.useState('')
@@ -71,8 +63,8 @@ export default function AddBooking() {
     // If the page was reloaded or navigated to directly, then the modal should be presented as
     // a full screen page. You may need to change the UI to account for this.
     const isPresented = navigation.canGoBack()
-    if (isLoadingService) return <Text>Loading...</Text>
-    if (serviceError) return <Text>{error.message}</Text>
+    if (isLoading) return <Text>Loading...</Text>
+    if (error) return <Text>{error.message}</Text>
   
     return (
       <View className="flex flex-col justify-center items-center">
@@ -84,33 +76,13 @@ export default function AddBooking() {
         </Box>
         <Text >Date: {date}</Text>
         <Text>Time: {availability}</Text>
+        <Text>Service: {service}</Text>
         {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
         <StatusBar style="light" />
         <Box>
           {/* Display date (not time)*/}
           <FormControl isRequired>
             <VStack>
-              <FormControl.Label _text={{ bold: true }}>Service:</FormControl.Label>
-              <Box maxW="full">
-                <Select
-                  selectedValue={String(service)}
-                  minWidth="full"
-                  accessibilityLabel="Choose Service"
-                  placeholder="Choose Service"
-                  _selectedItem={{
-                    bg: 'teal.600',
-                    endIcon: <CheckIcon size="5" />,
-                  }}
-                  mt={1}
-                  onValueChange={(itemValue) => setService(Number(itemValue))}
-                >
-                  {services.map((service) => (
-                    <option key={service.id} value={service.id}>
-                      {service.type}({service.petType}) - ${service.price} 
-                    </option>
-                  ))}
-                </Select>
-              </Box>
               <FormControl.Label _text={{ bold:true }}>Pet</FormControl.Label>
               <Box maxW='full'>
               <Select
@@ -137,11 +109,11 @@ export default function AddBooking() {
                     setPetId(Number(itemValue))
                   }}
                 >
-                  {pets.map((pet) => (
+                  {pets? pets.map((pet) => (
                     <option key={pet.id} value={pet.id}>
                       {pet.name}
                     </option>
-                  ))}
+                  )) : null}
                 </Select>
               </Box>
               <FormControl.Label _text={{ bold: true }}>Open for frequency visit:</FormControl.Label>

@@ -20,4 +20,15 @@ export const petRouter = router({
       },
     })
   }),
+  byBookingId: publicProcedure.input(z.number()).query(({input})=> {
+    return prisma.pet.findMany({
+      where: {
+        bookings: {
+          some: {
+            id: input
+          }
+        }
+      },
+    })
+  }),
 })
