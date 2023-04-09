@@ -87,9 +87,6 @@ export const sitterRouter = router({
             },
           },
         },
-        include: {
-          services: true,
-        },
       })
     }),
   create: publicProcedure
