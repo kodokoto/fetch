@@ -6,7 +6,7 @@ import DatePicker from 'react-native-modal-datetime-picker'
 import { TimeOfDay, Day, ServiceType } from '@prisma/client'
 
 export type FilterSearchParams = {
-  service: string
+  serviceType: string
   date: Day
   availability: TimeOfDay
   maxPrice: number
@@ -21,7 +21,7 @@ export default function Filter() {
       pathname: '/results',
       params: {
         date: data.date,
-        service: data.service,
+        serviceType: data.serviceType,
         availability: data.availability,
         maxPrice: data.maxPrice,
       },
@@ -30,7 +30,7 @@ export default function Filter() {
 
   const [date, setDate] = React.useState(new Date())
   const [showDate, setShowDate] = React.useState(false)
-  const [service, setService] = React.useState<ServiceType>('WALK')
+  const [serviceType, setServiceType] = React.useState<ServiceType>('WALK')
   const [availability, setAvailability] = React.useState<TimeOfDay>('ANY')
   const [maxPrice, setMaxPrice] = React.useState(0)
 
@@ -65,7 +65,7 @@ export default function Filter() {
           <FormControl.Label _text={{ bold: true }}>Service:</FormControl.Label>
           <Box maxW="full">
             <Select
-              selectedValue={service}
+              selectedValue={serviceType}
               minWidth="full"
               accessibilityLabel="Choose Service"
               placeholder="Choose Service"
@@ -74,7 +74,7 @@ export default function Filter() {
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
-              onValueChange={(itemValue) => setService(itemValue as ServiceType)}
+              onValueChange={(itemValue) => setServiceType(itemValue as ServiceType)}
             >
               <Select.Item label="Walking" value="WALK" />
               <Select.Item label="Pet care" value="PET_CARE" />
@@ -139,7 +139,7 @@ export default function Filter() {
                 .replace(/[^a-z]/gi, '')
                 .toUpperCase() as Day,
               availability,
-              service,
+              serviceType,
               maxPrice,
             })
           }

@@ -6,11 +6,11 @@ import { api } from 'app/utils/trpc'
 import { useSearchParams } from 'expo-router'
 
 export default function Results() {
-  const { date, service, availability, maxPrice } = useSearchParams()
+  const { date, serviceType, availability, maxPrice } = useSearchParams()
   console.log('max: ' + maxPrice)
 
   const searchParamsObject = {
-    service: String(service),
+    serviceType: String(serviceType),
     maxPrice: Number(maxPrice),
     availability: String(availability),
     date: String(date),
@@ -22,7 +22,8 @@ export default function Results() {
   return (
     <View className="flex gap-8">
       <Text className="font-bold text-xl ml-2">Search Results</Text>
-      {sitters ? (
+      {
+      sitters ? (
         sitters.map((searchResult) => {
           return <SearchResult searchResult={searchResult} key={searchResult.id} />
         })

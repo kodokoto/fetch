@@ -22,9 +22,9 @@ export default function ProfileIcon(props: User) {
   const { data: sitterProfile } = api.sitter.byUserId.useQuery(userId, { enabled: !!userId })
 
   const getDefaultValue = () => {
-    if (session.currentProfile === 'Owner') {
+    if (session.currentProfile === Profile.OWNER) {
       return 'Owner'
-    } else if (session.currentProfile === 'Sitter') {
+    } else if (session.currentProfile === Profile.SITTER) {
       return 'Sitter'
     } else {
       return 'Owner'
@@ -47,7 +47,9 @@ export default function ProfileIcon(props: User) {
           )
         }}
       >
-          <Menu.Item onPress={() => router.push('EditProfile')}>Edit Profile</Menu.Item>
+          <Menu.Item onPress={() => router.push(`/${getDefaultValue().toLowerCase()}/${
+            session.currentProfile === 'Owner' ? ownerProfile?.id : sitterProfile?.id
+          }`)}>Edit Profile</Menu.Item>
           <Menu.Item onPress={() => router.push('Setting')}>Setting</Menu.Item>
           <Menu.Item
             onPress={() => {
