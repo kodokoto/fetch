@@ -25,7 +25,7 @@ export default function Results() {
       <Text className="font-bold text-xl ml-2">Search Results</Text>
       {sitters ? (
         sitters.map((searchResult) => {
-          return <SearchResult searchResult={searchResult} key={searchResult.id} />
+          return <SearchResult searchResult={searchResult} key={searchResult.id}/>
         })
       ) : (
         <Text>No Results</Text>
