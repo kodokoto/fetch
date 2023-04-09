@@ -1,7 +1,8 @@
 import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { prisma } from 'db'
-import { ServiceType, BookingFrequency } from '@prisma/client'
+import { ServiceType } from '@prisma/client'
+import { Day, TimeOfDay, BookingFrequency } from '@prisma/client'
 
 function parseServiceStringToEnum(service: string): ServiceType {
   switch (service) {
@@ -52,46 +53,49 @@ export const bookingRouter = router({
       },
     })
   }),
-  create: publicProcedure
-    .input(
-      z.object({
-        startDate: z.date(),
-        ownerId: z.number(),
-        sitterId: z.number(),
-        services: z.number(),
+  create : publicProcedure
+    .input(z.object({
+      ownerId: z.number(),
+      sitterId: z.number(),
+      serviceId: z.number(),
+      petId: z.number(),
+      scheduledTime: z.object({
+        time: z.string(),
+        day: z.string(),
         frequency: z.string(),
-        pets: z.number()
-      })
-    )
-    .mutation(({ input }) => {
-      const { startDate, ownerId, sitterId, services, frequency, pets } = input
-      const parsedFrequency = parseFrequencyStringToEnum(frequency)
-
-      return prisma.booking.create({
+      }),
+    }))
+    .mutation(async ({ input }) => {
+      return await prisma.booking.create({
         data: {
-          startDate,
           owner: {
             connect: {
-              id: ownerId,
-            },
+              id: input.ownerId,
+            }
           },
           sitter: {
             connect: {
-              id: sitterId,
+              id: input.sitterId,
+            }
+          },
+          service: {
+            connect: {
+              id: input.serviceId,
+            }
+          },
+          scheduledTime: {
+            create: {
+              time: input.scheduledTime.time as TimeOfDay,
+              day: input.scheduledTime.day as Day,
+              frequency: input.scheduledTime.frequency as BookingFrequency,
             },
           },
-          services: {
+          pet: {
             connect: {
-              id: services
-            }
-          },
-          frequency: parsedFrequency,
-          pets: {
-            connect: {
-              id: pets
-            }
+              id: input.petId,
+            },
           },
         },
       })
-    }),
+    })
 })

@@ -42,6 +42,16 @@ export const sitterRouter = router({
       },
     })
   }),
+  byIdWithImages: publicProcedure.input(z.number()).query(({ input }) => {
+    return prisma.sitter.findFirst({
+      where: {
+        id: input,
+      },
+      include: {
+        images: true,
+      },
+    })
+  }),
   byUserId: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.sitter.findFirst({
       where: {
@@ -86,9 +96,6 @@ export const sitterRouter = router({
               },
             },
           },
-        },
-        include: {
-          services: true,
         },
       })
     }),

@@ -21,14 +21,27 @@ export const serviceRouter = router({
       },
     })
   }),
-  bySitterIdArray: publicProcedure.input(z.number()).query(({ input }) => {
-    return prisma.service.findMany({
-      where: {
-        sitterId: input,
-      },
-    })
-  }),
-  byService: publicProcedure.input(z.string()).query(({ input }) => {
+  bySitterIdAndAvailableTime: publicProcedure
+    .input(
+      z.object({
+        sitterId: z.number(),
+        day: z.string(),
+        time: z.string(),
+      })
+    )
+    .query(({ input }) => {
+      return prisma.service.findMany({
+        where: {
+          sitterId: input.sitterId,
+          availableTimes: {
+            some: {
+              AND: [{ day: input.day as Day }, { time: input.time as TimeOfDay }],
+            },
+          },
+        },
+      })
+    }),
+  byServiceType: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.service.findFirst({
       where: {
         type: input as ServiceType,

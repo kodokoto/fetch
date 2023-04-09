@@ -3,8 +3,9 @@ import { api } from '../utils/trpc'
 import { Avatar, Box, Text } from 'native-base'
 import { useRouter, useSearchParams } from 'expo-router'
 import { Sitter } from 'db'
+import { Sitter } from 'db'
 
-export default function SearchResult(props) {
+export default function SearchResult(props: Sitter) {
   const router = useRouter()
   const {date, service, availability, maxPrice, dateTime} = useSearchParams();
   console.log(props.searchResult)

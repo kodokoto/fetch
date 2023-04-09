@@ -23,7 +23,8 @@ export default function Results() {
   return (
     <View className="flex gap-8">
       <Text className="font-bold text-xl ml-2">Search Results</Text>
-      {sitters ? (
+      {
+      sitters ? (
         sitters.map((searchResult) => {
           return <SearchResult searchResult={searchResult} key={searchResult.id}/>
         })

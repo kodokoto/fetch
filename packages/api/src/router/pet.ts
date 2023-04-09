@@ -13,12 +13,14 @@ export const petRouter = router({
       },
     })
   }),
-  byOwnerId: publicProcedure.input(z.number()).query(({ input }) => {
-    return prisma.pet.findMany({
-      where: {
-        ownerId: input
-      },
-    })
+  byOwnerId: publicProcedure
+        .input(z.number())
+        .query(({ input }) => {
+            return prisma.pet.findMany({
+                where: {
+                    ownerId: input,
+                },
+            })
   }),
   byBookingId: publicProcedure.input(z.number()).query(({input})=> {
     return prisma.pet.findMany({
@@ -32,3 +34,4 @@ export const petRouter = router({
     })
   }),
 })
+
