@@ -34,7 +34,7 @@ model Sitter {
   messages        Message[] @relation("sitterMessages")
   name            String
   imageUrl        String
-  images          Image[]
+  images          Image[]   
   bio             String    @default("Hello! I'm a new sitter.")
   description     String    @default("I dont have a description yet.")
   proximityRadius Int       @default(10)
@@ -106,7 +106,6 @@ model Location {
   zip       String
   lat       Float
   lng       Float
-  userId    Int      @unique
 }
 
 model Pet {
