@@ -10,14 +10,16 @@ export default function Results() {
   console.log('max: ' + maxPrice)
 
   const searchParamsObject = {
-    serviceType: String(serviceType),
-    maxPrice: Number(maxPrice),
-    availability: String(availability),
     date: String(date),
+    service: String(serviceType),
+    availability: String(availability),
+    maxPrice: Number(maxPrice),
   }
 
   console.log('Search Params: ' + JSON.stringify(searchParamsObject))
   const { data: sitters } = api.sitter.bySearchParams.useQuery(searchParamsObject)
+
+  console.log("Sitters: " + sitters);
 
   return (
     <View className="flex gap-8">

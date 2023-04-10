@@ -27,6 +27,7 @@ export default function SitterProfile() {
     { key: 'services', title: 'Services' },
   ]);
 
+  console.log("User Id: " + JSON.stringify(session));
 
   if (isLoading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
@@ -158,15 +159,31 @@ export default function SitterProfile() {
     {
       session.currentProfile === Profile.OWNER 
       ? <View className='absolute bottom-0 w-full h-20 bg-transparent'>
-          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+          <Button style={{
+            marginBottom: 50
+          }} className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
             onPress={() => router.push({
               pathname: '/booking/create',
               params: {
-
+                  sitterId: sitterId,
+                  serviceType: "WALK",
+                  day: "09/04/23",
+                  time: "13:00",
               }
             })}
           >
             <Text className='text-white'>Request Booking</Text>
+          </Button>
+          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+            onPress={() => router.push({
+              pathname: '/messages',
+              params: {
+                ownerId: session.ownerId,
+                sitterId: sitterId,
+              }
+            })}
+          >
+            <Text className='text-white'>Message</Text>
           </Button>
         </View>
       : null

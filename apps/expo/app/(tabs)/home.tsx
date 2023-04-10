@@ -23,7 +23,7 @@ export default function Home() {
   console.log('FROM SESSION:', session)
 
   // if both data.owner and data.sitter are null, redirect to create profile
-  if (!data.owner && !data.sitter) {
+  if (!data || (!data.owner && !data.sitter)) {
     return <Redirect href="/create" />
   }
 

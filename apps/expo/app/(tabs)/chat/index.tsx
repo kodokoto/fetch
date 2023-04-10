@@ -5,9 +5,15 @@ import { Ionicons } from '@expo/vector-icons'
 import { api } from 'app/utils/trpc'
 import { useUser, useClerk } from '@clerk/clerk-expo'
 import { Skeleton } from 'native-base'
+import { useAtom } from 'jotai'
+import { sessionAtom } from 'app/utils/storage'
 
 export default function Chat() {
   const [searchWord, setSearchWord] = useState('')
+
+  const [session, setSession] = useAtom(sessionAtom)
+  let isOwner = false;
+  let isSitter = false;
 
   const { user, isLoaded } = useUser()
   const userId = user?.id
@@ -15,7 +21,19 @@ export default function Chat() {
   const { data: owner } = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
   const ownerId = owner?.id
 
-  const { data: contacts } = api.owner.contacts.useQuery(ownerId, { enabled: !!ownerId })
+  const { data: sitter } = api.sitter.byUserId.useQuery(userId, { enabled: !!userId })
+  const sitterId = sitter?.id
+
+  const { data: contacts } = session.currentProfile.toString() == "Owner" ? api.owner.contacts.useQuery(ownerId, { enabled: !!ownerId }) :
+  api.sitter.contacts.useQuery(sitterId, { enabled: !!sitterId });
+
+  console.log("Contacts: " + JSON.stringify(contacts));
+
+  if(session.currentProfile.toString() == "Owner"){
+    isOwner = true;
+  } else {
+    isSitter = true;
+  }
 
   const filtercontacts = (filterWord) => {
     const filteredcontacts = contacts.filter((sitter) => {
@@ -39,8 +57,8 @@ export default function Chat() {
             const userId = user.id
             return (
               <ChatPreview
-                ownerId={ownerId}
-                sitterId={userId}
+                ownerId={isSitter ? sitterId : ownerId}
+                sitterId={isOwner ? user.id : user.id}
                 name={user.name}
                 key={user.id}
                 imageUrl={user.imageUrl}

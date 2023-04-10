@@ -14,6 +14,9 @@ export default function Messages() {
   // router.setParams({ headerTitle: String(receiverName)});
   const [filteredMessages, setfilteredMessages] = useState<FilteredMessages[]>([])
 
+  console.log("Owner Id 2: " + ownerId);
+  console.log("Sitter Id 2: " + sitterId);
+
   const { data, error, isLoading } = api.message.betweenUsers.useQuery(
     { ownerId: Number(ownerId), sitterId: Number(sitterId) },
     {

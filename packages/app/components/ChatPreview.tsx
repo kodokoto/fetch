@@ -28,7 +28,6 @@ export default function ChatPreview(props: ChatPreviewProps) {
               ownerId: props.ownerId,
               sitterId: props.sitterId,
               receiverName: props.name,
-              receiverImageUrl: props.imageUrl,
             },
           })
         }
