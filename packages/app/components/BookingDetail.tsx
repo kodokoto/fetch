@@ -52,6 +52,10 @@ export default function BookingDetail(props: Booking) {
   const {data: serviceData} = api.service.byId.useQuery(props.serviceId)
   const {data: petData} = api.pet.byBookingId.useQuery(props.id)
   const {data: scheduledTime } = api.scheduledTime.byBookingId.useQuery(props.id)
+  const { data } = api.booking.byIdWithScheduledTime.useQuery({
+    id: props.id,
+    include: 'scheduledTime',
+  })
 
   const handleAcceptPress = () => {
     mutation.mutate({
@@ -128,7 +132,7 @@ export default function BookingDetail(props: Booking) {
             </Button>
             <Box className="flex-end">
               <Text className="text-md">Date & Time</Text>
-              <Text className="text-lg font-bold">{scheduledTime ? capitalizeWords(scheduledTime.day) : null}, {scheduledTime ? parseTime(scheduledTime.time) : null}</Text>
+              <Text className="text-lg font-bold">{data.scheduledTime ? capitalizeWords(data.scheduledTime.day) : null}, {data.scheduledTime ? parseTime(data.scheduledTime.time) : null}</Text>
             </Box>
           </Box>
           <Divider my="2" _light={{ bg: '#4c8ab9' }} _dark={{ bg: '#4c8ab9' }} />
@@ -138,7 +142,7 @@ export default function BookingDetail(props: Booking) {
             </Button>
             <Box className="flex-end">
               <Text className="text-md">Frequency</Text>
-              <Text className="text-lg font-bold">{scheduledTime ? parseBookingFrequency(scheduledTime.frequency) : null}</Text>
+              <Text className="text-lg font-bold">{data.scheduledTime ? parseBookingFrequency(data.scheduledTime.frequency) : null}</Text>
             </Box>
           </Box>
           <Divider my="2" _light={{ bg: '#4c8ab9' }} _dark={{ bg: '#4c8ab9' }} />
