@@ -1,8 +1,10 @@
 import { Text, View } from 'react-native'
+import { Button } from 'native-base'
 import { useSearchParams, useNavigation, Link } from 'expo-router'
 import { api } from 'app/utils/trpc'
 import { StatusBar } from 'expo-status-bar'
 import BookingDetail from 'app/components/BookingDetail'
+import { useRouter } from 'expo-router'
 
 export default function Booking() {
   const { bookingId } = useSearchParams()
@@ -27,7 +29,7 @@ export default function Booking() {
       <BookingDetail {...data} />
       {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
       <StatusBar style="light" />
-      <Button onPress={() => router.push('./review')}>Review</Button>
+      <Button onPress={() => router.push('/review')}>Review</Button>
       {/* Text box for review */}
 
     </View>

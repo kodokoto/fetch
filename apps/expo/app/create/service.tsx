@@ -1,172 +1,188 @@
 import React, { useState } from 'react';
 import { View, Input, Text, Button, Checkbox, Select, ScrollView } from 'native-base';
+import { Pressable } from 'react-native';
+import { Stack } from 'expo-router';
 
-const services = () => {
-    const [selectedService, setSelectedService] = useState("");
-    const [rate, setRate] = useState('');
-    const [availability, setAvailability] = useState('');
-    const [days, setDays] = useState({
-        mon: false,
-        tue: false,
-        wed: false,
-        thu: false,
-        fri: false,
-        sat: false,
-        sun: false,
-    });
-    const [times, setTimes] = useState({
-        early: false,
-        midday: false,
-        evening: false,
-        none: false,
-    });
+enum Day {
+    MONDAY = 'MONDAY',
+    TUESDAY = 'TUESDAY',
+    WEDNESDAY = 'WEDNESDAY',
+    THURSDAY = 'THURSDAY',
+    FRIDAY = 'FRIDAY',
+    SATURDAY = 'SATURDAY',
+    SUNDAY = 'SUNDAY',
+}
 
-    const [size, setSize] = useState({
-        small: false,
-        medium: false,
-        large: false,
-        cat: false,
-    });
+type AvailableDays = {
+    MONDAY: boolean;
+    TUESDAY: boolean;
+    WEDNESDAY: boolean;
+    THURSDAY: boolean;
+    FRIDAY: boolean;
+    SATURDAY: boolean;
+    SUNDAY: boolean;
+}
 
-    const handleSizeChange = (sizeType) => {
-        setSize({ ...size, [sizeType]: !size[sizeType] });
-    };
+type AvailableTimes = {
+    MORNING: boolean;
+    AFTERNOON: boolean;
+    EVENING: boolean;
+}
 
-    const [selectedCancellationTime, setSelectedCancellationTime] = useState("");
+function prettifyDay(day: string) {
+    // two letters, first letter capitalized and second letter lowercase
+    return day[0] + day[1].toLowerCase();
+}
 
-    const handleCancellationTimeChange = (time) => {
-        setSelectedCancellationTime(time);
-    };
+// capitalise the first letter of a string and lowercase the rest
+function titleCase(str: string) {
+    return str[0].toUpperCase() + str.slice(1).toLowerCase();
+}
 
-    const handleSave = () => {
-        console.log('Rate:', rate);
-        console.log('Availability:', availability);
-        console.log('Days:', days);
-    };
+function DayToggle({value, onChange} : {value: AvailableDays, onChange: (value: AvailableDays) => void}) {
 
-    const handleDayChange = (day) => {
-        setDays({
-            ...days,
-            [day]: !days[day],
+    const handleDayChange = (day, newValue) => {
+        onChange({
+            ...value,
+            [day]: newValue,
         });
     };
 
     return (
-        <ScrollView>
-            <View style={{ padding: 20 }}>
-                <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 20 }}>Services</Text>
-                <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10 }}>Choose a Service:</Text>
-                <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>what service do you want to offer?</Text>
-                {/*Dropdown*/}
-                <Select
-                    placeholder="Select a service"
-                    selectedValue={selectedService}
-                    onValueChange={(value) => setSelectedService(value)}
-                >
-                    <Select.Item label="Walk" value="WALK" />
-                    <Select.Item label="Pet Care" value="PET_CARE" />
-                    <Select.Item label="House Sitting" value="HOUSE_SITTING" />
-                </Select>
+        <View className='flex-row justify-center divide-x-8 '>
+            <DayToggleButton roundedLeft day={Day.MONDAY} value={value.MONDAY} onChange={handleDayChange} />
+            <DayToggleButton day={Day.TUESDAY} value={value.TUESDAY} onChange={handleDayChange} />
+            <DayToggleButton day={Day.WEDNESDAY} value={value.WEDNESDAY} onChange={handleDayChange} />
+            <DayToggleButton day={Day.THURSDAY} value={value.THURSDAY} onChange={handleDayChange} />
+            <DayToggleButton day={Day.FRIDAY} value={value.FRIDAY} onChange={handleDayChange} />
+            <DayToggleButton day={Day.SATURDAY} value={value.SATURDAY} onChange={handleDayChange} />
+            <DayToggleButton roundedRight day={Day.SUNDAY} value={value.SUNDAY} onChange={handleDayChange} />
+        </View>
+    )
+}
 
-                <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10, marginTop: 30 }}>Rates:</Text>
-                <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>What do you want pet owners to pay per visit?</Text>
-                <Input placeholder="Enter rate" value={rate} onChangeText={setRate} />
+function DayToggleButton({ day, value, onChange, roundedLeft = false, roundedRight = false }: { day: Day, value: boolean, onChange: (day: Day,value: boolean) => void, roundedLeft?: boolean, roundedRight?: boolean }) {
 
+    const className = 'roounded-l-full';
+    return (
+        <Button 
+            className={`flex-row w-12 h-12 justify-center items-center text-center bg-transparent border-2 rounded-none ${className}`}
+            onPress={() => onChange(day, !value)}
+            style={{ 
+                borderColor: value ? '#808080' : '#C5C5C5',
+                borderTopLeftRadius: roundedLeft ? 10 : 0,
+                borderBottomLeftRadius: roundedLeft ? 10 : 0,
+                borderTopRightRadius: roundedRight ? 10 : 0,
+                borderBottomRightRadius: roundedRight ? 10 : 0,
+            }}
+        >   
+            <Text>{prettifyDay(day)}</Text>
+        </Button>
+    )
+}
 
-                <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10, marginTop: 50 }}>Availability:</Text>
-                <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>How many pet owners can you serve per day?</Text>
-                <Input placeholder="Enter availability" value={availability} onChangeText={setAvailability} />
+function TimeToggle({value, onChange} : {value: AvailableTimes, onChange: (value: AvailableTimes) => void}) {
 
+    const handleTimeChange = (time, newValue) => {
+        onChange({
+            ...value,
+            [time]: newValue,
+        });
+    };
 
-                <Text style={{ fontWeight: 'bold', marginBottom: 10, marginTop: 50 }}>Which days of the week will you be typically available for drop-offs?</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={days.mon} onPress={() => handleDayChange('mon')} />
-                    <Text>Mon</Text>
+    return (
+        <View className='flex-row justify-center divide-x-8 '>
+            <TimeToggleButton time='MORNING' value={value.MORNING} onChange={handleTimeChange} />
+            <TimeToggleButton time='AFTERNOON' value={value.AFTERNOON} onChange={handleTimeChange} />
+            <TimeToggleButton time='EVENING' value={value.EVENING} onChange={handleTimeChange} />
+        </View>
+    )
+}
+
+function TimeToggleButton({ time, value, onChange }: { time: string, value: boolean, onChange: (time: string,value: boolean) => void}) {
+
+    return (
+        <Button 
+            className={`flex-row w-24 h-12 mx-3 justify-center items-center text-center bg-transparent border-2 rounded-[10px]`}
+            onPress={() => onChange(time, !value)}
+            style={{ 
+                borderColor: value ? '#808080' : '#C5C5C5',
+            }}
+        >   
+            <Text>{titleCase(time)}</Text>
+        </Button>
+    )
+}
+    
+
+export default function services() {
+    const [selectedService, setSelectedService] = useState("");
+    const [rate, setRate] = useState('');
+
+    const [days, setDays] = useState<AvailableDays>({
+        "MONDAY": false,
+        "TUESDAY": false,
+        "WEDNESDAY": false,
+        "THURSDAY": false,
+        "FRIDAY": false,
+        "SATURDAY": false,
+        "SUNDAY": false,
+    });
+
+    const [times, setTimes] = useState<AvailableTimes>({
+        "MORNING": false,
+        "AFTERNOON": false,
+        "EVENING": false,
+    });
+
+    const handleSubmit = () => {
+        console.log('submit');
+    }
+
+    return (
+        <>
+            <View className='flex-col m-8 mt-4'>
+                <View className='flex-col my-4'>
+                    <Text className='font-bold text-2xl'>Choose a Service:</Text>
+                    <Text className='mb-4'>what service do you want to offer?</Text>
+                    <Select
+                        variant='rounded'
+                        placeholder="Select a service"
+                        selectedValue={selectedService}
+                        onValueChange={(value) => setSelectedService(value)}
+                    >
+                        <Select.Item label="Walk" value="WALK" />
+                        <Select.Item label="Pet Care" value="PET_CARE" />
+                        <Select.Item label="House Sitting" value="HOUSE_SITTING" />
+                    </Select>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={days.tue} onPress={() => handleDayChange('tue')} />
-                    <Text>Tue</Text>
+                <View className='flex-col my-4'>
+                    <Text className='font-bold text-2xl'>Rates:</Text>
+                    <Text className='mb-4'>What do you want pet owners to pay per visit?</Text>
+                    <Input 
+                        variant={'rounded'} 
+                        placeholder="Enter a rate" 
+                        value={rate} 
+                        onChangeText={setRate}
+                        InputLeftElement={<Text className='ml-4'>£</Text>} 
+                        keyboardType='numeric'
+                    />
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={days.wed} onPress={() => handleDayChange('wed')} />
-                    <Text>Wed</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={days.thu} onPress={() => handleDayChange('thu')} />
-                    <Text>Thu</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={days.fri} onPress={() => handleDayChange('fri')} />
-                    <Text>Fri</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={days.sat} onPress={() => handleDayChange('sat')} />
-                    <Text>Sat</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={days.sun} onPress={() => handleDayChange('sun')} />
-                    <Text>Sun</Text>
-                </View>
-                <Text style={{ fontWeight: 'bold', marginBottom: 10, marginTop: 50 }}>What times are you available for visits?</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={times.slot1} onPress={() => handleTimeChange('slot1')} />
-                    <Text>6am-11am</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={times.slot2} onPress={() => handleTimeChange('slot2')} />
-                    <Text>11am-3pm</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={times.slot3} onPress={() => handleTimeChange('slot3')} />
-                    <Text>3pm-10pm</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={times.none} onPress={() => handleTimeChange('none')} />
-                    <Text>None</Text>
-                </View>
-                <View>
-                    <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10, marginTop: 50 }}>Pet Preferences:</Text>
-                    <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>What types of pets do you prefer to care for?</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Checkbox checked={size.small} onPress={() => handleSizeChange('small')} />
-                        <Text>Small dog (0-7 kg)</Text>
+                <View className='flex-col my-4'>
+                    <Text className='font-bold text-2xl mb-4'>Availability:</Text>
+                    <View className='mb-6'>
+                        <DayToggle value={days} onChange={setDays} />
                     </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Checkbox checked={size.medium} onPress={() => handleSizeChange('medium')} />
-                        <Text>Medium dog (7-18 kg)</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Checkbox checked={size.large} onPress={() => handleSizeChange('large')} />
-                        <Text>Large dog (18 kg or more)</Text>
-                    </View>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Checkbox checked={size.cat} onPress={() => handleSizeChange('cat')} />
-                        <Text>Cat</Text>
+                    <View>
+                        <TimeToggle value={times} onChange={setTimes} />
                     </View>
                 </View>
-                <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10, marginTop: 50 }}>Cancellation Time:</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={selectedCancellationTime === "same-day"} onPress={() => handleCancellationTimeChange("same-day")} />
-                    <Text>Same Day</Text>
+                <View className='flex-col my-4'>
+                    <Button className='h-12 rounded-full bg-blue-500 w-11/12 my-4 mx-auto' onPress={() => handleSubmit()}>
+                        <Text className='text-white'>Submit</Text>
+                    </Button>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={selectedCancellationTime === "one-day"} onPress={() => handleCancellationTimeChange("one-day")} />
-                    <Text>One Day In Advance</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={selectedCancellationTime === "three-days"} onPress={() => handleCancellationTimeChange("three-days")} />
-                    <Text>Three Days In Advance</Text>
-                </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Checkbox checked={selectedCancellationTime === "seven-days"} onPress={() => handleCancellationTimeChange("seven-days")} />
-                    <Text>Seven Days In Advance</Text>
-                </View>
-                <Button block style={{ marginTop: 20 }} onPress={handleSave}>
-                    <Text style={{ color: '#fff' }}>Save</Text>
-                </Button>
             </View>
-        </ScrollView >
+        </>
     );
-};
-
-export default services;
+}

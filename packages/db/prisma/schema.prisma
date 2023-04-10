@@ -123,7 +123,7 @@ model Pet {
   owner       Owner     @relation(fields: [ownerId], references: [id])
   bookings    Booking[]
   description String?
-
+  type        PetType
   @@index([ownerId])
 }
 
