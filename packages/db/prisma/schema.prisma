@@ -11,6 +11,7 @@ datasource db {
   relationMode = "prisma"
 }
 
+
 model Owner {
   id          Int       @id @default(autoincrement())
   createdAt   DateTime  @default(now())
@@ -23,7 +24,7 @@ model Owner {
   imageUrl    String
   description String?
   reviews     Review[]
-  location    String    @default("London, UK")
+  location    String   @default("London, UK")
   reports     Report[]
 }
 
@@ -42,7 +43,7 @@ model Sitter {
   description     String    @default("I dont have a description yet.")
   proximityRadius Int       @default(10)
   reviews         Review[]
-  location        String    @default("London, UK")
+  location    String   @default("London, UK")
   reports         Report[]
 }
 
@@ -178,24 +179,24 @@ model Review {
   rating    Int
   content   String
   fromId    Int
-  from      Owner    @relation(fields: [fromId], references: [id])
+  from      Owner   @relation(fields: [fromId], references: [id])
   toId      Int
-  to        Sitter   @relation(fields: [toId], references: [id])
+  to        Sitter @relation(fields: [toId], references: [id])
 
   @@index([fromId])
   @@index([toId])
 }
 
 model Report {
-  id         Int        @id @default(autoincrement())
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-  reportType ReportType
-  content    String
-  fromId     Int
-  from       Owner      @relation(fields: [fromId], references: [id])
-  toId       Int
-  to         Sitter     @relation(fields: [toId], references: [id])
+  id          Int         @id @default(autoincrement())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  reportType  ReportType
+  content     String
+  fromId      Int
+  from        Owner       @relation(fields: [fromId], references: [id])
+  toId        Int
+  to          Sitter     @relation(fields: [toId], references: [id])
 
   @@index([fromId])
   @@index([toId])
@@ -205,7 +206,7 @@ enum ReportType {
   HARRASMENT
   VIOLENCE
   THREATENING_BEHAVIOUR
-  SPAM
+  SPAM 
   HATE
   OTHER
 }
