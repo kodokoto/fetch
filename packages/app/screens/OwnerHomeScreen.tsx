@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import React from 'react'
 import { useUser } from '@clerk/clerk-expo'
 import { Box } from 'native-base'
@@ -23,7 +23,7 @@ export default function OwnerHomeScreen() {
   if (bookingsLoading) return <Text>Loading...</Text>
 
   return (
-    <View>
+    <ScrollView>
       <Text>Owner Home Screen</Text>
       <Box className="flex-wrap flex-row">
         <WelcomeMessage name={ownerProfile.name} />
@@ -31,6 +31,6 @@ export default function OwnerHomeScreen() {
       </Box>
       <Text className="font-bold text-xl ml-2">Upcoming Appointments</Text>
       {bookings && bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)}
-    </View>
+    </ScrollView>
   )
 }
