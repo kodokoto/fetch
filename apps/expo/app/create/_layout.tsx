@@ -9,6 +9,12 @@ export default function () {
           headerTitle: 'Choose your profile',
         }}
       />
+      <Stack.Screen
+        name="service"
+        options={{
+          headerTitle: 'Create a service',
+        }}
+      />
     </Stack>
   )
 }
