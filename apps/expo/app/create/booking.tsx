@@ -19,11 +19,11 @@ import { Service, ScheduledTime, TimeOfDay, Day, BookingFrequency } from '@prism
 export default function AddBooking() {
     const router = useRouter()
 
-    const { sitterId, serviceType, day, time } = useSearchParams()
+    const { sitterId, serviceType, day, timeOfDay } = useSearchParams()
 
     console.log("Sitter Id: " + sitterId);
     console.log("Service Type: " + serviceType);
-    console.log("Day Time: " + time);
+    console.log("Day Time: " + timeOfDay);
     
     
 
@@ -43,7 +43,7 @@ export default function AddBooking() {
     const { data: availabileServices, isLoading : availabileServicesIsLoading } = api.service.bySitterIdAndAvailableTime.useQuery({
         sitterId: String(sitterId),
         day: String(day) as Day,
-        time: String(time) as TimeOfDay
+        time: String(timeOfDay) as TimeOfDay
     })
     const mutation = api.booking.create.useMutation()
 
@@ -64,12 +64,15 @@ export default function AddBooking() {
         petId: getPetByName(selectedPet).id
       })
     }
-
+    function titleCase(string){
+        return string[0].toUpperCase() + string.slice(1).toLowerCase();
+    }
+      
     const [selectedServiceType, setSelectedServiceType] = React.useState<string>(String(serviceType));
     const [selectedPet, setSelectedPet] = React.useState("")
     const [scheduledTime, setScheduledTime] = React.useState<Partial<ScheduledTime>>({
         day: String(day) as Day,
-        time: String(time) as TimeOfDay,
+        time: String(timeOfDay) as TimeOfDay,
         frequency: "ONE_OFF" as BookingFrequency
     })
     if(!isLoaded || availabileServicesIsLoading || sitterDataIsLoading || petsIsLoading) return null;
@@ -86,7 +89,7 @@ export default function AddBooking() {
                 {
                     availabileServices && availabileServices.map((service) => {
                         return (
-                            <Select.Item key={service.id} label={service.type} value={service.type} />
+                            <Select.Item key={service.id} label={titleCase(service.type)} value={service.type} />
                         )
                     })
                 }

@@ -49,7 +49,7 @@ export default function ProfileIcon(props: User) {
       >
           <Menu.Item onPress={() => router.push(`/${getDefaultValue().toLowerCase()}/${
             session.currentProfile === 'Owner' ? ownerProfile?.id : sitterProfile?.id
-          }`)}>Edit Profile</Menu.Item>
+          }`)}>View Profile</Menu.Item>
           <Menu.Item onPress={() => router.push('Setting')}>Setting</Menu.Item>
           <Menu.Item
             onPress={() => {

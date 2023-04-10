@@ -43,7 +43,7 @@ export default function Filter() {
       {/* Display date (not time)*/}
       <FormControl isRequired>
         <VStack space={4} className="mt-8 mx-8">
-          <FormControl.Label className="text-bold">Time availabile:</FormControl.Label>
+          <FormControl.Label className="text-bold">Day availabile:</FormControl.Label>
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
@@ -80,13 +80,13 @@ export default function Filter() {
               <Select.Item label="House sitting" value="HOUSE_SITTING" />
             </Select>
           </Box>
-          <FormControl.Label _text={{ bold: true }}>Open for frequency visit:</FormControl.Label>
+          <FormControl.Label _text={{ bold: true }}>Time Available:</FormControl.Label>
           <Box maxW="full">
             <Select
               selectedValue={timeOfDay}
               minWidth="full"
-              accessibilityLabel="Choose timeOfDay"
-              placeholder="Choose timeOfDay"
+              accessibilityLabel="Choose time"
+              placeholder="Choose time"
               _selectedItem={{
                 bg: 'teal.600',
                 endIcon: <CheckIcon size="5" />,
@@ -99,7 +99,7 @@ export default function Filter() {
               <Select.Item label="3pm-10pm" value="EVENING" />
             </Select>
           </Box>
-          <FormControl.Label _text={{ bold: true }}>Proximity:</FormControl.Label>
+          <FormControl.Label _text={{ bold: true }}>Maximum Price:</FormControl.Label>
           <Box alignItems="center" w="100%">
             <HStack>
               <Slider

@@ -93,7 +93,7 @@ export default function SitterProfile() {
       ? <View className='absolute bottom-0 w-full h-20 bg-transparent'>
           <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
             onPress={() => router.push({
-              pathname: '/booking/create',
+              pathname: '/create/booking',
               params: {
                 sitterId,
                 serviceType,
