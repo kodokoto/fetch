@@ -64,7 +64,7 @@ export default function BookingPreview(props: Booking) {
   return (
     <Button
       onPress={handlePress}
-      className="m-auto rounded-2xl w-80 bg-[#4c8ab9] mt-6 h-30 hover:bg-[#4c8ab9]  border-solid border-transparent border-2"
+      className="m-auto rounded-2xl w-80 bg-[#4c8ab9] mt-6 mb-2 h-30 hover:bg-[#4c8ab9]  border-solid border-transparent border-2"
     >
       <Box className="bg-[#4c8ab9] rounded-2xl p-4 w-80 h-25 mb-2 flex-wrap flex-row justify-between">
         <Box className="float-left" style={{ flexDirection: 'row' }}>
@@ -76,14 +76,14 @@ export default function BookingPreview(props: Booking) {
             <Text>{petData? petData.map((pet) => pet.name).join(", ") : null}</Text>
           </Box>
         </Box>
-        <Text className="flex-end">{parseBookingFrequency(scheduledTime.frequency)}</Text>
+        <Text className="flex-end">{scheduledTime ? parseBookingFrequency(scheduledTime.frequency) : null}</Text>
       </Box>
       <Box className="ml-4 flex-wrap flex-row">
         <Ionicons size={24} className="flex-start" name="ios-calendar-outline"></Ionicons>
         {/* <Text>{typeof props.startDate}</Text> */}
-        <Text className='mx-2 text-md'>{capitalizeWords(scheduledTime.day)}</Text>
+        <Text className='mx-2 text-md'>{scheduledTime ? capitalizeWords(scheduledTime.day) : null}</Text>
         <Ionicons size={24} name="ios-time-outline"></Ionicons>
-        <Text className="mx-2 text-md">{parseTime(scheduledTime.time)}</Text>
+        <Text className="mx-2 text-md">{scheduledTime ? parseTime(scheduledTime.time) : null}</Text>
       </Box>
     </Button>
   )
