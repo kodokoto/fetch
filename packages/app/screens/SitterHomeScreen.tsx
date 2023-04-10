@@ -32,6 +32,11 @@ export default function SitterHomeScreen() {
   if (!isLoaded) return null
   if (bookingsLoading) return <Text>Loading...</Text>
 
+  if(Profile.OWNER == "Owner"){
+    session.currentProfile = Profile.SITTER;
+    session.sitterId = Number(sitterProfile.id);
+  }
+
   console.log("Home Session: " + JSON.stringify(session));
 
   if(owner){
