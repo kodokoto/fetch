@@ -5,7 +5,7 @@ import SettingsComponent from 'app/components/SettingsMenu'
 import { useRouter } from 'expo-router'
 import { Sitter } from 'db'
 
-type SitterDisplayCardProps = {
+type SitterDescriptionCardProps = {
   sitter: Sitter
   searchParams: {
     serviceType: string
@@ -14,7 +14,7 @@ type SitterDisplayCardProps = {
   }
 }
 
-export default function SitterDisplayCard(props: SitterDisplayCardProps) {
+export default function SitterDescriptionCard(props: SitterDescriptionCardProps) {
   const router = useRouter()
 
   return (

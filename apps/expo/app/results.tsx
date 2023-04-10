@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import SitterDisplayCard from 'app/components/SitterDisplayCard'
+import SitterDescriptionCard from 'app/components/SitterDescriptionCard'
 import { api } from 'app/utils/trpc'
 import { useSearchParams } from 'expo-router'
 
@@ -25,7 +25,7 @@ export default function Results() {
       {
       sitters ? (
         sitters.map((sitter) => {
-          return <SitterDisplayCard sitter={sitter} searchParams={{
+          return <SitterDescriptionCard sitter={sitter} searchParams={{
             serviceType: String(serviceType),
             day: String(day),
             timeOfDay: String(timeOfDay),
