@@ -11,9 +11,8 @@ datasource db {
   relationMode = "prisma"
 }
 
-
 model Owner {
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(uuid())
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   pets        Pet[]
@@ -24,12 +23,12 @@ model Owner {
   imageUrl    String
   description String?
   reviews     Review[]
-  location    String   @default("London, UK")
+  location    String    @default("London, UK")
   reports     Report[]
 }
 
 model Sitter {
-  id              Int       @id @default(autoincrement())
+  id          String    @id @default(uuid())
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   bookings        Booking[]
@@ -38,12 +37,12 @@ model Sitter {
   messages        Message[] @relation("sitterMessages")
   name            String
   imageUrl        String
-  images          Image[]   
+  images          Image[]
   bio             String    @default("Hello! I'm a new sitter.")
   description     String    @default("I dont have a description yet.")
   proximityRadius Int       @default(10)
   reviews         Review[]
-  location    String   @default("London, UK")
+  location        String    @default("London, UK")
   reports         Report[]
 }
 
@@ -52,7 +51,7 @@ model Image {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   url       String
-  sitterId  Int
+  sitterId  String
   sitter    Sitter   @relation(fields: [sitterId], references: [id])
 
   @@index([sitterId])
@@ -87,9 +86,9 @@ model Booking {
   updatedAt       DateTime      @updatedAt
   status          BookingStatus @default(PENDING)
   owner           Owner         @relation(fields: [ownerId], references: [id])
-  ownerId         Int
+  ownerId         String
   sitter          Sitter        @relation(fields: [sitterId], references: [id])
-  sitterId        Int
+  sitterId        String
   service         Service       @relation(fields: [serviceId], references: [id])
   serviceId       Int
   pet             Pet           @relation(fields: [petId], references: [id])
@@ -120,7 +119,7 @@ model Pet {
   name        String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  ownerId     Int
+  ownerId     String
   owner       Owner     @relation(fields: [ownerId], references: [id])
   bookings    Booking[]
   description String?
@@ -132,9 +131,9 @@ model Message {
   id        Int      @id @default(autoincrement())
   content   String
   owner     Owner    @relation("ownerMessages", fields: [ownerId], references: [id])
-  ownerId   Int
+  ownerId   String
   sitter    Sitter   @relation("sitterMessages", fields: [sitterId], references: [id])
-  sitterId  Int
+  sitterId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -165,7 +164,7 @@ model Service {
   duration       Int // in minutes
   petType        PetType
   Sitter         Sitter          @relation(fields: [sitterId], references: [id])
-  sitterId       Int
+  sitterId       String
   availableTimes AvailableTime[]
   bookings       Booking[]
 
@@ -178,25 +177,25 @@ model Review {
   updatedAt DateTime @updatedAt
   rating    Int
   content   String
-  fromId    Int
-  from      Owner   @relation(fields: [fromId], references: [id])
-  toId      Int
-  to        Sitter @relation(fields: [toId], references: [id])
+  fromId    String
+  from      Owner    @relation(fields: [fromId], references: [id])
+  toId      String
+  to        Sitter   @relation(fields: [toId], references: [id])
 
   @@index([fromId])
   @@index([toId])
 }
 
 model Report {
-  id          Int         @id @default(autoincrement())
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  reportType  ReportType
-  content     String
-  fromId      Int
-  from        Owner       @relation(fields: [fromId], references: [id])
-  toId        Int
-  to          Sitter     @relation(fields: [toId], references: [id])
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  reportType ReportType
+  content    String
+  fromId     String
+  from       Owner      @relation(fields: [fromId], references: [id])
+  toId       String
+  to         Sitter     @relation(fields: [toId], references: [id])
 
   @@index([fromId])
   @@index([toId])
@@ -206,7 +205,7 @@ enum ReportType {
   HARRASMENT
   VIOLENCE
   THREATENING_BEHAVIOUR
-  SPAM 
+  SPAM
   HATE
   OTHER
 }

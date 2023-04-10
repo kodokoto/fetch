@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { useUser } from '@clerk/clerk-expo'
-import { Box } from 'native-base'
+import { Box, Button } from 'native-base'
 import ProfileIcon from 'app/components/ProfileIcon'
 import WelcomeMessage from 'app/components/WelcomeMessage'
 import BookingPreview from 'app/components/BookingPreview'
@@ -11,37 +11,48 @@ import { Profile, sessionAtom } from 'app/utils/storage'
 import { api } from 'app/utils/trpc'
 
 export default function SitterHomeScreen() {
-  
+
   const { user, isLoaded } = useUser();
   const userId = user?.id
 
-  const [session, setSession] = useAtom(sessionAtom);
+  const mutation = api.service.create.useMutation();
 
-  const { data: owner } = api.owner.byUserId.useQuery(userId, {enabled: !!userId, cacheTime: 0});
-  const { data: sitterProfile, isLoading: sitterProfileLoading } = owner ? api.owner.byUserId.useQuery(userId, {
-    enabled: !!userId,
-    cacheTime: 0,
-  }) : api.sitter.byUserId.useQuery(userId, {
+  const { data: sitterProfile, isLoading: sitterProfileLoading } = api.sitter.byUserId.useQuery(userId, {
     enabled: !!userId,
     cacheTime: 0,
   });
+  
   const { data: bookings, isLoading: bookingsLoading } = api.booking.byOwnerId.useQuery(sitterProfile?.id, {
     enabled: !!sitterProfile?.id,
   })
 
-  if (!isLoaded) return null
-  if (bookingsLoading) return <Text>Loading...</Text>
-
-  if(Profile.OWNER == "Owner"){
-    session.currentProfile = Profile.SITTER;
-    session.sitterId = Number(sitterProfile.id);
+  const handleFakeSubmit = () => {
+      mutation.mutateAsync({
+        sitterId: sitterProfile.id,
+        type: "WALK",
+        price: 0,
+        petType: "DOG",
+        duration: 0,
+        description: "This is a fake service",
+        availableTimes: [
+          {
+            day: "MONDAY",
+            time: "MORNING",
+          },
+          {
+            day: "SUNDAY",
+            time: "EVENING",
+          },
+        ],
+      }).then(() => {
+        console.log("success")
+      })
   }
 
-  console.log("Home Session: " + JSON.stringify(session));
 
-  if(owner){
-    return <OwnerHomeScreen />
-  } else {
+
+  if (!isLoaded) return null
+  if (bookingsLoading) return <Text>Loading...</Text>
 
   return (
     <View>
@@ -50,10 +61,11 @@ export default function SitterHomeScreen() {
         <WelcomeMessage name={sitterProfile.name} />
         <ProfileIcon iconUrl={sitterProfile.imageUrl} />
       </Box>
+      <Button onPress={handleFakeSubmit}>
+        <Text>Add fake service</Text>
+      </Button>
       <Text className="font-bold text-xl ml-2">Upcoming Appointments</Text>
       {bookings && bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)}
     </View>
   )
-
-  }
 }

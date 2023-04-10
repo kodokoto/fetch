@@ -1,7 +1,7 @@
 import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { prisma } from 'db'
-import { ServiceType, TimeOfDay, Day } from '@prisma/client'
+import { ServiceType, TimeOfDay, Day, PetType } from '@prisma/client'
 
 export const serviceRouter = router({
   all: publicProcedure.query(() => {
@@ -14,7 +14,7 @@ export const serviceRouter = router({
       },
     })
   }),
-  bySitterId: publicProcedure.input(z.number()).query(({ input }) => {
+  bySitterId: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.service.findFirst({
       where: {
         sitterId: input,
@@ -24,7 +24,7 @@ export const serviceRouter = router({
   bySitterIdAndAvailableTime: publicProcedure
     .input(
       z.object({
-        sitterId: z.number(),
+        sitterId: z.string(),
         day: z.string(),
         time: z.string(),
       })
@@ -51,23 +51,62 @@ export const serviceRouter = router({
   bySearchParams: publicProcedure
     .input(
       z.object({
-        date: z.string(),
-        service: z.string(),
-        availability: z.string(),
+        day: z.string(),
+        serviceType: z.string(),
+        timeOfDay: z.string(),
         maxPrice: z.number(),
       })
     )
     .query(({ input }) => {
       return prisma.service.findMany({
         where: {
-          type: input.service as ServiceType,
+          type: input.serviceType as ServiceType,
           price: {
             lte: input.maxPrice,
           },
           availableTimes: {
             some: {
-              AND: [{ day: input.availability as Day }, { time: input.availability as TimeOfDay }],
+              AND: [{ day: input.day as Day }, { time: input.timeOfDay as TimeOfDay }],
             },
+          },
+        },
+      })
+    }),
+    create: publicProcedure
+    .input(
+      z.object({
+        sitterId: z.string(),
+        type: z.string(),
+        price: z.number(),
+        petType: z.string(),
+        description: z.string(),
+        duration: z.number(),
+        availableTimes: z.array(
+          z.object({
+            day: z.string(),
+            time: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await prisma.service.create({
+        data: {
+          Sitter: {
+            connect: {
+              id: input.sitterId,
+            }
+          },
+          duration: input.duration,
+          description: input.description,
+          petType: input.petType as PetType,
+          type: input.type as ServiceType,
+          price: input.price,
+          availableTimes: {
+            create: input.availableTimes.map((time) => ({
+              day: time.day as Day,
+              time: time.time as TimeOfDay,
+            })),
           },
         },
       })

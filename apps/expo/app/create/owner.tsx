@@ -21,7 +21,7 @@ export default function OwnerProfileCreate() {
         imageUrl: user.profileImageUrl,
       }).then(
         (ownerProfile) =>{
-          setSession({currentProfile: Profile.OWNER, ownerId: ownerProfile.id, sitterId: session.sitterId})
+          setSession({...session, currentProfile: Profile.OWNER, ownerId: ownerProfile.id})
           router.push('/home')
         } 
       )  

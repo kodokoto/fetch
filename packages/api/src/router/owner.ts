@@ -12,7 +12,7 @@ export const ownerRouter = router({
   all: publicProcedure.query(() => {
     return prisma.owner.findMany()
   }),
-  byId: publicProcedure.input(z.number()).query(({ input }) => {
+  byId: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.owner.findFirst({
       where: {
         id: input,
@@ -26,25 +26,12 @@ export const ownerRouter = router({
       },
     })
   }),
-  contacts: publicProcedure.input(z.number()).query(({ input }) => {
+  contacts: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.sitter.findMany({
       where: {
         messages: {
           some: {
             ownerId: input,
-          },
-        },
-      },
-    })
-  }),
-  contactsByUserId: publicProcedure.input(z.string()).query(({ input }) => {
-    return prisma.sitter.findMany({
-      where: {
-        messages: {
-          some: {
-            owner: {
-              userId: input,
-            },
           },
         },
       },

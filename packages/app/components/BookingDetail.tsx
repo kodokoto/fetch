@@ -44,7 +44,7 @@ function parseTime(TimeOfDay: string){
 
 export default function BookingDetail(props: Booking) {
   const router = useRouter()
-  const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(props.sitterId)
+  const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(String(props.sitterId))
   const {data: serviceData} = api.service.byId.useQuery(props.serviceId)
   const {data: petData} = api.pet.byBookingId.useQuery(props.id)
   const {data: scheduledTime } = api.scheduledTime.byBookingId.useQuery(props.id)

@@ -3,12 +3,21 @@ import { api } from '../utils/trpc'
 import { Avatar } from 'native-base'
 import { useRouter } from 'expo-router'
 import { Box } from 'native-base'
+import { ServiceType, Sitter } from 'db'
 
-export default function SearchResult(props) {
+type SitterDescriptionCardProps = {
+  sitter: Sitter
+  searchParams: {
+    serviceType: string
+    day: string
+    timeOfDay: string
+  }
+}
+
+export default function SitterDescriptionCard(props: SitterDescriptionCardProps) {
   const router = useRouter()
+  const {data: petType} = api.service.byServiceType.useQuery(String(ServiceType))
 
-  const petType = api.service.bySitterId.useQuery(props.searchResult.id).data
-  console.log('Pet Type: ' + JSON.stringify(petType))
   return (
     <View
       style={{
@@ -20,24 +29,21 @@ export default function SearchResult(props) {
         className='bg-slate-100 rounded-2xl p-4 w-80 h-25 m-auto mb-2 flex-wrap flex-row justify-between border-[#4c8ab9] border-solid border-2'
         onPress={() =>
           router.push({
-            pathname: `/sitter/${props.searchResult.id}`,
-            params: {
-              name: props.searchResult.name,
-              userId: props.searchResult.id
-            },
+            pathname: `/sitter/${props.sitter.id}`,
+            params: props.searchParams
           })
         }
       >
         <Box className="float-left" style={{ flexDirection: 'row' }}>
-          {props.searchResult ? (
+          {props.sitter ? (
             <Avatar
               className="w-12 h-12 ml-4 float-left"
-              source={{ uri: props.searchResult.imageUrl }}
+              source={{ uri: props.sitter.imageUrl }}
             />
           ) : null}
           <Box className="ml-4 float-left">
             <Text>
-              {props.searchResult ? props.searchResult.name : null}
+              {props.sitter ? props.sitter.name : null}
             </Text>
             <Text>Location: London</Text>
             <Text>
