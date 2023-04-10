@@ -18,8 +18,7 @@ import { sessionAtom } from 'app/utils/storage'
 export default function ReportForm() {
   const router = useRouter()
   const { sitterId } = useSearchParams()
-  const { user, isLoaded } = useUser()
-  const [session, setSession] = useAtom(sessionAtom)
+  const [session, _] = useAtom(sessionAtom)
   const ownerid = session.ownerId
   const mutation = api.report.create.useMutation()
 
@@ -33,7 +32,7 @@ export default function ReportForm() {
       reportType: type,
       reportContent: textAreaValue,
       fromId: ownerid,
-      toId: Number(sitterId)
+      toId: String(sitterId)
     })
 
     router.push(`/sitter/${sitterId}`);

@@ -15,7 +15,7 @@ export default function SitterProfile() {
   const [session, _] = useAtom(sessionAtom)
 
   const { data: sitterData, error, isLoading } = api.sitter.byIdWith.useQuery({
-    id: Number(sitterId),
+    id: String(sitterId),
     include: ['images', 'reviews', 'services']
   })
 

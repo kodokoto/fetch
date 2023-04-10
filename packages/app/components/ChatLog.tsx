@@ -3,15 +3,15 @@ import ChatMessage from './ChatMessage'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 type ChatLogProps = {
-  uid: number
+  uid: string
   messages: FilteredMessages[]
 }
 
 export type FilteredMessages = {
   content: string
   createdAt: Date
-  ownerId: number
-  sitterId: number
+  ownerId: string
+  sitterId: string
 }
 
 export default function ChatLog(props: ChatLogProps) {

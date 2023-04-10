@@ -7,27 +7,17 @@ export const sitterRouter = router({
   all: publicProcedure.query(() => {
     return prisma.sitter.findMany()
   }),
-  byId: publicProcedure.input(z.number()).query(({ input }) => {
+  byId: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.sitter.findFirst({
       where: {
         id: input,
-      },
-    })
-  }),
-  byIdWithImages: publicProcedure.input(z.number()).query(({ input }) => {
-    return prisma.sitter.findFirst({
-      where: {
-        id: input,
-      },
-      include: {
-        images: true,
       },
     })
   }),
   byIdWith: publicProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
         include: z.array(z.enum(['images', 'services', 'reviews'])),
       })
     )
@@ -50,7 +40,7 @@ export const sitterRouter = router({
       },
     })
   }),
-  contacts: publicProcedure.input(z.number()).query(({ input }) => {
+  contacts: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.owner.findMany({
       where: {
         messages: {

@@ -32,7 +32,7 @@ export default function ProfileIcon(props: User) {
   }
 
   const switchProfile = (profile: Profile) => {
-    setSession({currentProfile: profile, ownerId: session.ownerId, sitterId: session.sitterId})
+    setSession({...session, currentProfile: profile})
   }
 
 
