@@ -33,9 +33,10 @@ export default function Services() {
                         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
                         }
                     )}</Text>
-                    <Text>Pet Type: {service.petType.replace(
-                    /\w\S*/g,
-                    function(txt) {
+                    <Text>Pet Types: {service.petTypes.map(
+                        (type) => type
+                    ).join(', ')
+                    .replace(/\w\S*/g, function(txt) {
                     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
                     }
                     )}</Text>

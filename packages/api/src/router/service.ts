@@ -26,6 +26,9 @@ export const serviceRouter = router({
       where: {
         sitterId: input,
       },
+      include: {
+        petTypes: true,
+      }
     })
   }),
   bySitterIdAndAvailableTime: publicProcedure
@@ -85,7 +88,7 @@ export const serviceRouter = router({
         sitterId: z.string(),
         serviceType: z.string(),
         price: z.number(),
-        petType: z.string(),
+        petTypes: z.array(z.string()),
         description: z.string(),
         duration: z.number(),
         availableTimes: z.array(
@@ -106,7 +109,11 @@ export const serviceRouter = router({
           },
           duration: input.duration,
           description: input.description,
-          petType: input.petType as PetType,
+          petTypes: {
+            create: input.petTypes.map((petType) => ({
+              type: petType as PetType,
+            })),
+          },
           type: input.serviceType as ServiceType,
           price: input.price,
           availableTimes: {
