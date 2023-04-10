@@ -21,6 +21,16 @@ export const serviceRouter = router({
       },
     })
   }),
+  manyBySitterId: publicProcedure.input(z.string()).query(({ input }) => {
+    return prisma.service.findMany({
+      where: {
+        sitterId: input,
+      },
+      include: {
+        petTypes: true,
+      }
+    })
+  }),
   bySitterIdAndAvailableTime: publicProcedure
     .input(
       z.object({
@@ -76,9 +86,9 @@ export const serviceRouter = router({
     .input(
       z.object({
         sitterId: z.string(),
-        type: z.string(),
+        serviceType: z.string(),
         price: z.number(),
-        petType: z.string(),
+        petTypes: z.array(z.string()),
         description: z.string(),
         duration: z.number(),
         availableTimes: z.array(
@@ -99,8 +109,12 @@ export const serviceRouter = router({
           },
           duration: input.duration,
           description: input.description,
-          petType: input.petType as PetType,
-          type: input.type as ServiceType,
+          petTypes: {
+            create: input.petTypes.map((petType) => ({
+              type: petType as PetType,
+            })),
+          },
+          type: input.serviceType as ServiceType,
           price: input.price,
           availableTimes: {
             create: input.availableTimes.map((time) => ({

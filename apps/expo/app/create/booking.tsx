@@ -63,6 +63,7 @@ export default function AddBooking() {
         serviceId: getServiceByType(selectedServiceType).id,
         petId: getPetByName(selectedPet).id
       })
+      router.push('/home');
     }
     function titleCase(string){
         return string[0].toUpperCase() + string.slice(1).toLowerCase();

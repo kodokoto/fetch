@@ -33,7 +33,7 @@ export default function Home() {
   }
 
   // if both data.owner and data.sitter are null, redirect to create profile
-  if (!data || (!data.owner && !data.sitter)) {
+  if (data == undefined || (!data.owner && !data.sitter)) {
     return <Redirect href="/create" />
   }
 

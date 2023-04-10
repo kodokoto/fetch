@@ -1,18 +1,19 @@
-import { View, Text } from 'react-native'
+import { View, Text, Button, Box } from 'native-base'
 import React from 'react'
 import { useUser } from '@clerk/clerk-expo'
-import { Box, Button } from 'native-base'
 import ProfileIcon from 'app/components/ProfileIcon'
 import WelcomeMessage from 'app/components/WelcomeMessage'
 import BookingPreview from 'app/components/BookingPreview'
 import OwnerHomeScreen from './OwnerHomeScreen'
 import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
+import { Link, useRouter, useSearchParams } from 'expo-router'
 import { api } from 'app/utils/trpc'
 
 export default function SitterHomeScreen() {
 
   const { user, isLoaded } = useUser();
+  const router = useRouter();
   const userId = user?.id
 
   const mutation = api.service.create.useMutation();
@@ -56,14 +57,14 @@ export default function SitterHomeScreen() {
 
   return (
     <View>
-      <Text>SItter Home Screen</Text>
+      <Text>Sitter Home Screen</Text>
       <Box className="flex-wrap flex-row">
         <WelcomeMessage name={sitterProfile.name} />
         <ProfileIcon iconUrl={sitterProfile.imageUrl} />
       </Box>
-      <Button onPress={handleFakeSubmit}>
+      {/* <Button onPress={handleFakeSubmit}>
         <Text>Add fake service</Text>
-      </Button>
+      </Button> */}
       <Text className="font-bold text-xl ml-2">Upcoming Appointments</Text>
       {bookings && bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)}
     </View>

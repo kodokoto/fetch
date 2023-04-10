@@ -124,7 +124,7 @@ model Pet {
   owner       Owner     @relation(fields: [ownerId], references: [id])
   bookings    Booking[]
   description String?
-
+  type        PetType
   @@index([ownerId])
 }
 
@@ -163,7 +163,7 @@ model Service {
   price          Float
   description    String
   duration       Int // in minutes
-  petType        PetType
+  petTypes       Animal[]
   Sitter         Sitter          @relation(fields: [sitterId], references: [id])
   sitterId       String
   availableTimes AvailableTime[]
@@ -200,6 +200,17 @@ model Report {
 
   @@index([fromId])
   @@index([toId])
+}
+
+model Animal {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  type      PetType
+  service   Service  @relation(fields: [serviceId], references: [id])
+  serviceId Int
+
+  @@index([serviceId])
 }
 
 enum ReportType {
@@ -246,3 +257,8 @@ enum TimeOfDay {
   AFTERNOON
   EVENING
 }
+
+
+
+
+

@@ -1,10 +1,11 @@
-import { View } from 'react-native'
-import SettingsComponent from 'app/components/SettingsMenu'
+import { View, Text } from 'react-native'
+import SettingsMenu from 'app/components/SettingsMenu'
+ 
 
 export default function Settings() {
   return (
     <View>
-      <SettingsComponent />
+      <SettingsMenu />
     </View>
   )
 }
