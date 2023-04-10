@@ -25,6 +25,7 @@ export default function SitterProfile() {
     { key: 'info', title: 'Info' },
     { key: 'reviews', title: 'Reviews' },
     { key: 'services', title: 'Services' },
+    { key: 'preferences', title: 'Preferences'},
   ]);
 
 
