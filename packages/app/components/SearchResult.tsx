@@ -5,10 +5,10 @@ import SettingsComponent from 'app/components/SettingsMenu'
 import { useRouter } from 'expo-router'
 import { Sitter } from 'db'
 
-export default function SearchResult(props: Sitter) {
+export default function SearchResult(props) {
   const router = useRouter()
 
-  const petType = api.service.bySitterId.useQuery(searchResult.id).data
+  const petType = api.service.bySitterId.useQuery(props.searchResult.id).data
   console.log('Pet Type: ' + JSON.stringify(petType))
   return (
     <View
@@ -32,16 +32,15 @@ export default function SearchResult(props: Sitter) {
         }}
         onPress={() =>
           router.push({
-            pathname: `/sitter/${data.id}`,
+            pathname: `/sitter/${props.searchResult.id}`,
             params: {
-              name: data.name,
-              userId: data.id,
-              imageUrl: data.imageUrl,
+              name: props.searchResult.name,
+              userId: props.searchResult.id
             },
           })
         }
       >
-        {data ? (
+        {props.searchResult ? (
           <Avatar
             style={{
               height: 50,
@@ -49,7 +48,7 @@ export default function SearchResult(props: Sitter) {
               borderWidth: 1,
               borderColor: 'black',
             }}
-            source={{ uri: data.imageUrl }}
+            source={{ uri: props.searchResult.imageUrl }}
           />
         ) : null}
         <View
@@ -62,7 +61,7 @@ export default function SearchResult(props: Sitter) {
               fontSize: 20,
             }}
           >
-            {data ? data.name : null}
+            {props.searchResult ? props.searchResult.name : null}
           </Text>
           <Text>Location: London</Text>
           <Text>

@@ -52,6 +52,17 @@ export default function SitterProfile() {
                     {
                       session.currentProfile === Profile.OWNER
                       ? <View className='flex flex-row gap-2'>
+                         <Button className='rounded-full'
+                            onPress={() => router.push({
+                              pathname: '/messages',
+                              params: {
+                                receiverId: session.ownerId,
+                                senderId: sitterId,
+                              }
+                            })}
+                          >
+                            <Text className='text-white'>Message</Text>
+                          </Button>
                           <Button className='bg-transparent' onPress={() => {
                             router.push({
                               pathname: '/report',

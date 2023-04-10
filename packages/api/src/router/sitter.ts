@@ -1,7 +1,7 @@
 import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { prisma } from 'db'
-import { ServiceType, BookingFrequency, TimeOfDay, Day } from '@prisma/client'
+import { ServiceType, TimeOfDay, Day } from '@prisma/client'
 
 export const sitterRouter = router({
   all: publicProcedure.query(() => {
