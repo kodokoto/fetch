@@ -17,6 +17,9 @@ export default function Results() {
     maxPrice: Number(maxPrice),
   }
 
+  console.log("Search Params: " + JSON.stringify(searchParamsObject));
+  
+
   const { data: sitters } = api.sitter.bySearchParams.useQuery(searchParamsObject)
 
   return (

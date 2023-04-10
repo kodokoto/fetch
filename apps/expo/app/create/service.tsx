@@ -1,125 +1,22 @@
 import React, { useState } from 'react';
-import { View, Input, Text, Button, Checkbox, Select, ScrollView } from 'native-base';
-import { Pressable } from 'react-native';
-import { Stack } from 'expo-router';
-
-enum Day {
-    MONDAY = 'MONDAY',
-    TUESDAY = 'TUESDAY',
-    WEDNESDAY = 'WEDNESDAY',
-    THURSDAY = 'THURSDAY',
-    FRIDAY = 'FRIDAY',
-    SATURDAY = 'SATURDAY',
-    SUNDAY = 'SUNDAY',
-}
-
-type AvailableDays = {
-    MONDAY: boolean;
-    TUESDAY: boolean;
-    WEDNESDAY: boolean;
-    THURSDAY: boolean;
-    FRIDAY: boolean;
-    SATURDAY: boolean;
-    SUNDAY: boolean;
-}
-
-type AvailableTimes = {
-    MORNING: boolean;
-    AFTERNOON: boolean;
-    EVENING: boolean;
-}
-
-function prettifyDay(day: string) {
-    // two letters, first letter capitalized and second letter lowercase
-    return day[0] + day[1].toLowerCase();
-}
-
-// capitalise the first letter of a string and lowercase the rest
-function titleCase(str: string) {
-    return str[0].toUpperCase() + str.slice(1).toLowerCase();
-}
-
-function DayToggle({value, onChange} : {value: AvailableDays, onChange: (value: AvailableDays) => void}) {
-
-    const handleDayChange = (day, newValue) => {
-        onChange({
-            ...value,
-            [day]: newValue,
-        });
-    };
-
-    return (
-        <View className='flex-row justify-center divide-x-8 '>
-            <DayToggleButton roundedLeft day={Day.MONDAY} value={value.MONDAY} onChange={handleDayChange} />
-            <DayToggleButton day={Day.TUESDAY} value={value.TUESDAY} onChange={handleDayChange} />
-            <DayToggleButton day={Day.WEDNESDAY} value={value.WEDNESDAY} onChange={handleDayChange} />
-            <DayToggleButton day={Day.THURSDAY} value={value.THURSDAY} onChange={handleDayChange} />
-            <DayToggleButton day={Day.FRIDAY} value={value.FRIDAY} onChange={handleDayChange} />
-            <DayToggleButton day={Day.SATURDAY} value={value.SATURDAY} onChange={handleDayChange} />
-            <DayToggleButton roundedRight day={Day.SUNDAY} value={value.SUNDAY} onChange={handleDayChange} />
-        </View>
-    )
-}
-
-function DayToggleButton({ day, value, onChange, roundedLeft = false, roundedRight = false }: { day: Day, value: boolean, onChange: (day: Day,value: boolean) => void, roundedLeft?: boolean, roundedRight?: boolean }) {
-
-    const className = 'roounded-l-full';
-    return (
-        <Button 
-            className={`flex-row w-12 h-12 justify-center items-center text-center bg-transparent border-2 rounded-none ${className}`}
-            onPress={() => onChange(day, !value)}
-            style={{ 
-                borderColor: value ? '#808080' : '#C5C5C5',
-                borderTopLeftRadius: roundedLeft ? 10 : 0,
-                borderBottomLeftRadius: roundedLeft ? 10 : 0,
-                borderTopRightRadius: roundedRight ? 10 : 0,
-                borderBottomRightRadius: roundedRight ? 10 : 0,
-            }}
-        >   
-            <Text>{prettifyDay(day)}</Text>
-        </Button>
-    )
-}
-
-function TimeToggle({value, onChange} : {value: AvailableTimes, onChange: (value: AvailableTimes) => void}) {
-
-    const handleTimeChange = (time, newValue) => {
-        onChange({
-            ...value,
-            [time]: newValue,
-        });
-    };
-
-    return (
-        <View className='flex-row justify-center divide-x-8 '>
-            <TimeToggleButton time='MORNING' value={value.MORNING} onChange={handleTimeChange} />
-            <TimeToggleButton time='AFTERNOON' value={value.AFTERNOON} onChange={handleTimeChange} />
-            <TimeToggleButton time='EVENING' value={value.EVENING} onChange={handleTimeChange} />
-        </View>
-    )
-}
-
-function TimeToggleButton({ time, value, onChange }: { time: string, value: boolean, onChange: (time: string,value: boolean) => void}) {
-
-    return (
-        <Button 
-            className={`flex-row w-24 h-12 mx-3 justify-center items-center text-center bg-transparent border-2 rounded-[10px]`}
-            onPress={() => onChange(time, !value)}
-            style={{ 
-                borderColor: value ? '#808080' : '#C5C5C5',
-            }}
-        >   
-            <Text>{titleCase(time)}</Text>
-        </Button>
-    )
-}
-    
+import { View, Input, Text, Button, Checkbox, Select, ScrollView, TextArea } from 'native-base';
+import { useRouter } from 'expo-router';
+import { api } from 'app/utils/trpc'
+import { sessionAtom } from 'app/utils/storage';
+import { useAtom } from 'jotai';
+import AvailableDaySelect from 'app/components/AvailableDaySelect';
+import AvailableTimeSelect from 'app/components/AvailableTimeSelect';
+import PetTypeSelect from 'app/components/PetTypeSelect';
 
 export default function services() {
-    const [selectedService, setSelectedService] = useState("");
-    const [rate, setRate] = useState('');
+    const router = useRouter()
 
-    const [days, setDays] = useState<AvailableDays>({
+    const [serviceType, setServiceType] = useState("");
+    const [price, setPrice] = useState('');
+    const [description, setDescription] = useState('');
+    const [duration, setDuration] = useState('');
+
+    const [days, setDays] = useState({
         "MONDAY": false,
         "TUESDAY": false,
         "WEDNESDAY": false,
@@ -129,60 +26,142 @@ export default function services() {
         "SUNDAY": false,
     });
 
-    const [times, setTimes] = useState<AvailableTimes>({
+    const [times, setTimes] = useState({
         "MORNING": false,
         "AFTERNOON": false,
         "EVENING": false,
     });
 
+    const [petType, setPetType] = useState({
+        "DOG": false,
+        "CAT": false,
+        "OTHER": false,
+    });
+
+    const [session, _] = useAtom(sessionAtom)
+    const mutation = api.service.create.useMutation()
+
+
     const handleSubmit = () => {
-        console.log('submit');
+        const availableTimes = [];
+        for (const day in days) {
+            if (days[day]) {
+                for (const time in times) {
+                    if (times[time]) {
+                        availableTimes.push({
+                            day,
+                            time,
+                        })
+                    }
+                }
+            }
+        }
+
+        const petTypes = [];
+        for (const pet in petType) {
+            if (petType[pet]) {
+                petTypes.push(pet)
+            }
+        }
+
+        mutation.mutateAsync({
+            sitterId: session.sitterId,
+            serviceType: serviceType,
+            price: Number(price),
+            petTypes: petTypes,
+            description: description,
+            duration: Number(duration),
+            availableTimes,
+        }).then(
+          () => router.replace('/services')
+        )
     }
 
     return (
         <>
-            <View className='flex-col m-8 mt-4'>
-                <View className='flex-col my-4'>
+          <ScrollView>
+          <View className='flex-col m-8 mt-4'>
+                <View className='flex-col my-5'>
                     <Text className='font-bold text-2xl'>Choose a Service:</Text>
                     <Text className='mb-4'>what service do you want to offer?</Text>
                     <Select
                         variant='rounded'
                         placeholder="Select a service"
-                        selectedValue={selectedService}
-                        onValueChange={(value) => setSelectedService(value)}
+                        selectedValue={serviceType}
+                        onValueChange={(value) => setServiceType(value)}
                     >
                         <Select.Item label="Walk" value="WALK" />
                         <Select.Item label="Pet Care" value="PET_CARE" />
                         <Select.Item label="House Sitting" value="HOUSE_SITTING" />
                     </Select>
                 </View>
-                <View className='flex-col my-4'>
+                <View className='flex-col my-5'>
                     <Text className='font-bold text-2xl'>Rates:</Text>
                     <Text className='mb-4'>What do you want pet owners to pay per visit?</Text>
                     <Input 
                         variant={'rounded'} 
                         placeholder="Enter a rate" 
-                        value={rate} 
-                        onChangeText={setRate}
+                        value={price} 
+                        onChangeText={setPrice}
                         InputLeftElement={<Text className='ml-4'>£</Text>} 
                         keyboardType='numeric'
                     />
                 </View>
-                <View className='flex-col my-4'>
+
+                <View className='flex-col my-5'>
+                    <Text className='font-bold text-2xl'>petType:</Text>
+                    <Text className='mb-4'>What petType do you want to take care of?</Text>
+                    <PetTypeSelect value={petType} onChange={setPetType} />
+                </View>
+
+                <View className='flex-col my-5'>
                     <Text className='font-bold text-2xl mb-4'>Availability:</Text>
                     <View className='mb-6'>
-                        <DayToggle value={days} onChange={setDays} />
+                        <AvailableDaySelect value={days} onChange={setDays} />
                     </View>
                     <View>
-                        <TimeToggle value={times} onChange={setTimes} />
+                        <AvailableTimeSelect value={times} onChange={setTimes} />
                     </View>
                 </View>
-                <View className='flex-col my-4'>
+
+                <View className='flex-col my-5'>
+                    <Text className='font-bold text-2xl'>Description:</Text>
+                    <Text className='mb-4'>Tell pet owners a bit about what you provide for this service.</Text>
+                    <TextArea 
+                        h={20} 
+                        placeholder="Text Area Placeholder" 
+                        value={description}
+                        w="100%" 
+                        autoCompleteType={undefined} 
+                        onChangeText={
+                            (text) => setDescription(text) 
+                        }
+                    />
+                </View>
+
+                <View className='flex-col my-5'>
+                    <Text className='font-bold text-2xl'>Duration:</Text>
+                    <Text className='mb-4'>How long do you want to spend with each pet?</Text>
+                    <Select
+                        variant='rounded'
+                        placeholder="Select a duration"
+                        selectedValue={duration}
+                        onValueChange={(value) => setDuration(value)}
+                    >
+                        <Select.Item label="30 minutes" value="30" />
+                        <Select.Item label="1 hour" value="60" />
+                        <Select.Item label="2 hours" value="120" />
+                    </Select>
+                </View>
+
+                <View className='flex-col my-5'>
                     <Button className='h-12 rounded-full bg-blue-500 w-11/12 my-4 mx-auto' onPress={() => handleSubmit()}>
                         <Text className='text-white'>Submit</Text>
                     </Button>
                 </View>
             </View>
+
+          </ScrollView>
         </>
     );
 }
