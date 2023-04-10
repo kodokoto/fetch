@@ -3,6 +3,11 @@ import { z } from 'zod'
 import { prisma } from 'db'
 import clerk from '@clerk/clerk-sdk-node'
 
+const getUser = async (userId: string) => {
+  const user = await clerk.users.getUser(userId)
+  return user
+}
+
 export const ownerRouter = router({
   all: publicProcedure.query(() => {
     return prisma.owner.findMany()
@@ -14,22 +19,6 @@ export const ownerRouter = router({
       },
     })
   }),
-  byIdWith: publicProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        include: z.array(z.enum(['images', 'services', 'reviews'])),
-      })
-    )
-    .query(({ input }) => {
-      return prisma.owner.findFirst({
-        where: {
-          id: input.id,
-        },
-        include: {
-        },
-      })
-    }),
   byUserId: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.owner.findFirst({
       where: {
@@ -38,7 +27,7 @@ export const ownerRouter = router({
     })
   }),
   contacts: publicProcedure.input(z.string()).query(({ input }) => {
-    return prisma.owner.findMany({
+    return prisma.sitter.findMany({
       where: {
         messages: {
           some: {
@@ -48,22 +37,6 @@ export const ownerRouter = router({
       },
     })
   }),
-
-  bySearchParams: publicProcedure
-    .input(
-      z.object({
-        serviceType: z.string(),
-        timeOfDay: z.string(),
-        day: z.string(),
-        maxPrice: z.number(),
-      })
-    )
-    .query(({ input }) => {
-      return prisma.owner.findMany({
-        where: {
-        },
-      })
-    }),
   create: publicProcedure
     .input(
       z.object({
