@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Select, FormControl, Text, Button, Input, HStack, CheckIcon, Slider, VStack } from 'native-base'
 import { TouchableOpacity, Platform } from 'react-native'
 import { useRouter } from 'expo-router'
-import DatePicker from 'react-native-modal-datetime-picker'
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { TimeOfDay, Day, ServiceType } from '@prisma/client'
 
 export type FilterSearchParams = {
@@ -49,6 +49,7 @@ export default function Filter() {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
+              console.log(123);
               setShowDate(true)
             }}
           >
@@ -58,6 +59,7 @@ export default function Filter() {
                   setShowDate(true)
                 },
               }}
+              onTouchStart={() => setShowDate(true)}
               placeholder="Select day"
               editable={false}
               value={date.toLocaleDateString()}
@@ -124,7 +126,7 @@ export default function Filter() {
             </HStack>
           </Box>
         </VStack>
-        <DatePicker
+        <DateTimePickerModal
           isVisible={showDate}
           mode="date"
           onConfirm={onConfirmDate}
