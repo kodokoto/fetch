@@ -38,7 +38,6 @@ export default function AddBooking() {
     const { data: sitterData, isLoading: sitterDataIsLoading} = api.sitter.byId.useQuery(String(sitterId))
 
     const { data: pets, isLoading: petsIsLoading} = api.pet.byOwnerId.useQuery(ownerId, { enabled: !!ownerId, cacheTime: 0 })
-    console.log("Pets: " + JSON.stringify(pets));
     
     const { data: availabileServices, isLoading : availabileServicesIsLoading } = api.service.bySitterIdAndAvailableTime.useQuery({
         sitterId: String(sitterId),
