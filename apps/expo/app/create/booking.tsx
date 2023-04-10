@@ -54,12 +54,13 @@ export default function AddBooking() {
         return availabileServices.find((service) => service.type === name)
     }
 
+
     const handleSubmit = () => {
       mutation.mutate({
         scheduledTime: scheduledTime,
         sitterId: String(sitterId),
         ownerId: ownerData.id,
-        serviceId: 2,
+        serviceId: getServiceByType(selectedServiceType).id,
         petId: getPetByName(selectedPet).id
       })
     }
