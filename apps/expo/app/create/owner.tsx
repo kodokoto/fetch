@@ -32,6 +32,8 @@ export default function OwnerProfileCreate() {
 
   if (!isLoaded) return null
 
+  // 
+
   return (
     <View>
       <Button onPress={handleProfileCreation}>
