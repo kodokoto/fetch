@@ -9,6 +9,9 @@ import { useRouter } from 'expo-router'
 export default function Booking() {
   const { bookingId } = useSearchParams()
   const router = useRouter()
+
+  console.log("Booking Id: " + bookingId);
+  
   // convert to number
   const { data, error, isLoading } = api.booking.byId.useQuery(Number(bookingId))
 
