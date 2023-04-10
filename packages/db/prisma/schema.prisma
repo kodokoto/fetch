@@ -117,7 +117,6 @@ model Location {
 model Pet {
   id          Int       @id @default(autoincrement())
   name        String
-  type        PetType
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   ownerId     String
