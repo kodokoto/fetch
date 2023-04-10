@@ -9,9 +9,8 @@ type SitterDisplayCardProps = {
   sitter: Sitter
   searchParams: {
     serviceType: string
-    date: string
-    availability: string
-    maxPrice: number
+    day: string
+    timeOfDay: string
   }
 }
 

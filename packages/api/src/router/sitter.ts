@@ -65,9 +65,9 @@ export const sitterRouter = router({
   bySearchParams: publicProcedure
     .input(
       z.object({
-        date: z.string(),
         serviceType: z.string(),
-        availability: z.string(),
+        timeOfDay: z.string(),
+        day: z.string(),
         maxPrice: z.number(),
       })
     )
@@ -82,7 +82,7 @@ export const sitterRouter = router({
               },
               availableTimes: {
                 some: {
-                  AND: [{ day: input.date as Day }, { time: input.availability as TimeOfDay }],
+                  AND: [{ day: input.day as Day }, { time: input.timeOfDay as TimeOfDay }],
                 },
               },
             },

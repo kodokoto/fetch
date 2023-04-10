@@ -7,8 +7,8 @@ import { TimeOfDay, Day, ServiceType } from '@prisma/client'
 
 export type FilterSearchParams = {
   serviceType: string
-  date: Day
-  availability: TimeOfDay
+  day: Day
+  timeOfDay: TimeOfDay
   maxPrice: number
 }
 
@@ -16,13 +16,12 @@ export default function Filter() {
   const router = useRouter()
 
   const handleSubmit = (data: FilterSearchParams) => {
-    console.log('Data: ' + JSON.stringify(data))
     router.push({
       pathname: '/results',
       params: {
-        date: data.date,
+        day: data.day,
         serviceType: data.serviceType,
-        availability: data.availability,
+        timeOfDay: data.timeOfDay,
         maxPrice: data.maxPrice,
       },
     })
@@ -31,7 +30,7 @@ export default function Filter() {
   const [date, setDate] = React.useState(new Date())
   const [showDate, setShowDate] = React.useState(false)
   const [serviceType, setServiceType] = React.useState<ServiceType>('WALK')
-  const [availability, setAvailability] = React.useState<TimeOfDay>('ANY')
+  const [timeOfDay, setTimeOfDay] = React.useState<TimeOfDay>('ANY')
   const [maxPrice, setMaxPrice] = React.useState(0)
 
   const onConfirmDate = (date: Date) => {
@@ -84,16 +83,16 @@ export default function Filter() {
           <FormControl.Label _text={{ bold: true }}>Open for frequency visit:</FormControl.Label>
           <Box maxW="full">
             <Select
-              selectedValue={availability}
+              selectedValue={timeOfDay}
               minWidth="full"
-              accessibilityLabel="Choose availability"
-              placeholder="Choose availability"
+              accessibilityLabel="Choose timeOfDay"
+              placeholder="Choose timeOfDay"
               _selectedItem={{
                 bg: 'teal.600',
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
-              onValueChange={(itemValue) => setAvailability(itemValue as TimeOfDay)}
+              onValueChange={(itemValue) => setTimeOfDay(itemValue as TimeOfDay)}
             >
               <Select.Item label="6am-11am" value="MORNING" />
               <Select.Item label="11am-3pm" value="AFTERNOON" />
@@ -134,11 +133,11 @@ export default function Filter() {
           className="w-[300px] m-auto mt-10"
           onPress={() =>
             handleSubmit({
-              date: date
+              day: date
                 .toLocaleDateString('en-us', { weekday: 'long' })
                 .replace(/[^a-z]/gi, '')
                 .toUpperCase() as Day,
-              availability,
+              timeOfDay,
               serviceType,
               maxPrice,
             })
