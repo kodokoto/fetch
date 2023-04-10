@@ -68,14 +68,14 @@ export default function BookingPreview(props: Booking) {
             {/* <Text>{props.dateDescription}</Text> */}
           </Box>
         </Box>
-        <Text className="flex-end">{parseBookingFrequency(props.frequency)}</Text>
+        {/* <Text className="flex-end">{parseBookingFrequency(props.frequency)}</Text> */}
       </Box>
       <Box className="ml-4 flex-wrap flex-row">
         <Ionicons size={24} className="flex-start" name="ios-calendar-outline"></Ionicons>
         {/* <Text>{typeof props.startDate}</Text> */}
         {/* <Text className='mx-2 text-md'>{getDateDescription(props.startDate)}</Text> */}
         <Ionicons size={24} name="ios-time-outline"></Ionicons>
-        <Text className="mx-2 text-md">{getTimeDescription(props.startDate, props.startDate)}</Text>
+        {/* <Text className="mx-2 text-md">{getTimeDescription(props.startDate, props.startDate)}</Text> */}
       </Box>
     </Button>
   )

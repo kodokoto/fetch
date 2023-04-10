@@ -32,7 +32,7 @@ export default function ProfileIcon(props: User) {
   }
 
   const switchProfile = (profile: Profile) => {
-    setSession({currentProfile: profile, ownerId: session.ownerId, sitterId: session.sitterId})
+    setSession({...session, currentProfile: profile})
   }
 
 
@@ -49,8 +49,8 @@ export default function ProfileIcon(props: User) {
       >
           <Menu.Item onPress={() => router.push(`/${getDefaultValue().toLowerCase()}/${
             session.currentProfile === 'Owner' ? ownerProfile?.id : sitterProfile?.id
-          }`)}>Edit Profile</Menu.Item>
-          <Menu.Item onPress={() => router.push('settings')}>Settings</Menu.Item>
+          }`)}>View Profile</Menu.Item>
+          <Menu.Item onPress={() => router.push('Setting')}>Setting</Menu.Item>
           <Menu.Item
             onPress={() => {
               signOut()

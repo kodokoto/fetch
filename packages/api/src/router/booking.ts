@@ -10,14 +10,14 @@ export const bookingRouter = router({
   byId: publicProcedure.input(z.number()).query(({ input }) => {
     return prisma.booking.findFirst({ where: { id: input } })
   }),
-  byOwnerId: publicProcedure.input(z.number()).query(({ input }) => {
+  byOwnerId: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.booking.findMany({
       where: {
         ownerId: input,
       },
     })
   }),
-  bySitterId: publicProcedure.input(z.number()).query(({ input }) => {
+  bySitterId: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.booking.findMany({
       where: {
         sitterId: input,
@@ -26,8 +26,8 @@ export const bookingRouter = router({
   }),
   create : publicProcedure
     .input(z.object({
-      ownerId: z.number(),
-      sitterId: z.number(),
+      ownerId: z.string(),
+      sitterId: z.string(),
       serviceId: z.number(),
       petId: z.number(),
       scheduledTime: z.object({

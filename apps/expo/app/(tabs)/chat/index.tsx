@@ -5,9 +5,19 @@ import { Ionicons } from '@expo/vector-icons'
 import { api } from 'app/utils/trpc'
 import { useUser, useClerk } from '@clerk/clerk-expo'
 import { Skeleton } from 'native-base'
+import { useAtom } from 'jotai'
+import { sessionAtom } from 'app/utils/storage'
+import { useIsFocused } from "@react-navigation/native";
+import { useNavigation } from 'expo-router'
 
 export default function Chat() {
   const [searchWord, setSearchWord] = useState('')
+  const [filteredContacts, setFilteredContacts] = useState([]);
+  const isFocused = useIsFocused();
+
+  const [session, setSession] = useAtom(sessionAtom)
+  let isOwner = false;
+  let isSitter = false;
 
   const { user, isLoaded } = useUser()
   const userId = user?.id
@@ -15,14 +25,37 @@ export default function Chat() {
   const { data: owner } = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
   const ownerId = owner?.id
 
-  const { data: contacts } = api.owner.contacts.useQuery(ownerId, { enabled: !!ownerId })
+  const { data: sitter } = api.sitter.byUserId.useQuery(userId, { enabled: !!userId })
+  const sitterId = sitter?.id
 
-  const filtercontacts = (filterWord) => {
+  const { data: contacts } = session.currentProfile.toString() == "Owner" ? api.owner.contacts.useQuery(ownerId, { enabled: !!ownerId }) :
+  api.sitter.contacts.useQuery(sitterId, { enabled: !!sitterId });
+
+  console.log("Contacts: " + JSON.stringify(contacts));
+
+  if(session.currentProfile.toString() == "Owner"){
+    isOwner = true;
+  } else {
+    isSitter = true;
+  }
+
+  let filtercontacts = (filterWord) => {
     const filteredcontacts = contacts.filter((sitter) => {
       return sitter.name.includes(filterWord)
     })
     return filteredcontacts
   }
+
+  useEffect(() => {
+    console.log("Meat");
+    
+    filtercontacts = (filterWord) => {
+      const filteredcontacts = contacts.filter((sitter) => {
+        return sitter.name.includes(filterWord)
+      })
+      return filteredcontacts
+    }
+  }, [isFocused])
   if (!isLoaded) return null
   // if (!isLoaded || isLoading || contactIsLoading) return <Text>Loading...</Text>;
   // if (error || contactError) return <Text>{error.message}</Text>;
@@ -39,8 +72,8 @@ export default function Chat() {
             const userId = user.id
             return (
               <ChatPreview
-                ownerId={ownerId}
-                sitterId={userId}
+                receiverId={isSitter ? sitterId : ownerId}
+                senderId={user.id}
                 name={user.name}
                 key={user.id}
                 imageUrl={user.imageUrl}

@@ -12,8 +12,8 @@ export const reportRouter = router ({
       z.object({
         reportType: z.string(),
         reportContent: z.string(),
-        fromId: z.number(),
-        toId: z.number(),
+        fromId: z.string(),
+        toId: z.string(),
       })
     )
     .mutation(async ({ input }) => {

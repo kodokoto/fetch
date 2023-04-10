@@ -4,8 +4,8 @@ import { useRouter } from 'expo-router'
 import { api } from 'app/utils/trpc'
 
 type ChatPreviewProps = {
-  ownerId: number
-  sitterId: number
+  receiverId: string
+  senderId: string
   name: string
   imageUrl: string
 }
@@ -16,7 +16,7 @@ export default function ChatPreview(props: ChatPreviewProps) {
     data: mostRecentMessage,
     error,
     isLoading,
-  } = api.message.latestBetweenUsers.useQuery({ ownerId: props.ownerId, sitterId: props.sitterId })
+  } = api.message.latestBetweenUsers.useQuery({ ownerId: props.receiverId, sitterId: props.senderId })
   if (isLoading) return <Text>Loading...</Text>
   return (
     <View>
@@ -25,10 +25,9 @@ export default function ChatPreview(props: ChatPreviewProps) {
           router.push({
             pathname: '/messages',
             params: {
-              ownerId: props.ownerId,
-              sitterId: props.sitterId,
+              receiverId: props.receiverId,
+              senderId: props.senderId,
               receiverName: props.name,
-              receiverImageUrl: props.imageUrl,
             },
           })
         }

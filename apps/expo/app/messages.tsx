@@ -9,13 +9,16 @@ import { api } from 'app/utils/trpc'
 import { Message } from '@prisma/client'
 
 export default function Messages() {
-  const { ownerId, sitterId, receiverName, receiverImgUrl } = useSearchParams()
+  const { receiverId, senderId, receiverName, receiverImgUrl } = useSearchParams()
   const router = useRouter()
   // router.setParams({ headerTitle: String(receiverName)});
   const [filteredMessages, setfilteredMessages] = useState<FilteredMessages[]>([])
 
+  console.log("Owner Id 2: " + receiverId);
+  console.log("Sitter Id 2: " + senderId);
+
   const { data, error, isLoading } = api.message.betweenUsers.useQuery(
-    { ownerId: Number(ownerId), sitterId: Number(sitterId) },
+    { ownerId: String(receiverId), sitterId: String(senderId) },
     {
       onSuccess: (data: Message[]) => {
         // filter out id from each message
@@ -62,14 +65,14 @@ export default function Messages() {
   }, [currentMessageContent])
 
   const onSend = () => {
-    mutation.mutate({ content: currentMessageContent, ownerId: Number(ownerId), sitterId: Number(sitterId) })
+    mutation.mutate({ content: currentMessageContent, ownerId: String(receiverId), sitterId: String(senderId) })
     setfilteredMessages([
       ...filteredMessages,
       {
         content: currentMessageContent,
         createdAt: new Date(),
-        ownerId: Number(ownerId),
-        sitterId: Number(sitterId),
+        ownerId: String(receiverId),
+        sitterId: String(senderId),
       },
     ])
     setCurrentMessageContent('')
@@ -94,7 +97,7 @@ export default function Messages() {
           onContentSizeChange={() => this.scrollView.scrollToEnd({ animated: true })}
           keyboardShouldPersistTaps={'always'}
         >
-          <ChatLog uid={Number(ownerId)} messages={filteredMessages} />
+          <ChatLog uid={String(receiverId)} messages={filteredMessages} />
         </ScrollView>
       </KeyboardAwareScrollView>
       <View

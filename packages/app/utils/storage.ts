@@ -5,8 +5,9 @@ const storage = createJSONStorage<Session>(() => AsyncStorage)
 
 type Session = {
     currentProfile: Profile;
-    ownerId: number | null;
-    sitterId: number | null;
+    currentUser: string | null;
+    ownerId: string | null;
+    sitterId: string | null;
 }
 
 export enum Profile {
@@ -17,6 +18,7 @@ export enum Profile {
 
 const content = {
     currentProfile: Profile.NONE,
+    currentUser: null,
     ownerId: null,
     sitterId: null,
 }

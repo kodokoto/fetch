@@ -22,27 +22,37 @@ export default function Home() {
 
   console.log('FROM SESSION:', session)
 
+  // if the user is different from the previous user, update the session
+  if (session.currentUser != userId) {
+    setSession({
+      currentUser: userId,
+      currentProfile: data.owner ? Profile.OWNER : data.sitter ? Profile.SITTER : Profile.NONE,
+      ownerId: data.owner ? data.owner.id : null,
+      sitterId: data.sitter ? data.sitter.id : null,
+    })
+  }
+
   // if both data.owner and data.sitter are null, redirect to create profile
-  if (!data.owner && !data.sitter) {
+  if (!data || (!data.owner && !data.sitter)) {
     return <Redirect href="/create" />
   }
 
   // if data.sitter is null, and session.sitterId is not null, update the session
   if (!data.sitter && session.sitterId) {
-    setSession({currentProfile: session.currentProfile, ownerId: session.ownerId, sitterId: null})
+    setSession({...session, sitterId: null})
   }
 
-  // if data.owner is null, and session.ownerId is not null, update the session
+  // if data.owner is null, and session.ownerId is not null, update the ownerId in the session, keep the rest the same
   if (!data.owner && session.ownerId) {
-    setSession({currentProfile: session.currentProfile, ownerId: null, sitterId: session.sitterId})
+    setSession({...session, ownerId: null})
   }
 
   // if a owner id or a sitter id exists, but the session does not have a current profile, update the session
   // to owner id (if it exists) or sitter id 
   if ((data.owner || data.sitter) && session.currentProfile == Profile.NONE) {
     data.owner 
-    ? setSession({currentProfile: Profile.OWNER, ownerId: data.owner.id, sitterId: session.sitterId})
-    : setSession({currentProfile: Profile.SITTER, ownerId: session.ownerId, sitterId: data.sitter.id})
+    ? setSession({...session, currentProfile: Profile.OWNER, ownerId: data.owner.id})
+    : setSession({...session, currentProfile: Profile.SITTER, sitterId: data.sitter.id})
   }
 
   if (session.currentProfile === Profile.OWNER) {

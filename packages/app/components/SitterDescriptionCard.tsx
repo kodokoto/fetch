@@ -5,11 +5,18 @@ import SettingsComponent from 'app/components/SettingsMenu'
 import { useRouter } from 'expo-router'
 import { Sitter } from 'db'
 
-export default function SearchResult(props: Sitter) {
+type SitterDescriptionCardProps = {
+  sitter: Sitter
+  searchParams: {
+    serviceType: string
+    day: string
+    timeOfDay: string
+  }
+}
+
+export default function SitterDescriptionCard(props: SitterDescriptionCardProps) {
   const router = useRouter()
 
-  const petType = api.service.bySitterId.useQuery(searchResult.id).data
-  console.log('Pet Type: ' + JSON.stringify(petType))
   return (
     <View
       style={{
@@ -32,16 +39,12 @@ export default function SearchResult(props: Sitter) {
         }}
         onPress={() =>
           router.push({
-            pathname: `/sitter/${data.id}`,
-            params: {
-              name: data.name,
-              userId: data.id,
-              imageUrl: data.imageUrl,
-            },
+            pathname: `/sitter/${props.sitter.id}`,
+            params: props.searchParams
           })
         }
       >
-        {data ? (
+        {props.sitter ? (
           <Avatar
             style={{
               height: 50,
@@ -49,7 +52,7 @@ export default function SearchResult(props: Sitter) {
               borderWidth: 1,
               borderColor: 'black',
             }}
-            source={{ uri: data.imageUrl }}
+            source={{ uri: props.sitter.imageUrl }}
           />
         ) : null}
         <View
@@ -62,16 +65,9 @@ export default function SearchResult(props: Sitter) {
               fontSize: 20,
             }}
           >
-            {data ? data.name : null}
+            {props.sitter ? props.sitter.name : null}
           </Text>
           <Text>Location: London</Text>
-          <Text>
-            Helps with:{' '}
-            {petType &&
-              petType.petType.toLowerCase().replace(/\b[a-z]/g, function (letter) {
-                return letter.toUpperCase()
-              })}
-          </Text>
         </View>
         <Text
           style={{
