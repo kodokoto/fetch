@@ -5,6 +5,8 @@ import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { Booking } from '@prisma/client'
 import { api } from '../utils/trpc'
+import { useAtom } from 'jotai'
+import { Profile, sessionAtom } from 'app/utils/storage'
 
 function parseBookingFrequency(bookingFrequency: string) {
   switch (bookingFrequency) {
@@ -43,6 +45,7 @@ function parseTime(TimeOfDay: string){
 }
 
 export default function BookingDetail(props: Booking) {
+  const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
   const mutation = api.booking.updateStatusById.useMutation();
   const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(String(props.sitterId))
@@ -67,7 +70,7 @@ export default function BookingDetail(props: Booking) {
   }
  
   const handleMessagePress = () => {
-    router.push({
+    router.replace({
       pathname: '/messages',
       params: {
         receiverId: props.ownerId,
@@ -78,6 +81,7 @@ export default function BookingDetail(props: Booking) {
   }
   if (isLoading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
+  // console.log(scheduledTime.frequency)
   return (
     <ScrollView>
       <Avatar className="mx-auto mt-28 mb-20 w-32 h-32" source={{ uri: sitterData?.imageUrl }}>
@@ -89,8 +93,8 @@ export default function BookingDetail(props: Booking) {
             <Text className="text-2xl font-bold ml-4">{sitterData?.name}</Text>
             <Text className="text-lg ml-4">{props.status}</Text>
           </Box>
-          <Button onPress={handleAcceptPress}>Accept</Button>
-          <Button onPress={handleRejectPress}>Reject</Button>
+          <Button onPress={handleAcceptPress} className="rounded-2xl">Accept</Button>
+          <Button onPress={handleRejectPress} className="rounded-2xl">Reject</Button>
           <Button className="bg-white w-14 h-14 rounded-3xl flex-end mr-4" onPress={handleMessagePress}>
             <Ionicons size={28} color="#4c8ab9" name="chatbubble"></Ionicons>
           </Button>
@@ -149,10 +153,12 @@ export default function BookingDetail(props: Booking) {
           </Box>
           <Box className="flex-wrap flex-row mt-2 mb-10">
             <Button className="ml-auto rounded-2xl">Reschedule</Button>
-            <Button className="mr-auto ml-2 rounded-2xl">Cancel</Button>
+            <Button className="mx-2 rounded-2xl">Cancel</Button>
+            <Button className="mr-auto rounded-2xl" onPress={() => router.push('/review')}>Review</Button>
           </Box>
         </Box>
       </Box>
+      
     </ScrollView>
   )
 }

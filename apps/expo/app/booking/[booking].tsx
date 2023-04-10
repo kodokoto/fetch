@@ -32,7 +32,6 @@ export default function Booking() {
       <BookingDetail {...data} />
       {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
       <StatusBar style="light" />
-      <Button onPress={() => router.push('/review')}>Review</Button>
       {/* Text box for review */}
 
     </View>
