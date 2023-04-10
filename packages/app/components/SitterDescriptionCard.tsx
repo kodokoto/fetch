@@ -46,13 +46,13 @@ export default function SitterDescriptionCard(props: SitterDescriptionCardProps)
               {props.sitter ? props.sitter.name : null}
             </Text>
             <Text>Location: London</Text>
-            <Text>
+            {/* <Text>
               Helps with:{' '}
               {petType &&
                 petType.petType.toLowerCase().replace(/\b[a-z]/g, function (letter) {
                   return letter.toUpperCase()
                 })}
-            </Text>
+            </Text> */}
           </Box>
         </Box>
         <Text
