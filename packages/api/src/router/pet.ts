@@ -4,7 +4,7 @@ import { prisma } from 'db'
 
 export const petRouter = router({
     byOwnerId: publicProcedure
-        .input(z.number())
+        .input(z.string())
         .query(({ input }) => {
             return prisma.pet.findMany({
                 where: {

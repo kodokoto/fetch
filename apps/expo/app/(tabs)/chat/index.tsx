@@ -40,7 +40,7 @@ export default function Chat() {
   }
 
   let filtercontacts = (filterWord) => {
-    let filteredcontacts = contacts.filter((sitter) => {
+    const filteredcontacts = contacts.filter((sitter) => {
       return sitter.name.includes(filterWord)
     })
     return filteredcontacts
@@ -50,7 +50,7 @@ export default function Chat() {
     console.log("Meat");
     
     filtercontacts = (filterWord) => {
-      let filteredcontacts = contacts.filter((sitter) => {
+      const filteredcontacts = contacts.filter((sitter) => {
         return sitter.name.includes(filterWord)
       })
       return filteredcontacts

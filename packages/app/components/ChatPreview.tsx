@@ -4,8 +4,8 @@ import { useRouter } from 'expo-router'
 import { api } from 'app/utils/trpc'
 
 type ChatPreviewProps = {
-  receiverId: number
-  senderId: number
+  receiverId: string
+  senderId: string
   name: string
   imageUrl: string
 }

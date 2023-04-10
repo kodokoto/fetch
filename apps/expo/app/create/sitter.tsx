@@ -22,7 +22,7 @@ export default function SitterProfileCreate() {
         imageUrl: user.profileImageUrl,
       }).then(
         (sitterProfile) =>{
-          setSession({currentProfile: Profile.SITTER, ownerId: session.ownerId, sitterId: sitterProfile.id})
+          setSession({...session, currentProfile: Profile.SITTER, sitterId: sitterProfile.id})
           router.push('/home')
         } 
       )

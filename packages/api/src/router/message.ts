@@ -9,8 +9,8 @@ export const messageRouter = router({
   betweenUsers: publicProcedure
     .input(
       z.object({
-        ownerId: z.number(),
-        sitterId: z.number(),
+        ownerId: z.string(),
+        sitterId: z.string(),
       })
     )
     .query(({ input }) => {
@@ -30,8 +30,8 @@ export const messageRouter = router({
   create: publicProcedure
     .input(
       z.object({
-        ownerId: z.number(),
-        sitterId: z.number(),
+        ownerId: z.string(),
+        sitterId: z.string(),
         content: z.string(),
       })
     )
@@ -48,8 +48,8 @@ export const messageRouter = router({
   latestBetweenUsers: publicProcedure
     .input(
       z.object({
-        ownerId: z.number(),
-        sitterId: z.number(),
+        ownerId: z.string(),
+        sitterId: z.string(),
       })
     )
     .query(({ input }) => {

@@ -6,24 +6,15 @@ import ProfileIcon from 'app/components/ProfileIcon'
 import WelcomeMessage from 'app/components/WelcomeMessage'
 import BookingPreview from 'app/components/BookingPreview'
 import { api } from 'app/utils/trpc'
-import { useAtom } from 'jotai'
-import { Profile, sessionAtom } from 'app/utils/storage'
-import SitterHomeScreen from './SitterHomeScreen'
 
 export default function OwnerHomeScreen() {
   
   const { user, isLoaded } = useUser();
   const userId = user?.id
-  const [session, setSession] = useAtom(sessionAtom);
-  const { data: sitter } = api.sitter.byUserId.useQuery(userId, {enabled: !!userId, cacheTime: 0});
-
-  const { data: ownerProfile, isLoading: ownerProfileLoading } = !sitter ? api.owner.byUserId.useQuery(userId, {
+  const { data: ownerProfile, isLoading: ownerProfileLoading } = api.owner.byUserId.useQuery(userId, {
     enabled: !!userId,
     cacheTime: 0,
-  }) : api.sitter.byUserId.useQuery(userId, {
-    enabled: !!userId,
-    cacheTime: 0,
-  });
+  })
   const { data: bookings, isLoading: bookingsLoading } = api.booking.byOwnerId.useQuery(ownerProfile?.id, {
     enabled: !!ownerProfile?.id,
   })
@@ -31,16 +22,6 @@ export default function OwnerHomeScreen() {
   if (!isLoaded) return null
   if (bookingsLoading) return <Text>Loading...</Text>
 
-  if(Profile.SITTER == "Sitter"){
-    console.log("12345678: " + user.id);
-    session.currentProfile = Profile.OWNER;
-    session.ownerId = Number(ownerProfile.id);
-    console.log(session.ownerId)
-  }
-
-  if(sitter){
-    return <SitterHomeScreen />
-  } else {
   return (
     <View>
       <Text>Owner Home Screen</Text>
@@ -52,5 +33,4 @@ export default function OwnerHomeScreen() {
       {bookings && bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)}
     </View>
   )
-  }
 }

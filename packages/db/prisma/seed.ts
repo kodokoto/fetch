@@ -1,65 +1,43 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, TimeOfDay } from '@prisma/client'
+import { time } from 'console'
 const prisma = new PrismaClient()
 
 // get schema from ./schema.prisma
 
 async function main() {
   // seed new user with owner profile
-  await prisma.user.create({
+  await prisma.sitter.create({
     data: {
-      email: 'modiibeats@gmail.com',
-      googleId: '123456789',
-      name: 'Modii',
-      imageUrl: 'https:fakelink.com',
-      ownerAccount: {
-        create: {},
-      },
+      userId: 'user_1',
+      name: 'Sitter 1',
+      imageUrl: 'https://images.unsplash.com/photo-1610000000000-000000000000?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
   })
 
-  // seed new user with sitter profile
-  await prisma.user.create({
+  await prisma.service.create({
     data: {
-      email: 'sitter@gmail.com',
-      googleId: '12345678910',
-      name: 'Sitter',
-      imageUrl: 'https:fakelink.com',
-      sitterAccount: {
-        create: {
-          services: {
-            create: {
-              type: 'WALK',
-              price: 20,
-              description: 'I will walk your dog for 30 minutes',
-              duration: 30,
-              petType: 'DOG',
-            },
+      Sitter: {
+        connect: {
+          userId: 'user_1',
+        }
+      },
+      duration: 60,
+      description: 'I will walk your dog for 60 minutes',
+      petType: 'DOG',
+      type: 'WALK',
+      price: 20,
+      availableTimes: {
+        create: [
+          {
+            day: 'MONDAY',  
+            time: 'MORNING',
           },
-        },
+          {
+            day: 'MONDAY',
+            time: 'AFTERNOON',
+          },
+        ],        
       },
-    },
-  })
-
-  // seed new booking using existing users
-  await prisma.booking.create({
-    data: {
-      owner: {
-        connect: {
-          id: 1,
-        },
-      },
-      sitter: {
-        connect: {
-          id: 2,
-        },
-      },
-      services: {
-        connect: {
-          id: 1,
-        },
-      },
-      status: 'PENDING',
-      startDate: new Date(),
     },
   })
 
