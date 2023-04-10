@@ -6,9 +6,6 @@ import { Sitter } from 'db'
 
 export default function SearchResult(props) {
   const router = useRouter()
-  const {date, service, availability, maxPrice} = useSearchParams();
-  console.log(props.searchResult)
-  const { data } = api.sitter.byId.useQuery(props.searchResult.id, { enabled: !!props.searchResult.id })
   const petType = api.service.bySitterId.useQuery(props.searchResult.id).data
   console.log('Pet Type: ' + JSON.stringify(petType))
   return (
@@ -23,23 +20,21 @@ export default function SearchResult(props) {
         className='m-auto rounded-2xl w-80 bg-slate-100 mt-6 h-24 border-solid border-[#4c8ab9] border-2'
         onPress={() =>
           router.push({
-            pathname: `/sitter/${data.id}`,
+            pathname: `/sitter/${props.searchResult.id}`,
             params: {
-              userId: data.id,
-              date: date,
-              availability: availability,
-              service: service
+              name: props.searchResult.name,
+              userId: props.searchResult.id
             },
           })
         }
       >
-        {data ? (
-          <Avatar className="w-12 h-12 ml-4 mt-4 float-left" source={{ uri: data.imageUrl }}/>
+        {props ? (
+          <Avatar className="w-12 h-12 ml-4 mt-4 float-left" source={{ uri: props.imageUrl }}/>
         ) : null}
         <Box className="ml-4 float-left">
-          <Text>{data ? data.name : null}</Text>
+          <Text>{props ? props.name : null}</Text>
           <Text>
-            {data ? data.description : null}
+            {props ? props.description : null}
           </Text>
         </Box>
         <Text
