@@ -86,14 +86,14 @@ export const sitterRouter = router({
           services: {
             some: {
               type: parseServiceStringToEnum(input.service),
-              price: {
-                lte: input.maxPrice,
-              },
-              availableTimes: {
-                some: {
-                  AND: [{ day: input.date as Day }, { time: input.availability as TimeOfDay }],
-                },
-              },
+              // price: {
+              //   lte: input.maxPrice,
+              // },
+              // availableTimes: {
+              //   some: {
+              //     AND: [{ day: input.date as Day }, { time: input.availability as TimeOfDay }],
+              //   },
+              // },
             },
           },
         },

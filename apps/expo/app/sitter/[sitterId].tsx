@@ -27,6 +27,7 @@ export default function SitterProfile() {
     { key: 'services', title: 'Services' },
   ]);
 
+  console.log("User Id: " + JSON.stringify(session));
 
   if (isLoading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
@@ -132,6 +133,17 @@ export default function SitterProfile() {
                     {
                       session.currentProfile === Profile.OWNER
                       ? <View className='flex flex-row gap-2'>
+                         <Button className='rounded-full'
+                            onPress={() => router.push({
+                              pathname: '/messages',
+                              params: {
+                                receiverId: session.ownerId,
+                                senderId: sitterId,
+                              }
+                            })}
+                          >
+                            <Text className='text-white'>Message</Text>
+                          </Button>
                           <Button className='bg-transparent' onPress={() => {
                             router.push({
                               pathname: '/report',
@@ -162,7 +174,10 @@ export default function SitterProfile() {
             onPress={() => router.push({
               pathname: '/booking/create',
               params: {
-
+                  sitterId: sitterId,
+                  serviceType: "WALK",
+                  day: "09/04/23",
+                  time: "13:00",
               }
             })}
           >
