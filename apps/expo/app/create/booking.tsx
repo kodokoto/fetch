@@ -10,8 +10,6 @@ import {
   FormControl,
   Text,
   Button,
-  CheckIcon,
-  VStack
 } from 'native-base'
 import { Service, ScheduledTime, TimeOfDay, Day, BookingFrequency } from '@prisma/client'
 
@@ -76,7 +74,7 @@ export default function AddBooking() {
                 {
                     availabileServices.map((service) => {
                         return (
-                            <Select.Item key={service.id} label={service.type} value={service.type} />
+                            <Select.Item key={service.id} label={service.type} value={service.type}>£{service.price}</Select.Item>
                         )
                     })
                 }

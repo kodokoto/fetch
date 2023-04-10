@@ -16,21 +16,6 @@ function parseServiceStringToEnum(service: string): ServiceType {
   }
 }
 
-function parseFrequencyStringToEnum(frequency: string): BookingFrequency {
-  switch (frequency) {
-    case 'one-off':
-      return 'ONE_OFF'
-    case 'every week':
-      return 'WEEKLY'
-    case 'every two weeks':
-      return 'BI_WEEKLY'
-    case 'every month':
-      return 'MONTHLY'
-    default:
-      return 'ONE_OFF'
-  }
-}
-
 export const sitterRouter = router({
   all: publicProcedure.query(() => {
     return prisma.sitter.findMany()
@@ -74,6 +59,7 @@ export const sitterRouter = router({
   bySearchParams: publicProcedure
     .input(
       z.object({
+        id: z.number(),
         date: z.string(),
         service: z.string(),
         availability: z.string(),
@@ -83,6 +69,7 @@ export const sitterRouter = router({
     .query(({ input }) => {
       return prisma.sitter.findMany({
         where: {
+          id: input.id,
           services: {
             some: {
               type: parseServiceStringToEnum(input.service),

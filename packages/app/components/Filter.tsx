@@ -6,7 +6,6 @@ import DatePicker from 'react-native-modal-datetime-picker'
 import { TimeOfDay, Day, ServiceType } from '@prisma/client'
 
 export type FilterSearchParams = {
-  dateTime: string
   serviceType: string
   date: Day
   availability: TimeOfDay
@@ -21,7 +20,6 @@ export default function Filter() {
     router.push({
       pathname: '/results',
       params: {
-        dateTime: data.dateTime,
         date: data.date,
         serviceType: data.serviceType,
         availability: data.availability,
@@ -136,7 +134,6 @@ export default function Filter() {
           className="w-[300px] m-auto mt-10"
           onPress={() =>
             handleSubmit({
-              dateTime: date.toISOString().slice(0, 10),
               date: date
                 .toLocaleDateString('en-us', { weekday: 'long' })
                 .replace(/[^a-z]/gi, '')

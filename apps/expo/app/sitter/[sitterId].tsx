@@ -13,7 +13,7 @@ import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
 
 export default function SitterProfile() {
-  const { sitterId } = useSearchParams()
+  const { sitterId, serviceType, day, dayTime } = useSearchParams()
   const router = useRouter()
 
   const [session, setSession] = useAtom(sessionAtom)
@@ -143,7 +143,10 @@ export default function SitterProfile() {
             onPress={() => router.push({
               pathname: '/booking/create',
               params: {
-
+                sitterId, 
+                day,
+                dayTime,
+                serviceType
               }
             })}
           >

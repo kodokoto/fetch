@@ -3,11 +3,10 @@ import { api } from '../utils/trpc'
 import { Avatar, Box, Text } from 'native-base'
 import { useRouter, useSearchParams } from 'expo-router'
 import { Sitter } from 'db'
-import { Sitter } from 'db'
 
-export default function SearchResult(props: Sitter) {
+export default function SearchResult(props) {
   const router = useRouter()
-  const {date, service, availability, maxPrice, dateTime} = useSearchParams();
+  const {date, service, availability, maxPrice} = useSearchParams();
   console.log(props.searchResult)
   const { data } = api.sitter.byId.useQuery(props.searchResult.id, { enabled: !!props.searchResult.id })
   const petType = api.service.bySitterId.useQuery(props.searchResult.id).data
@@ -24,12 +23,11 @@ export default function SearchResult(props: Sitter) {
         className='m-auto rounded-2xl w-80 bg-slate-100 mt-6 h-24 border-solid border-[#4c8ab9] border-2'
         onPress={() =>
           router.push({
-            pathname: `/booking/addBooking`,
+            pathname: `/sitter/${data.id}`,
             params: {
               userId: data.id,
               date: date,
               availability: availability,
-              dateTime: dateTime,
               service: service
             },
           })

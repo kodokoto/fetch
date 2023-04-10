@@ -7,20 +7,6 @@ import React from 'react'
 import { Booking } from '@prisma/client'
 import { api } from '../utils/trpc'
 
-function getDateDescription(date: Date) {
-  // desired output format: "Monday, 1 April"
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const
-  return date.toLocaleDateString('en-US', options)
-}
-
-function getTimeDescription(start: Date, end: Date) {
-  // desired output format: "10:00- 13:00"
-  let s = new Date(start)
-  let e = new Date(end)
-  const options = { hour: 'numeric', minute: 'numeric' } as const
-  return `${s.toLocaleTimeString('en-US', options)} - ${e.toLocaleTimeString('en-US', options)}`
-}
-
 function parseBookingFrequency(bookingFrequency: string) {
   switch (bookingFrequency) {
     case 'ONE_OFF':
@@ -41,6 +27,7 @@ export default function BookingPreview(props: Booking) {
   console.log(props)
 
   const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(props.sitterId)
+  const { data: scheduledTime} = api.scheduledTime.byBookingId.useQuery(props.id)
 
   const handlePress = () => {
     router.push({
@@ -68,14 +55,14 @@ export default function BookingPreview(props: Booking) {
             {/* <Text>{props.dateDescription}</Text> */}
           </Box>
         </Box>
-        <Text className="flex-end">{parseBookingFrequency(props.frequency)}</Text>
+        <Text className="flex-end">{parseBookingFrequency(scheduledTime.frequency)}</Text>
       </Box>
       <Box className="ml-4 flex-wrap flex-row">
         <Ionicons size={24} className="flex-start" name="ios-calendar-outline"></Ionicons>
         {/* <Text>{typeof props.startDate}</Text> */}
-        {/* <Text className='mx-2 text-md'>{getDateDescription(props.startDate)}</Text> */}
+        <Text className='mx-2 text-md'>{scheduledTime.day}</Text>
         <Ionicons size={24} name="ios-time-outline"></Ionicons>
-        <Text className="mx-2 text-md">{getTimeDescription(props.startDate, props.startDate)}</Text>
+        <Text className="mx-2 text-md">{scheduledTime.time}</Text>
       </Box>
     </Button>
   )
