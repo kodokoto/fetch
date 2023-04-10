@@ -66,7 +66,7 @@ export const sitterRouter = router({
     .input(
       z.object({
         date: z.string(),
-        service: z.string(),
+        serviceType: z.string(),
         availability: z.string(),
         maxPrice: z.number(),
       })
@@ -76,7 +76,7 @@ export const sitterRouter = router({
         where: {
           services: {
             some: {
-              type: input.service as ServiceType,
+              type: input.serviceType as ServiceType,
               price: {
                 lte: input.maxPrice,
               },

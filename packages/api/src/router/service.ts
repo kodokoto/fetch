@@ -52,7 +52,7 @@ export const serviceRouter = router({
     .input(
       z.object({
         date: z.string(),
-        service: z.string(),
+        serviceType: z.string(),
         availability: z.string(),
         maxPrice: z.number(),
       })
@@ -60,7 +60,7 @@ export const serviceRouter = router({
     .query(({ input }) => {
       return prisma.service.findMany({
         where: {
-          type: input.service as ServiceType,
+          type: input.serviceType as ServiceType,
           price: {
             lte: input.maxPrice,
           },

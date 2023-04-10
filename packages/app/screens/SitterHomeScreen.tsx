@@ -12,10 +12,6 @@ import { api } from 'app/utils/trpc'
 
 export default function SitterHomeScreen() {
 
-
-
-
-
   const { user, isLoaded } = useUser();
   const userId = user?.id
 
@@ -25,6 +21,7 @@ export default function SitterHomeScreen() {
     enabled: !!userId,
     cacheTime: 0,
   });
+  
   const { data: bookings, isLoading: bookingsLoading } = api.booking.byOwnerId.useQuery(sitterProfile?.id, {
     enabled: !!sitterProfile?.id,
   })
@@ -57,17 +54,6 @@ export default function SitterHomeScreen() {
   if (!isLoaded) return null
   if (bookingsLoading) return <Text>Loading...</Text>
 
-  if(Profile.OWNER == "Owner"){
-    session.currentProfile = Profile.SITTER;
-    session.sitterId = Number(sitterProfile.id);
-  }
-
-  console.log("Home Session: " + JSON.stringify(session));
-
-  if(owner){
-    return <OwnerHomeScreen />
-  } else {
-
   return (
     <View>
       <Text>SItter Home Screen</Text>
@@ -82,6 +68,4 @@ export default function SitterHomeScreen() {
       {bookings && bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)}
     </View>
   )
-
-  }
 }

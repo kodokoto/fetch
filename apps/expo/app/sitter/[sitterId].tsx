@@ -13,7 +13,7 @@ export default function SitterProfile() {
   const router = useRouter()
   console.log("serviceTpe", serviceType)
 
-  const [session, setSession] = useAtom(sessionAtom)
+  const [session, _] = useAtom(sessionAtom)
 
   const { data: sitterData, error, isLoading } = api.sitter.byIdWith.useQuery({
     id: Number(sitterId),

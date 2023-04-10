@@ -76,9 +76,9 @@ export default function Filter() {
               mt={1}
               onValueChange={(itemValue) => setServiceType(itemValue as ServiceType)}
             >
-              <Select.Item label="Walking" value="walk" />
-              <Select.Item label="Pet care" value="petcare" />
-              <Select.Item label="House sitting" value="house_sitting" />
+              <Select.Item label="Walking" value="WALK" />
+              <Select.Item label="Pet care" value="PET_CARE" />
+              <Select.Item label="House sitting" value="HOUSE_SITTING" />
             </Select>
           </Box>
           <FormControl.Label _text={{ bold: true }}>Open for frequency visit:</FormControl.Label>
