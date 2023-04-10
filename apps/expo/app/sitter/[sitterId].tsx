@@ -133,6 +133,17 @@ export default function SitterProfile() {
                     {
                       session.currentProfile === Profile.OWNER
                       ? <View className='flex flex-row gap-2'>
+                         <Button className='rounded-full'
+                            onPress={() => router.push({
+                              pathname: '/messages',
+                              params: {
+                                receiverId: session.ownerId,
+                                senderId: sitterId,
+                              }
+                            })}
+                          >
+                            <Text className='text-white'>Message</Text>
+                          </Button>
                           <Button className='bg-transparent' onPress={() => {
                             router.push({
                               pathname: '/report',
@@ -159,9 +170,7 @@ export default function SitterProfile() {
     {
       session.currentProfile === Profile.OWNER 
       ? <View className='absolute bottom-0 w-full h-20 bg-transparent'>
-          <Button style={{
-            marginBottom: 50
-          }} className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
             onPress={() => router.push({
               pathname: '/booking/create',
               params: {
@@ -173,17 +182,6 @@ export default function SitterProfile() {
             })}
           >
             <Text className='text-white'>Request Booking</Text>
-          </Button>
-          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
-            onPress={() => router.push({
-              pathname: '/messages',
-              params: {
-                ownerId: session.ownerId,
-                sitterId: sitterId,
-              }
-            })}
-          >
-            <Text className='text-white'>Message</Text>
           </Button>
         </View>
       : null

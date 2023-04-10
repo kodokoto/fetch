@@ -24,12 +24,19 @@ export default function ReportForm() {
   const mutation = api.report.create.useMutation()
 
   const handleSubmit = () => {
+    console.log("Type: " + type);
+    console.log("Content: " + textAreaValue);
+    console.log("Owner Id: " + ownerid);
+    console.log("Sitter Id: " + sitterId);
+    
     mutation.mutate({
       reportType: type,
       reportContent: textAreaValue,
       fromId: ownerid,
       toId: Number(sitterId)
     })
+
+    router.push(`/sitter/${sitterId}`);
   }
 
   const [type, setType] = React.useState('')

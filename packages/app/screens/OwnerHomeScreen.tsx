@@ -14,7 +14,6 @@ export default function OwnerHomeScreen() {
   
   const { user, isLoaded } = useUser();
   const userId = user?.id
-  const [session, setSession] = useAtom(sessionAtom);
   const { data: sitter } = api.sitter.byUserId.useQuery(userId, {enabled: !!userId, cacheTime: 0});
 
   const { data: ownerProfile, isLoading: ownerProfileLoading } = !sitter ? api.owner.byUserId.useQuery(userId, {
@@ -30,13 +29,6 @@ export default function OwnerHomeScreen() {
 
   if (!isLoaded) return null
   if (bookingsLoading) return <Text>Loading...</Text>
-
-  if(Profile.SITTER){
-    console.log("12345678: " + user.id);
-    session.currentProfile = Profile.OWNER;
-    session.ownerId = Number(ownerProfile.id);
-    console.log(session.ownerId)
-  }
 
   if(sitter){
     return <SitterHomeScreen />

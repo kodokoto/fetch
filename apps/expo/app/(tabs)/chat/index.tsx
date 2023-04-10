@@ -7,9 +7,13 @@ import { useUser, useClerk } from '@clerk/clerk-expo'
 import { Skeleton } from 'native-base'
 import { useAtom } from 'jotai'
 import { sessionAtom } from 'app/utils/storage'
+import { useIsFocused } from "@react-navigation/native";
+import { useNavigation } from 'expo-router'
 
 export default function Chat() {
   const [searchWord, setSearchWord] = useState('')
+  const [filteredContacts, setFilteredContacts] = useState([]);
+  const isFocused = useIsFocused();
 
   const [session, setSession] = useAtom(sessionAtom)
   let isOwner = false;
@@ -35,12 +39,23 @@ export default function Chat() {
     isSitter = true;
   }
 
-  const filtercontacts = (filterWord) => {
-    const filteredcontacts = contacts.filter((sitter) => {
+  let filtercontacts = (filterWord) => {
+    let filteredcontacts = contacts.filter((sitter) => {
       return sitter.name.includes(filterWord)
     })
     return filteredcontacts
   }
+
+  useEffect(() => {
+    console.log("Meat");
+    
+    filtercontacts = (filterWord) => {
+      let filteredcontacts = contacts.filter((sitter) => {
+        return sitter.name.includes(filterWord)
+      })
+      return filteredcontacts
+    }
+  }, [isFocused])
   if (!isLoaded) return null
   // if (!isLoaded || isLoading || contactIsLoading) return <Text>Loading...</Text>;
   // if (error || contactError) return <Text>{error.message}</Text>;
@@ -57,8 +72,8 @@ export default function Chat() {
             const userId = user.id
             return (
               <ChatPreview
-                ownerId={isSitter ? sitterId : ownerId}
-                sitterId={isOwner ? user.id : user.id}
+                receiverId={isSitter ? sitterId : ownerId}
+                senderId={user.id}
                 name={user.name}
                 key={user.id}
                 imageUrl={user.imageUrl}
