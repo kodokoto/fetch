@@ -3,7 +3,7 @@ import { api } from '../utils/trpc'
 import { Avatar } from 'native-base'
 import { useRouter } from 'expo-router'
 import { Box } from 'native-base'
-import { ServiceType, Sitter } from 'db'
+import { Sitter } from '@prisma/client'
 
 type SitterDescriptionCardProps = {
   sitter: Sitter
@@ -16,7 +16,7 @@ type SitterDescriptionCardProps = {
 
 export default function SitterDescriptionCard(props: SitterDescriptionCardProps) {
   const router = useRouter()
-  const {data: petType} = api.service.byServiceType.useQuery(String(ServiceType))
+  const {data: petType} = api.service.byServiceType.useQuery(props.searchParams.serviceType)
 
   return (
     <View
