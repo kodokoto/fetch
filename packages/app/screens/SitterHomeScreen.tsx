@@ -1,4 +1,4 @@
-import { View, Text, Button, Box } from 'native-base'
+import { ScrollView, Text, Button, Box } from 'native-base'
 import React from 'react'
 import { useUser } from '@clerk/clerk-expo'
 import ProfileIcon from 'app/components/ProfileIcon'
@@ -23,7 +23,7 @@ export default function SitterHomeScreen() {
     cacheTime: 0,
   });
   
-  const { data: bookings, isLoading: bookingsLoading } = api.booking.byOwnerId.useQuery(sitterProfile?.id, {
+  const { data: bookings, isLoading: bookingsLoading } = api.booking.bySitterId.useQuery(sitterProfile?.id, {
     enabled: !!sitterProfile?.id,
   })
 
@@ -56,7 +56,7 @@ export default function SitterHomeScreen() {
   if (bookingsLoading) return <Text>Loading...</Text>
 
   return (
-    <View>
+    <ScrollView>
       <Text>Sitter Home Screen</Text>
       <Box className="flex-wrap flex-row">
         <WelcomeMessage name={sitterProfile.name} />
@@ -67,6 +67,6 @@ export default function SitterHomeScreen() {
       </Button> */}
       <Text className="font-bold text-xl ml-2">Upcoming Appointments</Text>
       {bookings && bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)}
-    </View>
+    </ScrollView>
   )
 }
