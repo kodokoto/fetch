@@ -7,30 +7,37 @@ import React from 'react'
 import { Booking } from '@prisma/client'
 import { api } from '../utils/trpc'
 
-function getDateDescription(date: Date) {
-  // desired output format: "Monday, 1 April"
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const
-  return date.toLocaleDateString('en-US', options)
-}
-
-function getTimeDescription(start: Date, end: Date) {
-  // desired output format: "10:00- 13:00"
-  let s = new Date(start)
-  let e = new Date(end)
-  const options = { hour: 'numeric', minute: 'numeric' } as const
-  return `${s.toLocaleTimeString('en-US', options)} - ${e.toLocaleTimeString('en-US', options)}`
-}
-
 function parseBookingFrequency(bookingFrequency: string) {
   switch (bookingFrequency) {
     case 'ONE_OFF':
-      return 'one'
+      return 'One Off'
     case 'WEEKLY':
-      return 'every week'
+      return 'Every Week'
     case 'BI_WEEKLY':
-      return 'every two weeks'
+      return 'Every Two Weeks'
     case 'MONTHLY':
-      return 'every month'
+      return 'Every Month'
+    default:
+      return ''
+  }
+}
+
+function capitalizeWords(inputString) {
+  return inputString.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+    return letter.toUpperCase();
+  });
+}
+
+function parseTime(TimeOfDay: string){
+  switch (TimeOfDay) {
+    case 'ANY':
+      return 'Any'
+    case 'MORNING':
+      return '6am-11am'
+    case 'AFTERNOON':
+      return '11am-3pm'
+    case 'EVENING':
+      return '3pm-10pm'
     default:
       return ''
   }
@@ -40,7 +47,9 @@ export default function BookingPreview(props: Booking) {
   const router = useRouter()
   console.log(props)
 
-  const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(props.sitterId)
+  const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(String(props.sitterId))
+  const { data: scheduledTime} = api.scheduledTime.byBookingId.useQuery(props.id)
+  const {data: petData} = api.pet.byBookingId.useQuery(props.id)
 
   const handlePress = () => {
     router.push({
@@ -64,18 +73,17 @@ export default function BookingPreview(props: Booking) {
           </Avatar>
           <Box className="ml-4 float-left">
             <Text className="font-bold text-lg">{sitterData?.name}</Text>
-            <Text>{'test'}</Text>
-            {/* <Text>{props.dateDescription}</Text> */}
+            <Text>{petData? petData.map((pet) => pet.name).join(", ") : null}</Text>
           </Box>
         </Box>
-        {/* <Text className="flex-end">{parseBookingFrequency(props.frequency)}</Text> */}
+        <Text className="flex-end">{parseBookingFrequency(scheduledTime.frequency)}</Text>
       </Box>
       <Box className="ml-4 flex-wrap flex-row">
         <Ionicons size={24} className="flex-start" name="ios-calendar-outline"></Ionicons>
         {/* <Text>{typeof props.startDate}</Text> */}
-        {/* <Text className='mx-2 text-md'>{getDateDescription(props.startDate)}</Text> */}
+        <Text className='mx-2 text-md'>{capitalizeWords(scheduledTime.day)}</Text>
         <Ionicons size={24} name="ios-time-outline"></Ionicons>
-        {/* <Text className="mx-2 text-md">{getTimeDescription(props.startDate, props.startDate)}</Text> */}
+        <Text className="mx-2 text-md">{parseTime(scheduledTime.time)}</Text>
       </Box>
     </Button>
   )

@@ -1,35 +1,42 @@
 import { useRouter } from 'expo-router'
 import { Text } from 'react-native'
-import { Button, Box, Divider, Avatar } from 'native-base'
+import { Button, Box, Divider, Avatar, ScrollView } from 'native-base'
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { Booking } from '@prisma/client'
 import { api } from '../utils/trpc'
 
-function getDateDescription(date: Date) {
-  // desired output format: "Monday, 1 April"
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const
-  return date.toLocaleDateString('en-US', options)
-}
-
-function getTimeDescription(start: Date, end: Date) {
-  // desired output format: "10:00- 13:00"
-  let s = new Date(start)
-  let e = new Date(end)
-  const options = { hour: 'numeric', minute: 'numeric' } as const
-  return `${s.toLocaleTimeString('en-US', options)} - ${e.toLocaleTimeString('en-US', options)}`
-}
-
 function parseBookingFrequency(bookingFrequency: string) {
   switch (bookingFrequency) {
     case 'ONE_OFF':
-      return 'one'
+      return 'One Off'
     case 'WEEKLY':
-      return 'every week'
+      return 'Every Week'
     case 'BI_WEEKLY':
-      return 'every two weeks'
+      return 'Every Two Weeks'
     case 'MONTHLY':
-      return 'every month'
+      return 'Every Month'
+    default:
+      return ''
+  }
+}
+
+function capitalizeWords(inputString) {
+  return inputString.toLowerCase().replace(/\b[a-z]/g, function(letter) {
+    return letter.toUpperCase();
+  });
+}
+
+function parseTime(TimeOfDay: string){
+  switch (TimeOfDay) {
+    case 'ANY':
+      return 'Any'
+    case 'MORNING':
+      return '6am-11am'
+    case 'AFTERNOON':
+      return '11am-3pm'
+    case 'EVENING':
+      return '3pm-10pm'
     default:
       return ''
   }
@@ -37,29 +44,31 @@ function parseBookingFrequency(bookingFrequency: string) {
 
 export default function BookingDetail(props: Booking) {
   const router = useRouter()
+  const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(String(props.sitterId))
+  const {data: serviceData} = api.service.byId.useQuery(props.serviceId)
+  const {data: petData} = api.pet.byBookingId.useQuery(props.id)
+  const {data: scheduledTime } = api.scheduledTime.byBookingId.useQuery(props.id)
 
-  const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(props.sitterId)
-
-  const sitterId = sitterData?.id
-  // const userId = data.userId;
-
+ 
   const handleMessagePress = () => {
     router.push({
-      pathname: '/DirectMessages',
+      pathname: '/messages',
       params: {
-        username: props.sitterId,
-        // mostRecentMessage: props.mostRecentMessage,
+        ownerId: props.ownerId,
+        sitterId: props.sitterId,
+        receiverName: sitterData?.name,
+        receiverImageUrl: sitterData?.imageUrl,
       },
     })
   }
   if (isLoading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
   return (
-    <>
+    <ScrollView>
       <Avatar className="mx-auto mt-28 mb-20 w-32 h-32" source={{ uri: sitterData?.imageUrl }}>
         LB
       </Avatar>
-      <Box className="rounded-2xl border-[#4c8ab9] border-solid border-2 bg-slate-100 h-116">
+      <Box className="rounded-2xl border-[#4c8ab9] border-solid border-2 bg-slate-100 h-116 w-96">
         <Box className="flex-wrap flex-row my-4 justify-between">
           <Box className="flex-start">
             <Text className="text-2xl font-bold ml-4">{sitterData?.name}</Text>
@@ -76,7 +85,19 @@ export default function BookingDetail(props: Booking) {
             </Button>
             <Box className="flex-end">
               <Text className="text-md">Pet</Text>
-              <Text className="text-lg font-bold">{}</Text>
+              <Text className="text-lg font-bold">
+                {petData? petData.map((pet) => pet.name).join(", ") : null}
+              </Text>
+            </Box>
+          </Box>
+          <Divider my="2" _light={{ bg: '#4c8ab9' }} _dark={{ bg: '#4c8ab9' }} />
+          <Box className="flex-wrap flex-row my-1">
+            <Button className="rounded-3xl bg-white w-14 h-14 flex-start">
+              <Ionicons size={30} color="#4c8ab9" className="ml-2" name="grid"></Ionicons>
+            </Button>
+            <Box className="flex-end">
+              <Text className="text-md">Service</Text>
+              <Text className="text-lg font-bold">{serviceData?.type}</Text>
             </Box>
           </Box>
           <Divider my="2" _light={{ bg: '#4c8ab9' }} _dark={{ bg: '#4c8ab9' }} />
@@ -86,16 +107,35 @@ export default function BookingDetail(props: Booking) {
             </Button>
             <Box className="flex-end">
               <Text className="text-md">Date & Time</Text>
-              {/* <Text className="text-lg font-bold">{getTimeDescription(props.startDate, props.startDate)}</Text> */}
+              <Text className="text-lg font-bold">{capitalizeWords(scheduledTime.day)}, {parseTime(scheduledTime.time)}</Text>
             </Box>
           </Box>
           <Divider my="2" _light={{ bg: '#4c8ab9' }} _dark={{ bg: '#4c8ab9' }} />
+          <Box className="flex-wrap flex-row my-1">
+            <Button className="rounded-3xl bg-white w-14 h-14 flex-start">
+              <Ionicons size={30} color="#4c8ab9" className="ml-2" name="layers"></Ionicons>
+            </Button>
+            <Box className="flex-end">
+              <Text className="text-md">Frequency</Text>
+              <Text className="text-lg font-bold">{parseBookingFrequency(scheduledTime.frequency)}</Text>
+            </Box>
+          </Box>
+          <Divider my="2" _light={{ bg: '#4c8ab9' }} _dark={{ bg: '#4c8ab9' }} />
+          <Box className="flex-wrap flex-row my-1">
+            <Button className="rounded-3xl bg-white w-14 h-14 flex-start">
+              <Ionicons size={30} color="#4c8ab9" className="ml-2" name="pricetag"></Ionicons>
+            </Button>
+            <Box className="flex-end">
+              <Text className="text-md">Price</Text>
+              <Text className="text-lg font-bold">£{serviceData?.price}</Text>
+            </Box>
+          </Box>
           <Box className="flex-wrap flex-row mt-2 mb-10">
             <Button className="ml-auto rounded-2xl">Reschedule</Button>
             <Button className="mr-auto ml-2 rounded-2xl">Cancel</Button>
           </Box>
         </Box>
       </Box>
-    </>
+    </ScrollView>
   )
 }
