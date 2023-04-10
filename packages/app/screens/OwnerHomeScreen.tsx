@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text } from 'react-native'
 import React from 'react'
 import { useUser } from '@clerk/clerk-expo'
 import { Box, ScrollView, Button } from 'native-base'
