@@ -16,6 +16,8 @@ export default function Filter() {
   const router = useRouter()
 
   const handleSubmit = (data: FilterSearchParams) => {
+    console.log("Dataaaaaa: " + JSON.stringify(data));
+    
     router.push({
       pathname: '/results',
       params: {

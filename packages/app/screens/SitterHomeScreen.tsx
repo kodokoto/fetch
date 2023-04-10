@@ -61,9 +61,9 @@ export default function SitterHomeScreen() {
         <WelcomeMessage name={sitterProfile.name} />
         <ProfileIcon iconUrl={sitterProfile.imageUrl} />
       </Box>
-      <Button onPress={handleFakeSubmit}>
+      {/* <Button onPress={handleFakeSubmit}>
         <Text>Add fake service</Text>
-      </Button>
+      </Button> */}
       <Text className="font-bold text-xl ml-2">Upcoming Appointments</Text>
       {bookings && bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)}
     </View>
