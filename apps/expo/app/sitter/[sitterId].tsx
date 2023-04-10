@@ -45,7 +45,9 @@ export default function SitterProfile() {
                   />
                   <View className='flex-row justify-between'>
                     <View>
+                      <Text></Text>
                       <Text className='text-2xl font-bold'>{sitterData.name}</Text>
+                      <Text className='text-sm'>Pet Sitter</Text>
                       <Text>{sitterData.bio}</Text>
                     </View>
                     {
@@ -81,6 +83,7 @@ export default function SitterProfile() {
               <ProfileTabs {...{
                 description: sitterData.description,
                 location: sitterData.location,
+                proximityRadius: sitterData.proximityRadius,
                 reviews: sitterData.reviews,
                 services: sitterData.services,
               }} />
@@ -103,6 +106,34 @@ export default function SitterProfile() {
             })}
           >
             <Text className='text-white'>Request Booking</Text>
+          </Button>
+          {/* Button for messaging */}
+          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+            onPress={() => router.push({
+              pathname: '/create/booking',
+              params: {
+                sitterId,
+                serviceType,
+                day,
+                timeOfDay,
+              }
+            })}
+          >
+            <Text className='text-white'>Message</Text>
+          </Button>
+          {/* Button for reporting user */}
+          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+            onPress={() => router.push({
+              pathname: '/create/booking',
+              params: {
+                sitterId,
+                serviceType,
+                day,
+                timeOfDay,
+              }
+            })}
+          >
+            <Text className='text-white'>Report</Text>
           </Button>
         </View>
       : null

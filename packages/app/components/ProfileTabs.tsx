@@ -1,12 +1,14 @@
 import { Profile } from 'next-auth';
 import * as React from 'react';
-import { Animated, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { Animated, View, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { Pet, Review, Service } from '@prisma/client';
+import ServiceDescription from './ServiceDescription';
 
 type ProfileTabProps = {
     description: string;
     location: string;
+    proximityRadius: number;
     reviews?: Review[];
     services?: Service[];
     pets?: Pet[];
@@ -14,6 +16,8 @@ type ProfileTabProps = {
 
 export default function ProfileTabs(props: ProfileTabProps) {
 
+
+    //TODO: turn all these into scrollable views
     const Info = () => (
       <View className='flex flex-1 flex-col gap-8 mx-4 my-0'
         style={{flex: 1}}
@@ -28,6 +32,9 @@ export default function ProfileTabs(props: ProfileTabProps) {
             <Text className='text-xl font-bold mb-2'>Location</Text>
             <Text>
                 {props.location}
+            </Text>
+            <Text>
+              {props.proximityRadius} miles away
             </Text>
           </View>
       </View>
@@ -52,9 +59,8 @@ export default function ProfileTabs(props: ProfileTabProps) {
       <View className='flex justify-center items-center mt-8'>
             {
                 props.services?.length > 0
-                ? props.services.map((review) => (
-                    null
-                    // <ServiceDescription key={review.id} review={review} />
+                ? props.services.map((service) => (
+                    <ServiceDescription key={service.id} service={service}/>
                 ))
                 : <Text>No services yet</Text>
             }
