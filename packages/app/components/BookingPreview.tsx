@@ -47,7 +47,7 @@ export default function BookingPreview(props: Booking) {
   const router = useRouter()
   console.log(props)
 
-  const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(props.sitterId)
+  const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(String(props.sitterId))
   const { data: scheduledTime} = api.scheduledTime.byBookingId.useQuery(props.id)
   const {data: petData} = api.pet.byBookingId.useQuery(props.id)
 
