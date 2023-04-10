@@ -27,7 +27,7 @@ export default function SitterProfile() {
   return (
     <>
     <Stack.Screen 
-      options={{
+      options={sitterData && {
         headerTitle: sitterData.name,
         headerTitleAlign: 'left',
       }}
@@ -52,7 +52,7 @@ export default function SitterProfile() {
                       session.currentProfile === Profile.OWNER
                       ? <View className='flex flex-row gap-2'>
                          <Button className='rounded-full'
-                            onPress={() => router.push({
+                            onPress={() => router.replace({
                               pathname: '/messages',
                               params: {
                                 receiverId: session.ownerId,
