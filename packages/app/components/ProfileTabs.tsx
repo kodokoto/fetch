@@ -3,11 +3,12 @@ import { Animated, View, Text, TouchableOpacity, Dimensions, ScrollView } from '
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { Pet, Review, Service } from '@prisma/client';
 import ServiceDescription from './ServiceDescription';
+import ReviewDescription from './ReviewDescription';
+import PetDescription from './PetDescription';
 
 type ProfileTabProps = {
     description: string;
     location: string;
-    proximityRadius: number;
     reviews?: Review[];
     services?: Service[];
     pets?: Pet[];
@@ -32,9 +33,6 @@ export default function ProfileTabs(props: ProfileTabProps) {
             <Text>
                 {props.location}
             </Text>
-            <Text>
-              {props.proximityRadius} miles away
-            </Text>
           </View>
       </View>
     );
@@ -46,8 +44,7 @@ export default function ProfileTabs(props: ProfileTabProps) {
             {
                 props.reviews?.length > 0
                 ? props.reviews.map((review) => (
-                    null
-                    // <ReviewDescription key={review.id} review={review} />
+                    <ReviewDescription key={review.id} review={review} />
                 ))
                 : <Text>No reviews yet</Text>
             }
@@ -71,9 +68,8 @@ export default function ProfileTabs(props: ProfileTabProps) {
       <View className='flex justify-center items-center mt-8'>
             {
                 props.pets?.length > 0
-                ? props.pets.map((review) => (
-                    null
-                    // <PetDescription key={review.id} review={review} />
+                ? props.pets.map((pet) => (
+                    <PetDescription key={pet.id} pet={pet} />
                 ))
                 : <Text>No pets yet</Text>
             }
@@ -87,12 +83,12 @@ export default function ProfileTabs(props: ProfileTabProps) {
         ? [
             { key: 'info', title: 'Info' },
             { key: 'services', title: 'Services' },
+            { key: 'reviews', title: 'Reviews' },
             
         ] 
         : [
             { key: 'info', title: 'Info' },
-            { key: 'pets', title: 'Pets' },
-            { key: 'reviews', title: 'Reviews' },
+            { key: 'pets', title: 'Pets' }
         ]
     );
   
@@ -139,8 +135,7 @@ export default function ProfileTabs(props: ProfileTabProps) {
           }
           : {
                 info: Info,
-                pets: Pets,
-                reviews: Reviews
+                pets: Pets
           }
           )}
           onIndexChange={setIndex}

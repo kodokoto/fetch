@@ -51,34 +51,7 @@ export const sitterRouter = router({
       },
     })
   }),
-  bySearchParams: publicProcedure
-    .input(
-      z.object({
-        serviceType: z.string(),
-        timeOfDay: z.string(),
-        day: z.string(),
-        maxPrice: z.number(),
-      })
-    )
-    .query(({ input }) => {
-      return prisma.sitter.findMany({
-        where: {
-          services: {
-            some: {
-              type: input.serviceType as ServiceType,
-              price: {
-                lte: input.maxPrice,
-              },
-              availableTimes: {
-                some: {
-                  AND: [{ day: input.day as Day }, { time: input.timeOfDay as TimeOfDay }],
-                },
-              },
-            },
-          },
-        },
-      })
-    }),
+
   create: publicProcedure
     .input(
       z.object({

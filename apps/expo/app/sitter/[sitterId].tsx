@@ -82,9 +82,8 @@ export default function SitterProfile() {
               <ProfileTabs {...{
                 description: sitterData.description,
                 location: sitterData.location,
-                proximityRadius: sitterData.proximityRadius,
-                reviews: sitterData.reviews,
                 services: sitterData.services,
+                reviews: sitterData.reviews,
               }} />
             </View>
       </View>

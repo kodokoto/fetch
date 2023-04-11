@@ -33,7 +33,7 @@ export const ownerRouter = router({
           id: input.id,
         },
         include: {
-          images: input.include.includes('images'),
+          // images: input.include.includes('images'),
           pets: input.include.includes('pets'),
           reviews: input.include.includes('reviews'),
         },
