@@ -9,7 +9,7 @@ type AvailablepetType = {
     OTHER: boolean;
 }
 
-export default function OnePetTypeSelect({value, onChange} : {value: AvailablepetType, onChange: (value: AvailablepetType) => void}) {
+export default function PetTypeToggle({value, onChange} : {value: AvailablepetType, onChange: (value: AvailablepetType) => void}) {
 
     const handleSingleSelectChange = (key, newValue) => {
         const newValues = {

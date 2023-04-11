@@ -4,25 +4,24 @@ import { View } from 'react-native'
 import React from "react";
 import { sessionAtom } from 'app/utils/storage';
 import { useAtom } from 'jotai';
-import OnePetTypeSelect from "app/components/OnePetTypeSelect";
-import { Stack } from "expo-router";
+import PetTypeToggle from "app/components/PetTypeToggle";
+import { useRouter } from "expo-router";
 
 
 export default function petCreateForm() {
-    // const router = useRouter();
     const [session, _] = useAtom(sessionAtom)
     const mutation = api.pet.create.useMutation()
+    const router = useRouter();
     const handleSubmit = () => {
-        mutation.mutate({
+        mutation.mutateAsync({
           name: name,
           type: getPetByBoolean(),
           ownerId: session.ownerId,
           description: description,
           imageUrl: 'https://i.pinimg.com/736x/ba/92/7f/ba927ff34cd961ce2c184d47e8ead9f6.jpg' // delete later
-        })
-        setName(""),
-        setSelectedPetType(""),
-        setDescription("")
+        }).then(
+          () => router.replace('/pets')
+        )
       }
 
       const [SelectedPetType, setSelectedPetType] = React.useState("DOG")
@@ -40,15 +39,6 @@ export default function petCreateForm() {
         console.log(PetType)
         return PetType
     }
-
-    // const availablePetTypes = Object.keys(petType);
-    // const firstAvailablePetType = availablePetTypes.find((type) => petType[type]);
-
-    // if (firstAvailablePetType) {
-    // setSelectedPetType(firstAvailablePetType);
-    // }
-
-
   
       return (
         <>
@@ -58,7 +48,7 @@ export default function petCreateForm() {
             <Input value={name} onChangeText={text => setName(text)} variant={'rounded'} ></Input>
             <Text className="font-bold text-2xl ml-2 mt-2">Animals:</Text>
             <Text className="ml-2 mb-2">What animal do you want taken care of?</Text>
-            <OnePetTypeSelect value={petType} onChange={setPetType} />
+            <PetTypeToggle value={petType} onChange={setPetType} />
             <Text className="font-bold text-2xl ml-2 mt-2">Description:</Text>
             <Text className="ml-2 mb-2">Tell pet sitter a bit about your pet.</Text>
             <TextArea value={description} onChangeText={text => setDescription(text)} autoCompleteType={undefined}></TextArea>
