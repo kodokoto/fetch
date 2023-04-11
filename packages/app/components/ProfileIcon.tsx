@@ -50,7 +50,7 @@ export default function ProfileIcon(props: User) {
           <Menu.Item onPress={() => router.push(`/${getDefaultValue().toLowerCase()}/${
             session.currentProfile === 'Owner' ? ownerProfile?.id : sitterProfile?.id
           }`)}>Your Profile</Menu.Item>
-          <Menu.Item onPress={() => router.push('Setting')}>Setting</Menu.Item>
+          <Menu.Item onPress={() => router.push('/settings')}>Setting</Menu.Item>
           <Menu.Item
             onPress={() => {
               signOut()
