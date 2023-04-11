@@ -124,6 +124,7 @@ model Pet {
   bookings    Booking[]
   description String?
   type        PetType
+  imageUrl    String
   @@index([ownerId])
 }
 

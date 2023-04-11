@@ -14,8 +14,6 @@ export default function SitterHomeScreen() {
   const router = useRouter();
   const userId = user?.id
 
-  const mutation = api.service.create.useMutation();
-
   const { data: sitterProfile, isLoading: sitterProfileLoading } = api.sitter.byUserId.useQuery(userId, {
     enabled: !!userId,
     cacheTime: 0,
@@ -24,7 +22,6 @@ export default function SitterHomeScreen() {
   const { data: bookings, isLoading: bookingsLoading } = api.booking.bySitterId.useQuery(sitterProfile?.id, {
     enabled: !!sitterProfile?.id,
   })
-
 
   if (!isLoaded) return null
   if (bookingsLoading) return <Text>Loading...</Text>

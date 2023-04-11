@@ -15,6 +15,25 @@ export default function () {
           headerTitle: 'Create a service',
         }}
       />
+      <Stack.Screen
+        name="owner"
+        options={{
+          headerTitle: 'Create an owner profile',
+        }}
+      />
+      <Stack.Screen
+        name="sitter"
+        options={{
+          headerTitle: 'Create an sitter profile',
+        }}
+      />
+      <Stack.Screen
+        name="pet"
+        options={{
+          headerTitle: 'Create a pet profile',
+          presentation: 'modal',
+        }}
+      />
     </Stack>
   )
 }

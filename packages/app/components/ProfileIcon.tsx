@@ -66,14 +66,14 @@ export default function ProfileIcon(props: User) {
               switchProfile(Profile.OWNER)
               router.push('/home')
             }}>Owner</Menu.ItemOption>
-            : <Menu.ItemOption value={'Add Sitter'} onPress={() => {
+            : <Menu.Item onPress={() => {
               router.push('/create/owner')
             }}>
             <View className='flex flex-row items-center'>
               <Ionicons name="add-circle-outline" size={14}></Ionicons>
-              <Text className='ml-2'>Add Sitter</Text>
+              <Text className='ml-4'>Add Owner</Text>
             </View>
-          </Menu.ItemOption>
+          </Menu.Item>
           }
           {
             sitterProfile != null
@@ -81,14 +81,14 @@ export default function ProfileIcon(props: User) {
               switchProfile(Profile.SITTER)
               router.push('/home')
             }}>Sitter</Menu.ItemOption>
-            : <Menu.ItemOption value={'Add Sitter'} onPress={() => {
+            : <Menu.Item onPress={() => {
               router.push('/create/sitter')
             }}>
             <View className='flex flex-row items-center'>
               <Ionicons name="add-circle-outline" size={14}></Ionicons>
-              <Text className='ml-2'>Add Sitter</Text>
+              <Text className='ml-4'>Add Sitter</Text>
             </View>
-          </Menu.ItemOption>
+          </Menu.Item>
           }
         </Menu.OptionGroup>
       </Menu>
