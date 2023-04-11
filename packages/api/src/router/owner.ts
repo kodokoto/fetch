@@ -81,7 +81,6 @@ export const ownerRouter = router({
       z.object({
         id: z.string(),
         name: z.string(),
-        bio: z.string(),
         imageUrl: z.string(),
         location : z.string(),
         description: z.string(),

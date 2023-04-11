@@ -1,6 +1,6 @@
 import { Image, View, Text, Dimensions } from 'react-native'
 import { Button, ScrollView } from 'native-base'
-import React from 'react'
+import React, {useState} from 'react'
 import { useRouter, useSearchParams, Stack } from 'expo-router'
 import { api } from 'app/utils/trpc'
 import { useAtom } from 'jotai'
@@ -17,7 +17,27 @@ export default function OwnerProfile() {
   const { data: ownerData, error, isLoading } = api.owner.byIdWith.useQuery({
     id: String(ownerId),
     include: ['images', 'reviews', 'pets']
+  }, {
+    cacheTime: 0,
+    onSuccess: (data) => {
+      setName(data.name)
+      setLocation(data.location)
+      setDescription(data.description)
+      setImageUrl(data.imageUrl)
+      // setImages(data.images)
+      setReviews(data.reviews)
+      setPets(data.pets)
+
+    }
   })
+
+  const [name, setName] = useState('')
+  const [location, setLocation] = useState('')
+  const [description, setDescription] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
+  // const [images, setImages] = useState([])
+  const [reviews, setReviews] = useState([])
+  const [pets, setPets] = useState([])
 
 
   if (isLoading) return <Text>Loading...</Text>
@@ -27,7 +47,7 @@ export default function OwnerProfile() {
     <>
     <Stack.Screen 
       options={ownerData && {
-        headerTitle: ownerData.name,
+        headerTitle: name,
         headerTitleAlign: 'left',
       }}
     />
@@ -39,13 +59,13 @@ export default function OwnerProfile() {
             <View className='bottom-12 flex-1'>
               <View className='flex flex-col gap-1 text-black mx-6 mb-4'>
                   <Image
-                      source={{ uri: ownerData.imageUrl }}
+                      source={{ uri: imageUrl }}
                       className='w-16 h-16 rounded-full border-white border-2'
                   />
                   <View className='flex-row justify-between'>
                     <View>
                       <Text></Text>
-                      <Text className='text-2xl font-bold'>{ownerData.name}</Text>
+                      <Text className='text-2xl font-bold'>{name}</Text>
                       <Text className='text-sm'>Pet Owner</Text>
                       {/* <Text>{ownerData.bio}</Text> */}
                     </View>
@@ -80,10 +100,10 @@ export default function OwnerProfile() {
                   </View>
               </View> 
               <ProfileTabs {...{
-                description: ownerData.description,
-                location: ownerData.location,
-                reviews: ownerData.reviews,
-                pets: ownerData.pets,
+                description: description,
+                location: location,
+                reviews: reviews,
+                pets: pets,
               }} />
             </View>
       </View>

@@ -11,14 +11,14 @@ import { Ionicons } from '@expo/vector-icons'
 import * as Location from 'expo-location';
 import { BounceIn } from 'react-native-reanimated'
 
-export default function OwnerProfileEdit() {
+export default function SitterProfileEdit() {
   const router = useRouter()
-  const { ownerId } = useSearchParams()
+  const { sitterId } = useSearchParams()
   
 
-  const mutationOwner = api.owner.update.useMutation()
+  const mutationSitter = api.sitter.update.useMutation()
 
-  const { data: ownerData, isLoading} = api.owner.byId.useQuery(String(ownerId), 
+  const { data: sitterData, isLoading} = api.sitter.byId.useQuery(String(sitterId), 
     {onSuccess: (data) => {
       setName(data.name)
       setLocation(data.location)
@@ -52,16 +52,16 @@ export default function OwnerProfileEdit() {
     console.log("Name: " + name)
     console.log("Location: " + location)
     console.log("Description: " + description)
-    mutationOwner.mutateAsync({
-        id : ownerData.id,
+    mutationSitter.mutateAsync({
+        id : sitterData.id,
         name: name,
-        imageUrl: ownerData.imageUrl,
+        imageUrl: sitterData.imageUrl,
         location: location,
         description: description,
     }).then(
       (data) => {
         console.log(data)
-        router.replace('/owner/' + ownerId)
+        router.replace('/sitter/' + sitterId)
       }
     )
   }
@@ -81,7 +81,7 @@ export default function OwnerProfileEdit() {
             <Image
               className='rounded-full w-12 h-12 mr-4'  
               source={{
-                uri: ownerData.imageUrl,
+                uri: sitterData.imageUrl,
               }}
             />
           </View>
