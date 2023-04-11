@@ -43,7 +43,7 @@ function parseTime(TimeOfDay: string){
   }
 }
 
-export default function SitterBookingPreview(props: Booking) {
+export default function AcceptBooking(props: Booking) {
   const router = useRouter()
   console.log(props)
 
@@ -53,12 +53,29 @@ export default function SitterBookingPreview(props: Booking) {
     include: 'scheduledTime',
   })
   const {data: petData} = api.pet.byBookingId.useQuery(props.id)
+  const mutation = api.booking.updateStatusById.useMutation();
 
   const handlePress = () => {
     router.push({
       pathname: `/booking/${props.id}`,
       params: { bookingId: props.id },
     })
+  }
+
+  const handleAcceptPress = () => {
+    mutation.mutate({
+      bookingId: props.id,
+      status: 'ACCEPTED'
+    })
+    router.push("/home");
+  }
+
+  const handleRejectPress = () => {
+    mutation.mutate({
+      bookingId: props.id,
+      status: 'REJECTED'
+    })
+    router.push("/home");
   }
 
   if (isLoading) return <Text>Loading...</Text>
@@ -87,6 +104,10 @@ export default function SitterBookingPreview(props: Booking) {
         <Text className='mx-2 text-md'>{data.scheduledTime ? capitalizeWords(data.scheduledTime.day) : null}</Text>
         <Ionicons size={24} name="ios-time-outline"></Ionicons>
         <Text className="mx-2 text-md">{data.scheduledTime ? parseTime(data.scheduledTime.time) : null}</Text>
+      </Box>
+      <Box className="m-auto mt-2 flex-wrap flex-row border-black border-solid border-2">
+        <Button onPress={handleAcceptPress} className="ml-auto w-36 bg-transparent border-black border-solid border-r-2">Accept</Button>
+        <Button onPress={handleRejectPress} className="mr-auto w-36 bg-transparent">Reject</Button>
       </Box>
     </Button>
   )

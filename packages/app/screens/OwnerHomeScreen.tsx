@@ -35,8 +35,14 @@ export default function OwnerHomeScreen() {
         <WelcomeMessage name={ownerProfile.name} />
         <ProfileIcon iconUrl={ownerProfile.imageUrl} />
       </Box>
-      <Text className="font-bold text-xl ml-2">Upcoming Appointments</Text>
-      {bookings && bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)}
+      <Text className="font-bold text-xl ml-2 mb-2">Upcoming Bookings</Text>
+      {bookings && bookings
+      .filter((booking) => booking.status === "ACCEPTED")
+      .map((booking, index) => <BookingPreview key={index} {...booking} />)}
+      <Text className="font-bold text-xl ml-2">Pending Bookings</Text>
+      {bookings && bookings
+      .filter((booking) => booking.status === "PENDING")
+      .map((booking, index) => <BookingPreview key={index} {...booking} />)}
     </ScrollView>
   )
 }

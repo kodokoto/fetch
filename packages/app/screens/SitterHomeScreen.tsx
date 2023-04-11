@@ -4,9 +4,7 @@ import { useUser } from '@clerk/clerk-expo'
 import ProfileIcon from 'app/components/ProfileIcon'
 import WelcomeMessage from 'app/components/WelcomeMessage'
 import SitterBookingPreview from 'app/components/SitterBookingPreview'
-import OwnerHomeScreen from './OwnerHomeScreen'
-import { useAtom } from 'jotai'
-import { Profile, sessionAtom } from 'app/utils/storage'
+import AcceptBooking from '../components/AcceptBooking.'
 import { Link, useRouter, useSearchParams } from 'expo-router'
 import { api } from 'app/utils/trpc'
 
@@ -38,14 +36,14 @@ export default function SitterHomeScreen() {
         <WelcomeMessage name={sitterProfile.name} />
         <ProfileIcon iconUrl={sitterProfile.imageUrl} />
       </Box>
-      <Text className="font-bold text-xl ml-2 mb-2">Upcoming Appointments</Text>
+      <Text className="font-bold text-xl ml-2 mb-2">Upcoming Bookings</Text>
       {bookings && bookings
       .filter((booking) => booking.status === "ACCEPTED")
       .map((booking, index) => <SitterBookingPreview key={index} {...booking} />)}
-      <Text className="font-bold text-xl ml-2">Pending Appointments</Text>
+      <Text className="font-bold text-xl ml-2">Pending Bookings</Text>
       {bookings && bookings
       .filter((booking) => booking.status === "PENDING")
-      .map((booking, index) => <SitterBookingPreview key={index} {...booking} />)}
+      .map((booking, index) => <AcceptBooking key={index} {...booking} />)}
     </ScrollView>
   )
 }

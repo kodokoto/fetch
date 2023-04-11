@@ -5,10 +5,14 @@ import { api } from 'app/utils/trpc'
 import { StatusBar } from 'expo-status-bar'
 import BookingDetail from 'app/components/BookingDetail'
 import { useRouter } from 'expo-router'
+import SitterBookingDetail from 'app/components/SitterBookingDetail'
+import { useAtom } from 'jotai'
+import { Profile, sessionAtom } from 'app/utils/storage'
 
 export default function Booking() {
   const { bookingId } = useSearchParams()
   const router = useRouter()
+  const [session, _] = useAtom(sessionAtom)
 
   console.log("Booking Id: " + bookingId);
   
@@ -23,17 +27,11 @@ export default function Booking() {
 
   if (isLoading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
-
-  return (
-    <View className="flex flex-col justify-center items-center">
-      {/* Use `../` as a simple way to navigate to the root. This is not analogous to "goBack". */}
-      {!isPresented && <Link href="../">Dismiss</Link>}
-      {/* <BookingDeatil /> */}
-      <BookingDetail {...data} />
-      {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
-      <StatusBar style="light" />
-      {/* Text box for review */}
-
-    </View>
-  )
+  if (session.currentProfile === Profile.OWNER) {
+    return <BookingDetail {...data} />
+  } 
+  if (session.currentProfile === Profile.SITTER) {
+    return <SitterBookingDetail {...data}/>
+  }
+  
 }
