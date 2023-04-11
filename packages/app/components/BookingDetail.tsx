@@ -23,6 +23,21 @@ function parseBookingFrequency(bookingFrequency: string) {
   }
 }
 
+function parseServiceType(serviceType: string) {
+  switch (serviceType) {
+    case 'WALK':
+      return 'Walking'
+    case 'PET_CARE':
+      return 'Pet care'
+    case 'HOUSE_SITTING':
+      return 'House sitting'
+    case 'MONTHLY':
+      return 'Every Month'
+    default:
+      return ''
+  }
+}
+
 function capitalizeWords(inputString) {
   return inputString.toLowerCase().replace(/\b[a-z]/g, function(letter) {
     return letter.toUpperCase();
@@ -122,7 +137,7 @@ export default function BookingDetail(props: Booking) {
             </Button>
             <Box className="flex-end">
               <Text className="text-md">Service</Text>
-              <Text className="text-lg font-bold">{serviceData?.type}</Text>
+              <Text className="text-lg font-bold">{serviceData ? parseServiceType(serviceData.type) : null}</Text>
             </Box>
           </Box>
           <Divider my="2" _light={{ bg: '#4c8ab9' }} _dark={{ bg: '#4c8ab9' }} />
