@@ -51,7 +51,6 @@ export const sitterRouter = router({
       },
     })
   }),
-
   bySearchParams: publicProcedure
     .input(
       z.object({
@@ -86,6 +85,11 @@ export const sitterRouter = router({
         userId: z.string(),
         name: z.string(),
         imageUrl: z.string(),
+        bio: z.string(),
+        proximityRadius: z.number(),
+        location: z.string(),
+        description: z.string(),
+
       })
     )
     .mutation(async ({ input }) => {
@@ -94,6 +98,10 @@ export const sitterRouter = router({
           userId: input.userId,
           name: input.name,
           imageUrl: input.imageUrl,
+          bio: input.bio,
+          proximityRadius: input.proximityRadius,
+          location: input.location,
+          description: input.description,
         },
       })
     }),

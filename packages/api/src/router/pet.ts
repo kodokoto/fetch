@@ -39,6 +39,7 @@ export const petRouter = router({
       name: z.string(),
       type: z.string(),
       ownerId: z.string(),
+      imageUrl: z.string(),
       description: z.string()
     }))
     .mutation(async ({ input }) => {
@@ -46,6 +47,7 @@ export const petRouter = router({
         data: {
           name: input.name,
           type: input.type as PetType,
+          imageUrl: input.imageUrl,
           owner: {
             connect: {
               id: input.ownerId
@@ -55,5 +57,4 @@ export const petRouter = router({
         }
       })
     })
-
 })

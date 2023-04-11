@@ -27,31 +27,6 @@ export default function SitterHomeScreen() {
     enabled: !!sitterProfile?.id,
   })
 
-  const handleFakeSubmit = () => {
-      mutation.mutateAsync({
-        sitterId: sitterProfile.id,
-        type: "WALK",
-        price: 0,
-        petType: "DOG",
-        duration: 0,
-        description: "This is a fake service",
-        availableTimes: [
-          {
-            day: "MONDAY",
-            time: "MORNING",
-          },
-          {
-            day: "SUNDAY",
-            time: "EVENING",
-          },
-        ],
-      }).then(() => {
-        console.log("success")
-      })
-  }
-
-
-
   if (!isLoaded) return null
   if (bookingsLoading) return <Text>Loading...</Text>
 
