@@ -21,6 +21,13 @@ export default function () {
           headerTitle: 'Create an owner profile',
         }}
       />
+      <Stack.Screen
+        name="pet"
+        options={{
+          headerTitle: 'Create a pet profile',
+          presentation: 'modal',
+        }}
+      />
     </Stack>
   )
 }

@@ -5,6 +5,7 @@ import React from "react";
 import { sessionAtom } from 'app/utils/storage';
 import { useAtom } from 'jotai';
 import OnePetTypeSelect from "app/components/OnePetTypeSelect";
+import { Stack } from "expo-router";
 
 
 export default function petCreateForm() {
@@ -49,6 +50,7 @@ export default function petCreateForm() {
 
   
       return (
+        <>
           <View className="mx-4">
             <Text className="font-bold text-2xl ml-2 mt-5">Name:</Text>
             <Text className="ml-2 mb-2">What is your pets name?</Text>
@@ -64,8 +66,8 @@ export default function petCreateForm() {
                     <Text className='text-white'>Submit</Text>
                 </Button>
             </View>
-  
-              
           </View>
+
+        </>
       )
   }

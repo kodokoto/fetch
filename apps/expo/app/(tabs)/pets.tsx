@@ -6,6 +6,7 @@ import { useAtom } from 'jotai'
 import { sessionAtom } from 'app/utils/storage'
 import { api } from 'app/utils/trpc'
 import { Ionicons } from '@expo/vector-icons'
+import { useRouter } from 'expo-router'
 
 type PetDescriptionCardProps = {
     name: string
@@ -15,6 +16,7 @@ type PetDescriptionCardProps = {
   }
   
 function PetDescriptionCard(props: PetDescriptionCardProps) {
+
     return (
       <View className='flex-row h-24 items-center '>
         <View className='flex-col ml-2'>
@@ -36,6 +38,7 @@ function PetDescriptionCard(props: PetDescriptionCardProps) {
 export default function pets() {
 
     const [session, _] = useAtom(sessionAtom)
+    const router = useRouter();
 
     const { data: pets, isLoading } = api.pet.byOwnerId.useQuery(session.ownerId, { cacheTime: 0 })
 
@@ -55,7 +58,7 @@ export default function pets() {
           {
             !pets || pets?.length < 4 
             ? (
-              <Button className='bg-transparent h-24' onPress={() => console.log('next task')}>
+              <Button className='bg-transparent h-24' onPress={() => router.push('/create/pet')}>
                 <View className='flex-row items-center justify-start'>
                   <Ionicons name="add" size={24} color="black" />
                   <Text className='ml-4'>Add Pet</Text>
