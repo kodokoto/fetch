@@ -2,7 +2,6 @@ import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { prisma } from 'db'
 import clerk from '@clerk/clerk-sdk-node'
-import { PetType } from '@prisma/client'
 
 const getUser = async (userId: string) => {
   const user = await clerk.users.getUser(userId)
@@ -20,6 +19,26 @@ export const ownerRouter = router({
       },
     })
   }),
+  
+  byIdWith: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        include: z.array(z.enum(['images', 'pets', 'reviews'])),
+      })
+    )
+    .query(({ input }) => {
+      return prisma.owner.findFirst({
+        where: {
+          id: input.id,
+        },
+        include: {
+          images: input.include.includes('images'),
+          pets: input.include.includes('pets'),
+          reviews: input.include.includes('reviews'),
+        },
+      })
+    }),
   byUserId: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.owner.findFirst({
       where: {
@@ -38,33 +57,14 @@ export const ownerRouter = router({
       },
     })
   }),
-  byIdWith: publicProcedure
-  .input(
-    z.object({
-      id: z.string(),
-      include: z.array(z.enum(['images', 'services', 'reviews'])),
-    })
-  )
-  .query(({ input }) => {
-    return prisma.sitter.findFirst({
-      where: {
-        id: input.id,
-      },
-      include: {
-        images: input.include.includes('images'),
-        services: input.include.includes('services'),
-        reviews: input.include.includes('reviews'),
-      },
-    })
-  }),
   create: publicProcedure
     .input(
       z.object({
         userId: z.string(),
         name: z.string(),
         imageUrl: z.string(),
+        location : z.string(),
         description: z.string(),
-        location: z.string(),
       })
     )
     .mutation(async ({ input }) => {
@@ -78,34 +78,31 @@ export const ownerRouter = router({
         },
       })
     }),
-    addPet: publicProcedure
+  
+  update: publicProcedure
     .input(
       z.object({
-        ownerId: z.string(),
-        pets: z.array(
-          z.object({
-            name: z.string(),
-            type: z.string(),
-            description: z.string(),
-            imageUrl: z.string(),
-        }))
+        id: z.string(),
+        name: z.string(),
+        imageUrl: z.string(),
+        location : z.string(),
+        description: z.string(),
+        bio: z.string(),
       })
     )
     .mutation(async ({ input }) => {
       return await prisma.owner.update({
         where: {
-          id: input.ownerId,
+          id: input.id,
         },
         data: {
-          pets: {
-            create: input.pets.map((pet) => ({
-              name: pet.name,
-              type: pet.type as PetType,
-              description: pet.description,
-              imageUrl: pet.imageUrl,
-            }))
-          }
-        }
+          name: input.name,
+          imageUrl: input.imageUrl,
+          location: input.location,
+          description: input.description,
+          bio: input.bio,
+        },
       })
-    }), 
+    }),
+
 })

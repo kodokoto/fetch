@@ -44,7 +44,9 @@ export default function SitterProfile() {
                   />
                   <View className='flex-row justify-between'>
                     <View>
+                      <Text></Text>
                       <Text className='text-2xl font-bold'>{sitterData.name}</Text>
+                      <Text className='text-sm'>Pet Sitter</Text>
                       <Text>{sitterData.bio}</Text>
                     </View>
                     {
@@ -54,8 +56,8 @@ export default function SitterProfile() {
                             onPress={() => router.replace({
                               pathname: '/messages',
                               params: {
-                                receiverId: session.ownerId,
-                                senderId: sitterId,
+                                receiverId: sitterId,
+                                senderId: session.ownerId,
                               }
                             })}
                           >
@@ -80,8 +82,8 @@ export default function SitterProfile() {
               <ProfileTabs {...{
                 description: sitterData.description,
                 location: sitterData.location,
-                reviews: sitterData.reviews,
                 services: sitterData.services,
+                reviews: sitterData.reviews,
               }} />
             </View>
       </View>
@@ -103,8 +105,47 @@ export default function SitterProfile() {
           >
             <Text className='text-white'>Request Booking</Text>
           </Button>
+          {/* Button for messaging */}
+          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+            onPress={() => router.push({
+              pathname: '/create/booking',
+              params: {
+                sitterId,
+                serviceType,
+                day,
+                timeOfDay,
+              }
+            })}
+          >
+            <Text className='text-white'>Message</Text>
+          </Button>
+          {/* Button for reporting user */}
+          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+            onPress={() => router.push({
+              pathname: '/create/booking',
+              params: {
+                sitterId,
+                serviceType,
+                day,
+                timeOfDay,
+              }
+            })}
+          >
+            <Text className='text-white'>Report</Text>
+          </Button>
         </View>
-      : null
+      : <View className='absolute bottom-0 w-full h-20 bg-transparent'>
+          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+              onPress={() => router.push({
+              pathname: '/edit/sitter',
+              params: {
+                  sitterId
+              }
+              })}
+          >
+              <Text className='text-white'>Edit Profile</Text>
+          </Button>
+      </View>
     }
     </View>
     </>
