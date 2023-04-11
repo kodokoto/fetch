@@ -35,7 +35,7 @@ export default function SitterProfile() {
         <View className='bg-transparent flex-1'>
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View className="flex-1 flex-col justify-center">
-            <ProfileCarousel {...sitterData.images}/>
+            <ProfileCarousel images={sitterData.images}/>
             <View className='bottom-12 flex-1'>
               <View className='flex flex-col gap-1 text-black mx-6 mb-4'>
                   <Image
