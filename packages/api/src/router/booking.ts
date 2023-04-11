@@ -82,7 +82,7 @@ export const bookingRouter = router({
         data: {
           status: input.status as BookingStatus
         }
-      }),
+      })
     }),
     udateScheduledTime: publicProcedure
     .input(z.object({
@@ -109,4 +109,4 @@ export const bookingRouter = router({
         },
       })
     })
-    }),
+})
