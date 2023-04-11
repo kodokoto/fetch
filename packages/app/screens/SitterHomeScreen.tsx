@@ -3,7 +3,7 @@ import React from 'react'
 import { useUser } from '@clerk/clerk-expo'
 import ProfileIcon from 'app/components/ProfileIcon'
 import WelcomeMessage from 'app/components/WelcomeMessage'
-import BookingPreview from 'app/components/BookingPreview'
+import SitterBookingPreview from 'app/components/SitterBookingPreview'
 import OwnerHomeScreen from './OwnerHomeScreen'
 import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
@@ -27,30 +27,6 @@ export default function SitterHomeScreen() {
     enabled: !!sitterProfile?.id,
   })
 
-  const handleFakeSubmit = () => {
-      mutation.mutateAsync({
-        sitterId: sitterProfile.id,
-        type: "WALK",
-        price: 0,
-        petType: "DOG",
-        duration: 0,
-        description: "This is a fake service",
-        availableTimes: [
-          {
-            day: "MONDAY",
-            time: "MORNING",
-          },
-          {
-            day: "SUNDAY",
-            time: "EVENING",
-          },
-        ],
-      }).then(() => {
-        console.log("success")
-      })
-  }
-
-
 
   if (!isLoaded) return null
   if (bookingsLoading) return <Text>Loading...</Text>
@@ -62,11 +38,14 @@ export default function SitterHomeScreen() {
         <WelcomeMessage name={sitterProfile.name} />
         <ProfileIcon iconUrl={sitterProfile.imageUrl} />
       </Box>
-      {/* <Button onPress={handleFakeSubmit}>
-        <Text>Add fake service</Text>
-      </Button> */}
-      <Text className="font-bold text-xl ml-2">Upcoming Appointments</Text>
-      {bookings && bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)}
+      <Text className="font-bold text-xl ml-2 mb-2">Upcoming Appointments</Text>
+      {bookings && bookings
+      .filter((booking) => booking.status === "ACCEPTED")
+      .map((booking, index) => <SitterBookingPreview key={index} {...booking} />)}
+      <Text className="font-bold text-xl ml-2">Pending Appointments</Text>
+      {bookings && bookings
+      .filter((booking) => booking.status === "PENDING")
+      .map((booking, index) => <SitterBookingPreview key={index} {...booking} />)}
     </ScrollView>
   )
 }

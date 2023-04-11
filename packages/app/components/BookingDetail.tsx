@@ -62,31 +62,13 @@ function parseTime(TimeOfDay: string){
 export default function BookingDetail(props: Booking) {
   const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
-  const mutation = api.booking.updateStatusById.useMutation();
   const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(String(props.sitterId))
   const {data: serviceData} = api.service.byId.useQuery(props.serviceId)
   const {data: petData} = api.pet.byBookingId.useQuery(props.id)
-  const {data: scheduledTime } = api.scheduledTime.byBookingId.useQuery(props.id)
   const { data } = api.booking.byIdWithScheduledTime.useQuery({
     id: props.id,
     include: 'scheduledTime',
   })
-
-  const handleAcceptPress = () => {
-    mutation.mutate({
-      bookingId: props.id,
-      status: 'ACCEPTED'
-    })
-    router.push("/home");
-  }
-
-  const handleRejectPress = () => {
-    mutation.mutate({
-      bookingId: props.id,
-      status: 'REJECTED'
-    })
-    router.push("/home");
-  }
  
   const handleMessagePress = () => {
     router.replace({
@@ -112,8 +94,6 @@ export default function BookingDetail(props: Booking) {
             <Text className="text-2xl font-bold ml-4">{sitterData?.name}</Text>
             <Text className="text-lg ml-4">{props.status}</Text>
           </Box>
-          <Button onPress={handleAcceptPress} className="rounded-2xl">Accept</Button>
-          <Button onPress={handleRejectPress} className="rounded-2xl">Reject</Button>
           <Button className="bg-white w-14 h-14 rounded-3xl flex-end mr-4" onPress={handleMessagePress}>
             <Ionicons size={28} color="#4c8ab9" name="chatbubble"></Ionicons>
           </Button>
