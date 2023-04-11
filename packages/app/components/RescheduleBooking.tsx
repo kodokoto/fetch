@@ -65,7 +65,7 @@ export default function RescheduleBooking() {
               <Text fontWeight="bold" mb={1}>Current Booking details:</Text>
               <Text>Pet name: {petData? petData.map((pet) => pet.name).join(", ") : null}</Text>
               <Text>Service type: {serviceType?.type}</Text>
-              <Text>Current booking schedule: </Text>
+              <Text fontWeight="bold" >Current booking schedule: </Text>
               <Text>Day: {schdeuledTimes?.day}</Text>
               <Text>Time: {schdeuledTimes?.time}</Text>
               <Text>Frequency: {schdeuledTimes?.frequency}</Text>
