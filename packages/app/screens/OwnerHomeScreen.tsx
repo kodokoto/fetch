@@ -28,9 +28,6 @@ export default function OwnerHomeScreen() {
   return (
     <ScrollView>
       {/* <Text>Owner Home Screen</Text> */}
-      <Button onPress={() => router.push({
-        pathname: '/create/pet'
-      })}>Add Pet</Button>
       <Box className="flex-wrap flex-row">
         <WelcomeMessage name={ownerProfile.name} />
         <ProfileIcon iconUrl={ownerProfile.imageUrl} />
@@ -43,6 +40,10 @@ export default function OwnerHomeScreen() {
       {bookings && bookings
       .filter((booking) => booking.status === "PENDING")
       .map((booking, index) => <BookingPreview key={index} {...booking} />)}
+      <Text className="font-bold text-xl ml-2 mb-2">Your Pets</Text>
+      <Button className='h-12 rounded-full bg-blue-500 w-11/12 my-4 mx-auto' onPress={() => router.push({
+        pathname: '/create/pet'
+      })}>Add Pet</Button>
     </ScrollView>
   )
 }
