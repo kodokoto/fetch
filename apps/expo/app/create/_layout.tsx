@@ -22,6 +22,12 @@ export default function () {
         }}
       />
       <Stack.Screen
+        name="sitter"
+        options={{
+          headerTitle: 'Create an sitter profile',
+        }}
+      />
+      <Stack.Screen
         name="pet"
         options={{
           headerTitle: 'Create a pet profile',

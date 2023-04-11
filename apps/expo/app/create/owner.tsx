@@ -1,6 +1,6 @@
 import { View, Text, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Button, Input, TextArea } from 'native-base'
+import { Button, Input, ScrollView, TextArea } from 'native-base'
 import { api } from 'app/utils/trpc'
 import { useUser } from '@clerk/clerk-expo'
 import { Stack, useRouter } from 'expo-router'
@@ -71,8 +71,8 @@ export default function OwnerProfileCreate() {
               ? (
                 <Button className='bg-transparent' onPress={()=> handleProfileCreation()}>
                   <View className='flex-row items-center'>
-                    <Text>Next</Text>
-                    <Ionicons name="ios-arrow-forward-circle-outline" size={18} color="black" />
+                    <Text className='ml-2'>Next</Text>
+                    <Ionicons name="ios-arrow-forward-circle-outline" size={24} color="black" />
                   </View>
                 </Button>
               )
@@ -81,49 +81,52 @@ export default function OwnerProfileCreate() {
           },
         }}
       />
-      <View className='m-6'>
-      <View className='my-8 flex-row justify-between'>
-        <View className='ml-2'>
-          <Text className='text-3xl font-bold'>Hi {user.firstName}!</Text>
-          <Text className=''>Welcome to fetch.</Text>
+      <ScrollView>
+        <View className='m-6'>
+        <View className='my-8 flex-row justify-between'>
+          <View className='ml-2'>
+            <Text className='text-3xl font-bold'>Hi {user.firstName}!</Text>
+            <Text className=''>Welcome to fetch.</Text>
+          </View>
+          <View className=' flex-col justify-center'>
+            <Image
+              className='rounded-full w-12 h-12 mr-4'  
+              source={{
+                uri: user.profileImageUrl,
+              }}
+            />
+          </View>
         </View>
-        <View className=' flex-col justify-center'>
-          <Image
-            className='rounded-full w-12 h-12 mr-4'  
-            source={{
-              uri: user.profileImageUrl,
-            }}
+        <View className='my-8'>
+          <Text className='text-md font-semibold mb-2'>Name: </Text>
+          <Input value={name}  onChangeText={setName}/>
+        </View>
+        
+        <View className='my-8'>
+          <Text className='text-md font-semibold mb-2'>Location: </Text>
+          <Input value={location}  onChangeText={setLocation} InputRightElement={
+            <Button className='bg-gray-200 rounded-l-none'>
+              <Ionicons name="ios-location-outline" size={18} color="black" onPress={handleLocationSearch}/>
+            </Button>
+          }/>
+        </View>
+
+        <View className='my-8'>
+          <Text className='text-md font-semibold mb-2'>Tell us a little bit about yourself:</Text>
+          <TextArea 
+              h={20} 
+              placeholder="Text Area Placeholder" 
+              value={description}
+              w="100%" 
+              autoCompleteType={undefined} 
+              onChangeText={
+                  (text) => setDescription(text) 
+              }
           />
         </View>
       </View>
-      <View className='my-8'>
-        <Text className='text-md font-semibold mb-2'>Name: </Text>
-        <Input value={name}  onChangeText={setName}/>
-      </View>
-      
-      <View className='my-8'>
-        <Text className='text-md font-semibold mb-2'>Location: </Text>
-        <Input value={location}  onChangeText={setLocation} InputRightElement={
-          <Button className='bg-gray-200 rounded-l-none'>
-            <Ionicons name="ios-location-outline" size={18} color="black" onPress={handleLocationSearch}/>
-          </Button>
-        }/>
-      </View>
 
-      <View className='my-8'>
-        <Text className='text-md font-semibold mb-2'>Tell us a little bit about yourself:</Text>
-        <TextArea 
-            h={20} 
-            placeholder="Text Area Placeholder" 
-            value={description}
-            w="100%" 
-            autoCompleteType={undefined} 
-            onChangeText={
-                (text) => setDescription(text) 
-            }
-        />
-      </View>
-    </View>
+      </ScrollView>
     </>
 
   )
