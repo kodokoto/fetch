@@ -3,10 +3,8 @@ import React from 'react'
 import { useUser } from '@clerk/clerk-expo'
 import ProfileIcon from 'app/components/ProfileIcon'
 import WelcomeMessage from 'app/components/WelcomeMessage'
-import BookingPreview from 'app/components/BookingPreview'
-import OwnerHomeScreen from './OwnerHomeScreen'
-import { useAtom } from 'jotai'
-import { Profile, sessionAtom } from 'app/utils/storage'
+import SitterBookingPreview from 'app/components/SitterBookingPreview'
+import AcceptBooking from '../components/AcceptBooking.'
 import { Link, useRouter, useSearchParams } from 'expo-router'
 import { api } from 'app/utils/trpc'
 
@@ -15,8 +13,6 @@ export default function SitterHomeScreen() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
   const userId = user?.id
-
-  const mutation = api.service.create.useMutation();
 
   const { data: sitterProfile, isLoading: sitterProfileLoading } = api.sitter.byUserId.useQuery(userId, {
     enabled: !!userId,
@@ -32,16 +28,19 @@ export default function SitterHomeScreen() {
 
   return (
     <ScrollView>
-      <Text>Sitter Home Screen</Text>
+      {/* <Text>Sitter Home Screen</Text> */}
       <Box className="flex-wrap flex-row">
         <WelcomeMessage name={sitterProfile.name} />
         <ProfileIcon iconUrl={sitterProfile.imageUrl} />
       </Box>
-      {/* <Button onPress={handleFakeSubmit}>
-        <Text>Add fake service</Text>
-      </Button> */}
-      <Text className="font-bold text-xl ml-2">Upcoming Appointments</Text>
-      {bookings && bookings.map((booking, index) => <BookingPreview key={index} {...booking} />)}
+      <Text className="font-bold text-xl ml-2 mb-2">Upcoming Bookings</Text>
+      {bookings && bookings
+      .filter((booking) => booking.status === "ACCEPTED")
+      .map((booking, index) => <SitterBookingPreview key={index} {...booking} />)}
+      <Text className="font-bold text-xl ml-2">Pending Bookings</Text>
+      {bookings && bookings
+      .filter((booking) => booking.status === "PENDING")
+      .map((booking, index) => <AcceptBooking key={index} {...booking} />)}
     </ScrollView>
   )
 }
