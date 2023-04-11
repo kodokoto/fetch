@@ -17,7 +17,8 @@ export default function petCreateForm() {
           name: name,
           type: getPetByBoolean(),
           ownerId: session.ownerId,
-          description: description
+          description: description,
+          imageUrl: 'https://i.pinimg.com/736x/ba/92/7f/ba927ff34cd961ce2c184d47e8ead9f6.jpg' // delete later
         })
         setName(""),
         setSelectedPetType(""),
