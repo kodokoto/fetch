@@ -1,14 +1,16 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text } from 'react-native'
 import React from 'react'
 import { useUser } from '@clerk/clerk-expo'
-import { Box } from 'native-base'
+import { Box, ScrollView, Button } from 'native-base'
+import { useRouter } from 'expo-router'
 import ProfileIcon from 'app/components/ProfileIcon'
 import WelcomeMessage from 'app/components/WelcomeMessage'
 import BookingPreview from 'app/components/BookingPreview'
 import { api } from 'app/utils/trpc'
+import { router } from 'api/src/trpc'
 
 export default function OwnerHomeScreen() {
-  
+  const router = useRouter()
   const { user, isLoaded } = useUser();
   const userId = user?.id
   const { data: ownerProfile, isLoading: ownerProfileLoading } = api.owner.byUserId.useQuery(userId, {
@@ -22,9 +24,13 @@ export default function OwnerHomeScreen() {
   if (!isLoaded) return null
   if (bookingsLoading) return <Text>Loading...</Text>
 
+
   return (
     <ScrollView>
       <Text>Owner Home Screen</Text>
+      <Button onPress={() => router.push({
+        pathname: '/create/pet'
+      })}>Add Pet</Button>
       <Box className="flex-wrap flex-row">
         <WelcomeMessage name={ownerProfile.name} />
         <ProfileIcon iconUrl={ownerProfile.imageUrl} />

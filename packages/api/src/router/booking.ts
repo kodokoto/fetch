@@ -1,7 +1,7 @@
 import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { prisma } from 'db'
-import { Day, TimeOfDay, BookingFrequency } from '@prisma/client'
+import { Day, TimeOfDay, BookingFrequency, BookingStatus } from '@prisma/client'
 
 export const bookingRouter = router({
   all: publicProcedure.query(() => {
@@ -69,6 +69,21 @@ export const bookingRouter = router({
         },
       })
     }),
+    updateStatusById: publicProcedure
+    .input(z.object({
+      bookingId: z.number(),
+      status: z.string()
+    }))
+    .mutation(async ({ input }) => {
+      return await prisma.booking.update({
+        where: {
+          id:  input.bookingId
+        },
+        data: {
+          status: input.status as BookingStatus
+        }
+      }),
+    }),
     udateScheduledTime: publicProcedure
     .input(z.object({
       bookingId: z.number(),
@@ -94,4 +109,4 @@ export const bookingRouter = router({
         },
       })
     })
-  })
+    }),
