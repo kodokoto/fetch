@@ -25,16 +25,16 @@ export default function Services() {
         <Text className='text-white'>Add Service</Text>
         </Button>
         <Text className="text-2xl ml-auto mr-auto">Current Services: </Text>
-        {data && data.map(service => {
+        {data && data.map((service, key) => {
             return (
-                <TouchableOpacity className="border mt-5 ml-14 mr-14 rounded p-5">
+                <TouchableOpacity key={key} className="border mt-5 ml-14 mr-14 rounded p-5">
                     <Text>Service Type: {service.type.replace(/^_*(.)|_+(.)/g, (s, c, d) => c ? c.toUpperCase() : ' ' + d.toUpperCase()).replace(/\w\S*/g,
                         function(txt) {
                         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
                         }
                     )}</Text>
                     <Text>Pet Types: {service.petTypes.map(
-                        (type) => type
+                        (type) => type.type
                     ).join(', ')
                     .replace(/\w\S*/g, function(txt) {
                     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
