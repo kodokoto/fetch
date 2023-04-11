@@ -24,15 +24,28 @@ export default function RescheduleBooking() {
     const [session, _] = useAtom(sessionAtom)
     const {data: booking} = api.booking.byId.useQuery(Number(bookingId))
     const serviceId = booking.serviceId
+    const scheduledTimeId = booking.scheduledTimeId
     const {data: serviceData} = api.service.byId.useQuery(serviceId)
-    const mutation = api.report.create.useMutation()
+    const {data: scheduleTime} = api.scheduledTime.byId.useQuery(Number(scheduledTimeId))
+    const mutation = api.scheduledTime.update.useMutation()
     const {data: petData} = api.pet.byBookingId.useQuery(Number(bookingId))
+
+    const handleSubmit = () => {
+      mutation.mutate({
+        id: scheduledTimeId,
+        frequency: scheduledTime
+        
+            
+      })
+      
+    }
 
     return (
       <View className="flex flex-col justify-center items-center">
-        <Text>Current Booking details: </Text>
+        <Text>Current Booking details:</Text>
         <Text>Here is your pet name: {petData? petData.map((pet) => pet.name).join(", ") : null}</Text>
         <Text>Here is your booking details: {serviceData?.type}</Text>
+        <Text>Here is current frequency:  {scheduleTime?.frequency}</Text>
         <FormControl>
             <Text fontSize="2xl" fontWeight="bold" mb={4}>Reschedule booking frequency </Text>
             <FormControl.Label>Frequency:</FormControl.Label>
@@ -45,7 +58,7 @@ export default function RescheduleBooking() {
                 <Select.Item label="Every two weeks" value="BI_WEEKLY" />
                 <Select.Item label="Every month" value="MONTHLY" />
             </Select>
-            <Button>
+            <Button onPress={() => handleSubmit()}>
                 <Text>Reschedule Booking</Text>
             </Button>
         </FormControl>
