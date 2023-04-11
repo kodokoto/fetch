@@ -154,8 +154,6 @@ enum Role {
 enum PetType {
   DOG
   CAT
-  BIRD
-  FISH
   OTHER
 }
 

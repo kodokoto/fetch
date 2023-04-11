@@ -10,6 +10,23 @@ export const bookingRouter = router({
   byId: publicProcedure.input(z.number()).query(({ input }) => {
     return prisma.booking.findFirst({ where: { id: input } })
   }),
+  byIdWithScheduledTime: publicProcedure
+  .input(
+    z.object({
+      id: z.number(),
+      include: z.enum(['scheduledTime'])
+    })
+  )
+  .query(({ input }) => {
+    return prisma.booking.findFirst({
+      where: { 
+        id: input.id,
+      },
+      include: {
+        scheduledTime: input.include.includes('scheduledTime')
+      }
+    })
+  }),
   byOwnerId: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.booking.findMany({
       where: {
@@ -64,46 +81,6 @@ export const bookingRouter = router({
           pet: {
             connect: {
               id: input.petId,
-            },
-          },
-        },
-      })
-    }),
-    updateStatusById: publicProcedure
-    .input(z.object({
-      bookingId: z.number(),
-      status: z.string()
-    }))
-    .mutation(async ({ input }) => {
-      return await prisma.booking.update({
-        where: {
-          id:  input.bookingId
-        },
-        data: {
-          status: input.status as BookingStatus
-        }
-      })
-    }),
-    udateScheduledTime: publicProcedure
-    .input(z.object({
-      bookingId: z.number(),
-      scheduledTime: z.object({
-        time: z.string(),
-        day: z.string(),
-        frequency: z.string(),
-      }),
-    }))
-    .mutation(async ({ input }) => {
-      return await prisma.booking.update({
-        where: {
-          id: input.bookingId,
-        },
-        data: {
-          scheduledTime: {
-            update: {
-              time: input.scheduledTime.time as TimeOfDay,
-              day: input.scheduledTime.day as Day,
-              frequency: input.scheduledTime.frequency as BookingFrequency,
             },
           },
         },
