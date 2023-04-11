@@ -33,7 +33,7 @@ export const ownerRouter = router({
           id: input.id,
         },
         include: {
-          // images: input.include.includes('images'),
+          images: input.include.includes('images'),
           pets: input.include.includes('pets'),
           reviews: input.include.includes('reviews'),
         },
@@ -64,6 +64,8 @@ export const ownerRouter = router({
         userId: z.string(),
         name: z.string(),
         imageUrl: z.string(),
+        location : z.string(),
+        description: z.string(),
       })
     )
     .mutation(async ({ input }) => {
@@ -72,6 +74,8 @@ export const ownerRouter = router({
           userId: input.userId,
           name: input.name,
           imageUrl: input.imageUrl,
+          description: input.description,
+          location: input.location,
         },
       })
     }),

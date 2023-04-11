@@ -24,7 +24,7 @@ export default function OwnerProfile() {
       setLocation(data.location)
       setDescription(data.description)
       setImageUrl(data.imageUrl)
-      // setImages(data.images)
+      setImages(data.images)
       setReviews(data.reviews)
       setPets(data.pets)
 
@@ -35,7 +35,7 @@ export default function OwnerProfile() {
   const [location, setLocation] = useState('')
   const [description, setDescription] = useState('')
   const [imageUrl, setImageUrl] = useState('')
-  // const [images, setImages] = useState([])
+  const [images, setImages] = useState([])
   const [reviews, setReviews] = useState([])
   const [pets, setPets] = useState([])
 
@@ -55,7 +55,7 @@ export default function OwnerProfile() {
         <View className='bg-transparent flex-1'>
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View className="flex-1 flex-col justify-center">
-            {/* <ProfileCarousel {...ownerData.images}/> */}
+            <ProfileCarousel images={ownerData.images}/>
             <View className='bottom-12 flex-1'>
               <View className='flex flex-col gap-1 text-black mx-6 mb-4'>
                   <Image
@@ -67,7 +67,7 @@ export default function OwnerProfile() {
                       <Text></Text>
                       <Text className='text-2xl font-bold'>{name}</Text>
                       <Text className='text-sm'>Pet Owner</Text>
-                      {/* <Text>{ownerData.bio}</Text> */}
+                      <Text>{ownerData.bio}</Text>
                     </View>
                     {
                       session.currentProfile === Profile.SITTER

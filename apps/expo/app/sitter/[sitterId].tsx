@@ -134,7 +134,18 @@ export default function SitterProfile() {
             <Text className='text-white'>Report</Text>
           </Button>
         </View>
-      : null
+      : <View className='absolute bottom-0 w-full h-20 bg-transparent'>
+          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+              onPress={() => router.push({
+              pathname: '/edit/sitter',
+              params: {
+                  sitterId
+              }
+              })}
+          >
+              <Text className='text-white'>Edit Profile</Text>
+          </Button>
+      </View>
     }
     </View>
     </>
