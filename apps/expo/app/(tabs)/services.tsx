@@ -44,8 +44,8 @@ export default function Services() {
 
   return (
     <ScrollView>
-      <View className='my-2 m-8'>
-        <Text className='text-2xl font-semibold mb-2'>Your services</Text>
+      <View className='my-2 m-6'>
+        <Text className='text-2xl font-semibold mb-6'>Your services</Text>
         <DisplayCardList editable Card={ServiceDisplayCard} value={services} onAdd={handleOnAdd} onEdit={handleOnedit} onDelete={handleOnDelete} addButtonTitle='Add Service'/>
       </View>
     </ScrollView>

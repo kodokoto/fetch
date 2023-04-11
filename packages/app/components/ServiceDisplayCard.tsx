@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { EditableDisplayCard } from './DisplayCardList';
 import { Service, Animal } from '@prisma/client'
 import { Entypo, Foundation, MaterialCommunityIcons } from '@expo/vector-icons';
-import { titleCase } from '../utils/helpers';
+import { parseServiceType, titleCase } from '../utils/helpers';
 
 type ServiceWithPetType = Service & { petTypes: Animal[] }
 
@@ -27,18 +27,18 @@ function petTypeToIcon(petType: string) {
     case "CAT":
       return <MaterialCommunityIcons name="cat" size={28} color="black" />
     case "OTHER":
-      return <Ionicons name="ios-paw" size={28} color="black" />
+      return <Ionicons name="ios-paw" size={24} color="black" />
   }
 }
 
 export default function ServiceDisplayCard({ value, editable = false, onEdit, onDelete }: EditableDisplayCard<ServiceWithPetType>) {
 
     return (
-      <View className='flex-row h-16 justify-between items-center border-l-2 border-gray-300 mb-2'>
-        <View className='flex-row items-center justify-center gap-x-8  w-[100%]'>
+      <View className='flex-row h-16 mb-2'>
+        <View className='flex-row items-center pl-4 gap-x-8  w-[100%]'>
             <View className='flex-col justify-between items-center '>
                 {serviceTypeToIcon(value.type)}
-                <Text className='text-sm'>{titleCase(value.type)}</Text>
+                <Text className='text-sm'>{parseServiceType(value.type)}</Text>
             </View>
             <View className='flex-col justify-between items-center'>
                 <Text className='text-lg font-semibold'>£{value.price}</Text>
@@ -48,7 +48,7 @@ export default function ServiceDisplayCard({ value, editable = false, onEdit, on
                 <Text className='text-lg font-semibold m-0'>{value.duration}</Text>
                 <Text className='text-sm'>Minutes</Text>
             </View>
-            <View className='flex-col justify-between items-center'>
+            <View className='flex-col justify-between items-center w-9'>
                 <View className='flex-row'>
                     {value.petTypes.map((petTpe, i) => {
                         return (<View key={i} className='flex-row items-center'>

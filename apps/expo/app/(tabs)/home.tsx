@@ -50,24 +50,15 @@ export default function Home() {
   // if a owner id or a sitter id exists, but the session does not have a current profile, update the session
   // to owner id (if it exists) or sitter id 
   if ((data.owner || data.sitter) && session.currentProfile == Profile.NONE) {
-    console.log("MISSMATCH: between db and session")
-    console.log("db:", data)
-    console.log("session:", session)
     data.owner 
     ? setSession({...session, currentProfile: Profile.OWNER, ownerId: data.owner.id})
     : setSession({...session, currentProfile: Profile.SITTER, sitterId: data.sitter.id})
   }
 
   if (data.owner && data.owner.id != session.ownerId) {
-    console.log("OWNER MISSMATCH: between db and session")
-    console.log("db:", data.owner.id)
-    console.log("session:", session.ownerId)
     setSession({...session, ownerId: data.owner.id})
   }
   if  (data.sitter && data.sitter.id != session.sitterId) {
-    console.log("SITTER MISSMATCH: between db and session")
-    console.log("db:", data.sitter.id)
-    console.log("session:", session.sitterId)
     setSession({...session, sitterId: data.sitter.id})
   }
 
