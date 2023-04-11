@@ -31,7 +31,7 @@ export default function SitterHomeScreen() {
 
   return (
     <ScrollView>
-      <Text>Sitter Home Screen</Text>
+      {/* <Text>Sitter Home Screen</Text> */}
       <Box className="flex-wrap flex-row">
         <WelcomeMessage name={sitterProfile.name} />
         <ProfileIcon iconUrl={sitterProfile.imageUrl} />

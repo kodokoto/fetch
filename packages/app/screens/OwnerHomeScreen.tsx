@@ -27,7 +27,7 @@ export default function OwnerHomeScreen() {
 
   return (
     <ScrollView>
-      <Text>Owner Home Screen</Text>
+      {/* <Text>Owner Home Screen</Text> */}
       <Button onPress={() => router.push({
         pathname: '/create/pet'
       })}>Add Pet</Button>
