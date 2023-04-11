@@ -70,8 +70,8 @@ export default function SitterProfileCreate() {
               location.length > 0
               ? (
                 <Button className='bg-transparent' onPress={()=> handleProfileCreation()}>
-                  <View className='flex-row items-center'>
-                    <Text className='ml-2'>Next</Text>
+                  <View className=' pl-8 flex-row items-center'>
+                    <Text className='text-md mr-2'>Next</Text>
                     <Ionicons name="ios-arrow-forward-circle-outline" size={24} color="black" />
                   </View>
                 </Button>
