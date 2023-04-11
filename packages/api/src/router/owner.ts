@@ -38,6 +38,25 @@ export const ownerRouter = router({
       },
     })
   }),
+  byIdWith: publicProcedure
+  .input(
+    z.object({
+      id: z.string(),
+      include: z.array(z.enum(['images', 'services', 'reviews'])),
+    })
+  )
+  .query(({ input }) => {
+    return prisma.sitter.findFirst({
+      where: {
+        id: input.id,
+      },
+      include: {
+        images: input.include.includes('images'),
+        services: input.include.includes('services'),
+        reviews: input.include.includes('reviews'),
+      },
+    })
+  }),
   create: publicProcedure
     .input(
       z.object({

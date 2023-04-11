@@ -15,13 +15,13 @@ export const petRouter = router({
     })
   }),
   byOwnerId: publicProcedure
-        .input(z.string())
-        .query(({ input }) => {
-            return prisma.pet.findMany({
-                where: {
-                    ownerId: input,
-                },
-            })
+      .input(z.string())
+      .query(({ input }) => {
+          return prisma.pet.findMany({
+              where: {
+                  ownerId: input,
+              },
+          })
   }),
   byBookingId: publicProcedure.input(z.number()).query(({input})=> {
     return prisma.pet.findMany({
@@ -56,5 +56,37 @@ export const petRouter = router({
           description: input.description,
         }
       })
+    }),
+    delete: publicProcedure
+      .input(z.object({
+        id: z.number()
+      }))
+      .mutation(async ({ input }) => {
+        return await prisma.pet.delete({
+          where: {
+            id: input.id
+          }
+        })
+    }),
+    update: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        name: z.string(),
+        type: z.string(),
+        imageUrl: z.string(),
+        description: z.string()
+      }))
+      .mutation(async ({ input }) => {
+        return await prisma.pet.update({
+          where: {
+            id: input.id
+          },
+          data: {
+            name: input.name,
+            type: input.type as PetType,
+            imageUrl: input.imageUrl,
+            description: input.description
+          }
+        })
     })
 })

@@ -22,6 +22,8 @@ model Owner {
   name        String
   imageUrl    String
   description String?
+  bio         String    @default("Hello! I'm a new owner.")
+  images      Image[]
   reviews     Review[]
   location    String    @default("London, UK")
   reports     Report[]
@@ -51,9 +53,11 @@ model Image {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   url       String
-  sitterId  String
-  sitter    Sitter   @relation(fields: [sitterId], references: [id])
-
+  sitterId  String?
+  sitter    Sitter?   @relation(fields: [sitterId], references: [id])
+  ownerId   String?
+  owner     Owner?    @relation(fields: [ownerId], references: [id])
+  @@index([ownerId])
   @@index([sitterId])
 }
 
@@ -64,7 +68,7 @@ model AvailableTime {
   time      TimeOfDay
   day       Day
   serviceId Int
-  service   Service   @relation(fields: [serviceId], references: [id])
+  service   Service   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
 
   @@index([serviceId])
 }
@@ -89,9 +93,9 @@ model Booking {
   ownerId         String
   sitter          Sitter        @relation(fields: [sitterId], references: [id])
   sitterId        String
-  service         Service       @relation(fields: [serviceId], references: [id])
+  service         Service       @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   serviceId       Int
-  pet             Pet           @relation(fields: [petId], references: [id])
+  pet             Pet           @relation(fields: [petId], references: [id], onDelete: Cascade)
   petId           Int
   scheduledTime   ScheduledTime @relation(fields: [scheduledTimeId], references: [id])
   scheduledTimeId Int           @unique
@@ -207,7 +211,7 @@ model Animal {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   type      PetType
-  service   Service  @relation(fields: [serviceId], references: [id])
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   serviceId Int
 
   @@index([serviceId])
@@ -243,7 +247,7 @@ enum BookingStatus {
 
 enum Day {
   MONDAY
-  TEUSDAY
+  TUESDAY
   WEDNESDAY
   THURSDAY
   FRIDAY

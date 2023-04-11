@@ -1,49 +1,53 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
-import { Button } from 'native-base'
+import { View, Text, ScrollView } from 'react-native'
 import { useRouter } from 'expo-router'
 import { useAtom } from 'jotai'
 import { sessionAtom } from 'app/utils/storage'
 import { api } from 'app/utils/trpc'
 import React from 'react'
+import DisplayCardList from 'app/components/DisplayCardList'
+import ServiceDisplayCard from 'app/components/ServiceDisplayCard'
+import { Service, Animal } from '@prisma/client'
+
+
+type ServiceWithPetType = Service & { petTypes: Animal[] }
 
 export default function Services() {
     const router = useRouter();
-    const [session, setSession] = useAtom(sessionAtom);
-    console.log("Sesh: " + JSON.stringify(session));
+    const [session, _] = useAtom(sessionAtom);
+    const [services, setServices] = React.useState<ServiceWithPetType[]>([])
+    const { isLoading } = api.service.bySitterId.useQuery(session.sitterId, {
+        onSuccess: (data) => {
+            setServices(data)
+        }
+    });    
 
-    const { data } = api.service.manyBySitterId.useQuery(session.sitterId);
-    console.log("Data in services: " + JSON.stringify(data));
+    const deleteService = api.service.delete.useMutation()
 
-    let type = "Walk";
-    
-    
+    const handleOnAdd = () => {
+        router.push('/create/service')
+    }
+
+    const handleOnedit = (service: Service) => {
+        router.push(`/edit/service/${service.id}`)
+    }
+
+    const handleOnDelete = (service: Service) => {
+        deleteService.mutateAsync({
+            serviceId: service.id
+        }).then(() => {
+            setServices(services.filter((s: Service) => s.id !== service.id))
+        })
+    }
+
+
+  if (isLoading) return <Text>Loading...</Text>
+
   return (
     <ScrollView>
-      <Button className='rounded-full mb-10 mt-5 w-11/12 ml-auto mr-auto'
-                         onPress={() => router.push('/create/service')}
-                       >
-        <Text className='text-white'>Add Service</Text>
-        </Button>
-        <Text className="text-2xl ml-auto mr-auto">Current Services: </Text>
-        {data && data.map(service => {
-            return (
-                <TouchableOpacity className="border mt-5 ml-14 mr-14 rounded p-5">
-                    <Text>Service Type: {service.type.replace(/^_*(.)|_+(.)/g, (s, c, d) => c ? c.toUpperCase() : ' ' + d.toUpperCase()).replace(/\w\S*/g,
-                        function(txt) {
-                        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-                        }
-                    )}</Text>
-                    <Text>Pet Types: {service.petTypes.map(
-                        (type) => type
-                    ).join(', ')
-                    .replace(/\w\S*/g, function(txt) {
-                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-                    }
-                    )}</Text>
-                    <Text>Description: {service.description}</Text>
-                </TouchableOpacity>
-            )
-        })}
+      <View className='my-2 m-8'>
+        <Text className='text-2xl font-semibold mb-2'>Your services</Text>
+        <DisplayCardList editable Card={ServiceDisplayCard} value={services} onAdd={handleOnAdd} onEdit={handleOnedit} onDelete={handleOnDelete} addButtonTitle='Add Service'/>
+      </View>
     </ScrollView>
   )
 }

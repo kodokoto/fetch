@@ -5,14 +5,16 @@ import React from "react";
 import { sessionAtom } from 'app/utils/storage';
 import { useAtom } from 'jotai';
 import PetTypeToggle from "app/components/PetTypeToggle";
-import { useRouter } from "expo-router";
+import { useRouter, useSearchParams } from "expo-router";
 
 
 export default function petCreateForm() {
     const [session, _] = useAtom(sessionAtom)
+    const { redirectUrl } = useSearchParams();
     const mutation = api.pet.create.useMutation()
     const router = useRouter();
     const handleSubmit = () => {
+        console.log("CURRENT SESSION", session)
         mutation.mutateAsync({
           name: name,
           type: getPetByBoolean(),
@@ -20,7 +22,11 @@ export default function petCreateForm() {
           description: description,
           imageUrl: 'https://i.pinimg.com/736x/ba/92/7f/ba927ff34cd961ce2c184d47e8ead9f6.jpg' // delete later
         }).then(
-          () => router.replace('/pets')
+          () => {
+            redirectUrl 
+            ? router.replace(String(redirectUrl))
+            : router.replace('/pets')
+          }
         )
       }
 

@@ -102,14 +102,16 @@ export default function AddBooking() {
                 placeholder='Select a Pet'
             >
                 {
-                    pets 
+                    pets && pets.length > 0
                     ? pets.map((pet) => {
                         return (
                             <Select.Item key={pet.id} label={pet.name} value={pet.name} />
                         )
                     })
-                    : <Select.Item label="No Pets" value="No Pets" onPress={
-                        () => router.push('/pet/create')
+                    : <Select.Item 
+                        label="No Pets" 
+                        value="No Pets" 
+                        onPress={() => router.push('/create/pet')
                     }/>
                 }
             </Select>
