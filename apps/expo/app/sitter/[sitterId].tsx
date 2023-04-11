@@ -22,7 +22,6 @@ export default function SitterProfile() {
 
   if (isLoading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
-  const width = Dimensions.get('window').width;
 
   return (
     <>
