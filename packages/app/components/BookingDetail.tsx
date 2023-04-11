@@ -62,6 +62,7 @@ function parseTime(TimeOfDay: string){
 export default function BookingDetail(props: Booking) {
   const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
+  const [booking, setBooking] = React.useState({} as Booking)
   const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(String(props.sitterId))
   const {data: serviceData} = api.service.byId.useQuery(props.serviceId)
   const {data: petData} = api.pet.byBookingId.useQuery(props.id)
@@ -69,6 +70,7 @@ export default function BookingDetail(props: Booking) {
     id: props.id,
     include: 'scheduledTime',
   })
+  const mutation = api.booking.delete.useMutation()
  
   const handleMessagePress = () => {
     router.replace({
@@ -79,7 +81,16 @@ export default function BookingDetail(props: Booking) {
         receiverName: sitterData?.name,
       },
     })
+
+  const handleDeleteBooking = () => {
+    console.log("Delete")
+    mutation.mutateAsync({
+      id: props.id
+    }).then(() => {
+      setBooking(null);
+    })
   }
+
   if (isLoading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
   return (
@@ -160,11 +171,13 @@ export default function BookingDetail(props: Booking) {
             })
           }
             >Reschedule</Button>
-            <Button className="mr-auto ml-2 rounded-2xl">Cancel</Button>
+            <Button className="mr-auto ml-2 rounded-2xl"
+            onPress={handleDeleteBooking}
+            >Cancel</Button>
           </Box>
         </Box>
       </Box>
       
     </ScrollView>
   )
-}
+}}
