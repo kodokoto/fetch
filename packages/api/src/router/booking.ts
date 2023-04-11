@@ -85,45 +85,5 @@ export const bookingRouter = router({
           },
         },
       })
-    }),
-    updateStatusById: publicProcedure
-    .input(z.object({
-      bookingId: z.number(),
-      status: z.string()
-    }))
-    .mutation(async ({ input }) => {
-      return await prisma.booking.update({
-        where: {
-          id:  input.bookingId
-        },
-        data: {
-          status: input.status as BookingStatus
-        }
-      })
-    }),
-    udateScheduledTime: publicProcedure
-    .input(z.object({
-      bookingId: z.number(),
-      scheduledTime: z.object({
-        time: z.string(),
-        day: z.string(),
-        frequency: z.string(),
-      }),
-    }))
-    .mutation(async ({ input }) => {
-      return await prisma.booking.update({
-        where: {
-          id: input.bookingId,
-        },
-        data: {
-          scheduledTime: {
-            update: {
-              time: input.scheduledTime.time as TimeOfDay,
-              day: input.scheduledTime.day as Day,
-              frequency: input.scheduledTime.frequency as BookingFrequency,
-            },
-          },
-        },
-      })
     })
 })

@@ -150,9 +150,17 @@ export default function BookingDetail(props: Booking) {
             </Box>
           </Box>
           <Box className="flex-wrap flex-row mt-2 mb-10">
-            <Button className="ml-auto rounded-2xl">Reschedule</Button>
-            <Button className="mx-2 rounded-2xl">Cancel</Button>
-            <Button className="mr-auto rounded-2xl" onPress={() => router.push('/review')}>Review</Button>
+            <Button className="ml-auto rounded-2xl"
+            onPress={() =>
+            router.push({
+              pathname: '/reschedule',
+              params: {
+                bookingId: props.id
+              }
+            })
+          }
+            >Reschedule</Button>
+            <Button className="mr-auto ml-2 rounded-2xl">Cancel</Button>
           </Box>
         </Box>
       </Box>
