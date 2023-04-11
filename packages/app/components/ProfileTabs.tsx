@@ -134,8 +134,8 @@ export default function ProfileTabs(props: ProfileTabProps) {
               
           }
           : {
-                info: Info,
-                pets: Pets
+              info: Info,
+              pets: Pets
           }
           )}
           onIndexChange={setIndex}

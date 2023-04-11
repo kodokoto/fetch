@@ -108,12 +108,8 @@ export default function OwnerProfile() {
           {/* Button for messaging */}
           <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
             onPress={() => router.push({
-              pathname: '/create/booking',
+              pathname: '',
               params: {
-                ownerId,
-                serviceType,
-                day,
-                timeOfDay,
               }
             })}
           >
@@ -122,19 +118,27 @@ export default function OwnerProfile() {
           {/* Button for reporting user */}
           <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
             onPress={() => router.push({
-              pathname: '/create/booking',
+              pathname: '',
               params: {
-                ownerId,
-                serviceType,
-                day,
-                timeOfDay,
               }
             })}
           >
             <Text className='text-white'>Report</Text>
           </Button>
         </View>
-      : null
+      : <View className='absolute bottom-0 w-full h-20 bg-transparent'>
+            <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+                onPress={() => router.push({
+                pathname: '/edit/owner',
+                params: {
+                    ownerId
+                }
+                })}
+            >
+                <Text className='text-white'>Edit Profile</Text>
+            </Button>
+        </View>
+        
     }
     </View>
     </>

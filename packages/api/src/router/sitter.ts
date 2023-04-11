@@ -78,4 +78,31 @@ export const sitterRouter = router({
         },
       })
     }),
+  update: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        imageUrl: z.string(),
+        bio: z.string(),
+        proximityRadius: z.number(),
+        location: z.string(),
+        description: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await prisma.sitter.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+          imageUrl: input.imageUrl,
+          bio: input.bio,
+          proximityRadius: input.proximityRadius,
+          location: input.location,
+          description: input.description,
+        },
+      })
+    }),
 })

@@ -75,4 +75,32 @@ export const ownerRouter = router({
         },
       })
     }),
+  
+  update: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        id: z.string(),
+        name: z.string(),
+        imageUrl: z.string(),
+        location : z.string(),
+        description: z.string(),
+      
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await prisma.owner.update({
+        where: {
+          userId: input.userId,
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+          imageUrl: input.imageUrl,
+          location: input.location,
+          description: input.description,
+        },
+      })
+    }),
+
 })
