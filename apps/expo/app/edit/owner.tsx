@@ -9,22 +9,27 @@ import { Profile, sessionAtom } from 'app/utils/storage'
 import { Ionicons } from '@expo/vector-icons'
 
 import * as Location from 'expo-location';
+import { BounceIn } from 'react-native-reanimated'
 
 export default function OwnerProfileEdit() {
   const router = useRouter()
   const { ownerId } = useSearchParams()
-  const { isLoaded, user } = useUser()
-  const userId = user?.id
   
 
   const mutationOwner = api.owner.update.useMutation()
-  const mutationSitter = api.sitter.update.useMutation()
 
-  const { data: ownerData} = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
-  const { data: sitterData} = api.sitter.byUserId.useQuery(userId, { enabled: !!userId })
-  const [location, setLocation] = useState(ownerData.location)
-  const [description, setDescription] = React.useState(ownerData.description)
-  const [name, setName] = React.useState(ownerData.name)
+  const { data: ownerData, isLoading} = api.owner.byId.useQuery(String(ownerId), 
+    {onSuccess: (data) => {
+        setName(data.name)
+        setLocation(data.location)
+        setDescription(data.description)
+    }
+  })
+
+
+  const [location, setLocation] = useState('')
+  const [description, setDescription] = useState('')
+  const [name, setName] = useState('')
 
   const handleLocationSearch = () => {
     Location.getCurrentPositionAsync({}).then(
@@ -44,29 +49,19 @@ export default function OwnerProfileEdit() {
   }  
 
   const handleProfileEditing = () => {
-    if (user && user.firstName) {
-        mutationOwner.mutateAsync({
-          name: name,
-          description: description,
-          location: location,
-        }).then(
-          () => {
-            mutationSitter.mutateAsync({
-                name: name,
-                location: location,
-              }).then(
-                () => {
-                    router.replace('/index')
-                }
-                )
-           } 
-        )  
-      } else {
-        console.log('User not found')
-      }
+    console.log("Name: " + name)
+    console.log("Location: " + location)
+    console.log("Description: " + description)
+    mutationOwner.mutateAsync({
+        id : ownerData.id,
+        name: name,
+        imageUrl: ownerData.imageUrl,
+        location: location,
+        description: description,
+    })
   }
 
-  if (!isLoaded) return null
+  if (isLoading) return null
 
   return (
 
@@ -81,7 +76,7 @@ export default function OwnerProfileEdit() {
             <Image
               className='rounded-full w-12 h-12 mr-4'  
               source={{
-                uri: user.profileImageUrl,
+                uri: ownerData.imageUrl,
               }}
             />
           </View>

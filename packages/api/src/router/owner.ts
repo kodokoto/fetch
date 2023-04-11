@@ -79,9 +79,9 @@ export const ownerRouter = router({
   update: publicProcedure
     .input(
       z.object({
-        userId: z.string(),
         id: z.string(),
         name: z.string(),
+        bio: z.string(),
         imageUrl: z.string(),
         location : z.string(),
         description: z.string(),
@@ -91,7 +91,6 @@ export const ownerRouter = router({
     .mutation(async ({ input }) => {
       return await prisma.owner.update({
         where: {
-          userId: input.userId,
           id: input.id,
         },
         data: {
