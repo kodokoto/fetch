@@ -1,5 +1,6 @@
 import { Image, View, Text, Dimensions } from 'react-native'
 import { Button, ScrollView } from 'native-base'
+
 import React, {useState} from 'react'
 import { useRouter, useSearchParams, Stack } from 'expo-router'
 import { api } from 'app/utils/trpc'
@@ -16,6 +17,7 @@ export default function OwnerProfile() {
 
   const { data: ownerData, error, isLoading } = api.owner.byIdWith.useQuery({
     id: String(ownerId),
+
     include: ['images', 'reviews', 'pets']
   }, {
     cacheTime: 0,
@@ -38,7 +40,6 @@ export default function OwnerProfile() {
   const [images, setImages] = useState([])
   const [reviews, setReviews] = useState([])
   const [pets, setPets] = useState([])
-
 
   if (isLoading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>

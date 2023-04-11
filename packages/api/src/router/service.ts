@@ -26,13 +26,6 @@ export const serviceRouter = router({
     })
   }),
   bySitterId: publicProcedure.input(z.string()).query(({ input }) => {
-    return prisma.service.findFirst({
-      where: {
-        sitterId: input,
-      },
-    })
-  }),
-  manyBySitterId: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.service.findMany({
       where: {
         sitterId: input,
@@ -136,4 +129,16 @@ export const serviceRouter = router({
         },
       })
     }),
+    delete: publicProcedure
+    .input(
+      z.object({
+        serviceId: z.number(),
+      }))
+    .mutation(async ({ input }) => {
+      return await prisma.service.delete({
+        where: {
+          id: input.serviceId,
+        },
+      })
+    })
 })

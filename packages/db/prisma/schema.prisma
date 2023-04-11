@@ -24,6 +24,7 @@ model Owner {
   images      Image[]
   description String?
   bio         String    @default("Hello! I'm a new owner.")
+  images      Image[]
   reviews     Review[]
   location    String    @default("London, UK")
   reports     Report[]
