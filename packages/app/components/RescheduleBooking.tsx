@@ -7,31 +7,46 @@ import {
   Text,
   Button,
   CheckIcon,
+  Center,
   VStack
 } from 'native-base'
 import { Service, ScheduledTime, TimeOfDay, Day, BookingFrequency } from '@prisma/client'
-
+import { Booking } from '@prisma/client'
 import { useRouter, useSearchParams } from 'expo-router'
 import { api } from 'app/utils/trpc'
 import { useUser } from '@clerk/clerk-expo'
 import { useAtom } from 'jotai'
 import { sessionAtom } from 'app/utils/storage'
 
+
+
 export default function RescheduleBooking() {
     const router = useRouter()
-    const { bookingId, ownerId } = useSearchParams()
+    
+
+    //VARIABLES FOR FORM
     const [scheduledTime, setScheduledTime] = React.useState('')
     const [scheduledDay, setScheduledDay] = React.useState('')
     const [scheduledFrequency, setScheduledFrequency] = React.useState('')
-    const [session, _] = useAtom(sessionAtom)
-    const {data: booking} = api.booking.byId.useQuery(Number(bookingId))
-    const serviceId = booking.serviceId
-    const scheduledTimeId = booking.scheduledTimeId
-    const {data: serviceData} = api.service.byId.useQuery(serviceId)
-    const {data: scheduleTime} = api.scheduledTime.byId.useQuery(Number(scheduledTimeId))
-    const mutation = api.scheduledTime.update.useMutation()
-    const {data: petData} = api.pet.byBookingId.useQuery(Number(bookingId))
 
+    const [session] = useAtom(sessionAtom)
+    //OWNERID
+    const ownerId = session.ownerId
+    
+    console.log("ownerId: ", session.ownerId)
+    const { bookingId } = useSearchParams()
+    console.log("BookingId: ", bookingId)
+
+    const { data: booking } = api.booking.byId.useQuery(Number(bookingId))
+
+    //GET TIMES
+    const scheduledTimeId = booking.scheduledTimeId
+    const mutation = api.scheduledTime.update.useMutation()
+    const {data: schdeuledTimes } = api.scheduledTime.byId.useQuery(scheduledTimeId)
+    
+    //Get PetData
+    const {data: petData } = api.pet.byBookingId.useQuery(Number(bookingId))
+    const {data: serviceType } = api.service.byBookingId.useQuery(Number(bookingId))
     const handleSubmit = () => {
       mutation.mutate({
         id: scheduledTimeId,
@@ -43,28 +58,34 @@ export default function RescheduleBooking() {
     }
 
     return (
-      <View className="flex flex-col justify-center items-center">
+      <View className="flex flex-col justify-center items-center mt-20">
         <VStack space={4} className="mt-8 mx-8">
-          <Text>Current Booking details:</Text>
-          <Text>Here is your pet name: {petData? petData.map((pet) => pet.name).join(", ") : null}</Text>
-          <Text>Here is your booking details: {serviceData?.type}</Text>
-          <Text>Here is current frequency:  {scheduleTime?.frequency}</Text>
+          <Box className ="rounded-2xl border-[#4c8ab9] border-solid  border-2 bg-slate-100">
+            <Center>
+              <Text fontWeight="bold" mb={1}>Current Booking details:</Text>
+              <Text>Pet name: {petData? petData.map((pet) => pet.name).join(", ") : null}</Text>
+              <Text>Service type: {serviceType?.type}</Text>
+              <Text>Current booking schedule: </Text>
+              <Text>Day: {schdeuledTimes?.day}</Text>
+              <Text>Time: {schdeuledTimes?.time}</Text>
+              <Text>Frequency: {schdeuledTimes?.frequency}</Text>
+            </Center>
+          </Box>
           <FormControl>
-          <Text fontSize="2xl" fontWeight="bold" mb={4}>Reschedule booking day </Text>
+          <Text fontSize="2xl" fontWeight="bold" mb={4}>Reschedule booking: </Text>
               <FormControl.Label>Day:</FormControl.Label>
               <Select 
                   selectedValue={scheduledDay}
                   onValueChange={(itemValue) => setScheduledDay(itemValue)}
               >
                   <Select.Item label="Monday" value="MONDAY" />
-                  <Select.Item label="Tuesday" value="TEUSDAY" />
+                  <Select.Item label="Tuesday" value="TUESDAY" />
                   <Select.Item label="Wednesday" value="WEDNESDAY" />
                   <Select.Item label="Thursday" value="THURSDAY" />
                   <Select.Item label="Friday" value="FRIDAY" />
                   <Select.Item label="Saturday" value="SATURDAY" />
                   <Select.Item label="Sunday" value="SUNDAY" />
               </Select>
-              <Text fontSize="2xl" fontWeight="bold" mb={4}>Reschedule booking time </Text>
               <FormControl.Label>Time:</FormControl.Label>
               <Select 
                   selectedValue={scheduledTime}
@@ -75,7 +96,6 @@ export default function RescheduleBooking() {
                   <Select.Item label="11am-3pm" value="AFTERNOON" />
                   <Select.Item label="3pm-10pm" value="EVENING" />
               </Select>
-              <Text fontSize="2xl" fontWeight="bold" mb={4}>Reschedule booking frequency </Text>
               <FormControl.Label>Frequency:</FormControl.Label>
               <Select 
                   selectedValue={scheduledFrequency}
@@ -86,7 +106,9 @@ export default function RescheduleBooking() {
                   <Select.Item label="Every two weeks" value="BI_WEEKLY" />
                   <Select.Item label="Every month" value="MONTHLY" />
               </Select>
-              <Button onPress={() => handleSubmit()}>
+              <Button 
+              className="w-[300px] m-auto mt-10"
+              onPress={() => handleSubmit()}>
                   <Text>Reschedule Booking</Text>
               </Button>
           </FormControl>
