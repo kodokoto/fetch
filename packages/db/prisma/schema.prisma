@@ -124,6 +124,7 @@ model Pet {
   bookings    Booking[]
   description String?
   type        PetType
+  imageUrl    String
   @@index([ownerId])
 }
 
@@ -149,8 +150,6 @@ enum Role {
 enum PetType {
   DOG
   CAT
-  BIRD
-  FISH
   OTHER
 }
 
@@ -242,7 +241,7 @@ enum BookingStatus {
 
 enum Day {
   MONDAY
-  TEUSDAY
+  TUESDAY
   WEDNESDAY
   THURSDAY
   FRIDAY

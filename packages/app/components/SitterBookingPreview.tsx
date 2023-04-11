@@ -6,8 +6,6 @@ import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { Booking } from '@prisma/client'
 import { api } from '../utils/trpc'
-import { useAtom } from 'jotai'
-import { Profile, sessionAtom } from 'app/utils/storage'
 
 function parseBookingFrequency(bookingFrequency: string) {
   switch (bookingFrequency) {
@@ -45,12 +43,11 @@ function parseTime(TimeOfDay: string){
   }
 }
 
-export default function BookingPreview(props: Booking) {
+export default function SitterBookingPreview(props: Booking) {
   const router = useRouter()
   console.log(props)
-  const [session, _] = useAtom(sessionAtom)
 
-  const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(String(props.sitterId))
+  const { data: ownerData, error, isLoading } = api.owner.byId.useQuery(String(props.ownerId))
   const { data } = api.booking.byIdWithScheduledTime.useQuery({
     id: props.id,
     include: 'scheduledTime',
@@ -66,6 +63,7 @@ export default function BookingPreview(props: Booking) {
 
   if (isLoading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
+
   return (
     <Button
       onPress={handlePress}
@@ -73,11 +71,11 @@ export default function BookingPreview(props: Booking) {
     >
       <Box className="bg-[#4c8ab9] rounded-2xl p-4 w-80 h-25 mb-2 flex-wrap flex-row justify-between">
         <Box className="float-left" style={{ flexDirection: 'row' }}>
-          <Avatar source={{ uri: sitterData?.imageUrl }} className="w-12 h-12 md:w-48 md:h-auto float-left">
+          <Avatar source={{ uri: ownerData?.imageUrl }} className="w-12 h-12 md:w-48 md:h-auto float-left">
             AT
           </Avatar>
           <Box className="ml-4 float-left">
-            <Text className="font-bold text-lg">{sitterData?.name}</Text>
+            <Text className="font-bold text-lg">{ownerData?.name}</Text>
             <Text>{petData? petData.map((pet) => pet.name).join(", ") : null}</Text>
           </Box>
         </Box>

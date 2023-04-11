@@ -45,3 +45,4 @@ function AnimalSelectButton({ animal, value, onChange, icon }: { animal: string,
         </Button>
     )
 }
+

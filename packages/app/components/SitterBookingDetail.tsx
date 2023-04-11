@@ -62,7 +62,7 @@ function parseTime(TimeOfDay: string){
 export default function BookingDetail(props: Booking) {
   const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
-  const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(String(props.sitterId))
+  const { data: ownerData, error, isLoading } = api.owner.byId.useQuery(String(props.ownerId))
   const {data: serviceData} = api.service.byId.useQuery(props.serviceId)
   const {data: petData} = api.pet.byBookingId.useQuery(props.id)
   const { data } = api.booking.byIdWithScheduledTime.useQuery({
@@ -74,9 +74,9 @@ export default function BookingDetail(props: Booking) {
     router.replace({
       pathname: '/messages',
       params: {
-        receiverId: props.ownerId,
-        senderId: props.sitterId,
-        receiverName: sitterData?.name,
+        receiverId: props.sitterId,
+        senderId: props.ownerId,
+        receiverName: ownerData?.name,
       },
     })
   }
@@ -84,13 +84,13 @@ export default function BookingDetail(props: Booking) {
   if (error) return <Text>{error.message}</Text>
   return (
     <ScrollView>
-      <Avatar className="mx-auto mt-28 mb-20 w-32 h-32" source={{ uri: sitterData?.imageUrl }}>
+      <Avatar className="mx-auto mt-28 mb-20 w-32 h-32" source={{ uri: ownerData?.imageUrl }}>
         LB
       </Avatar>
       <Box className="rounded-2xl border-[#4c8ab9] border-solid border-2 bg-slate-100 h-116 w-96">
         <Box className="flex-wrap flex-row my-4 justify-between">
           <Box className="flex-start">
-            <Text className="text-2xl font-bold ml-4">{sitterData?.name}</Text>
+            <Text className="text-2xl font-bold ml-4">{ownerData?.name}</Text>
             <Text className="text-lg ml-4">{capitalizeWords(props.status)}</Text>
           </Box>
           <Button className="bg-white w-14 h-14 rounded-3xl flex-end mr-4" onPress={handleMessagePress}>
@@ -151,7 +151,8 @@ export default function BookingDetail(props: Booking) {
           </Box>
           <Box className="flex-wrap flex-row mt-2 mb-10">
             <Button className="ml-auto rounded-2xl">Reschedule</Button>
-            <Button className="mr-auto ml-2 rounded-2xl">Cancel</Button>
+            <Button className="mx-2 rounded-2xl">Cancel</Button>
+            <Button className="mr-auto rounded-2xl" onPress={() => router.push('/review')}>Review</Button>
           </Box>
         </Box>
       </Box>

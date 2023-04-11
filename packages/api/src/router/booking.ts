@@ -1,7 +1,7 @@
 import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { prisma } from 'db'
-import { Day, TimeOfDay, BookingFrequency } from '@prisma/client'
+import { Day, TimeOfDay, BookingFrequency, BookingStatus } from '@prisma/client'
 
 export const bookingRouter = router({
   all: publicProcedure.query(() => {
@@ -9,6 +9,23 @@ export const bookingRouter = router({
   }),
   byId: publicProcedure.input(z.number()).query(({ input }) => {
     return prisma.booking.findFirst({ where: { id: input } })
+  }),
+  byIdWithScheduledTime: publicProcedure
+  .input(
+    z.object({
+      id: z.number(),
+      include: z.enum(['scheduledTime'])
+    })
+  )
+  .query(({ input }) => {
+    return prisma.booking.findFirst({
+      where: { 
+        id: input.id,
+      },
+      include: {
+        scheduledTime: input.include.includes('scheduledTime')
+      }
+    })
   }),
   byOwnerId: publicProcedure.input(z.string()).query(({ input }) => {
     return prisma.booking.findMany({
@@ -68,5 +85,5 @@ export const bookingRouter = router({
           },
         },
       })
-    }),
+    })
 })

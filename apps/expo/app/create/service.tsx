@@ -109,8 +109,8 @@ export default function services() {
                 </View>
 
                 <View className='flex-col my-5'>
-                    <Text className='font-bold text-2xl'>petType:</Text>
-                    <Text className='mb-4'>What petType do you want to take care of?</Text>
+                    <Text className='font-bold text-2xl'>Pets:</Text>
+                    <Text className='mb-4'>What pets do you want to take care of?</Text>
                     <PetTypeSelect value={petType} onChange={setPetType} />
                 </View>
 

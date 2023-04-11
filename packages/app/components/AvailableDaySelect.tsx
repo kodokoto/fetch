@@ -46,7 +46,7 @@ export default function AvailableDaySelect({value, onChange} : {value: Available
     return (
         <View className='flex-row justify-center divide-x-8 '>
             <DaySelectButton roundedLeft day='MONDAY' value={value.MONDAY} onChange={handleDayChange} />
-            <DaySelectButton day="TEUSDAY" value={value.TUESDAY} onChange={handleDayChange} />
+            <DaySelectButton day="TUESDAY" value={value.TUESDAY} onChange={handleDayChange} />
             <DaySelectButton day="WEDNESDAY" value={value.WEDNESDAY} onChange={handleDayChange} />
             <DaySelectButton day="THURSDAY" value={value.THURSDAY} onChange={handleDayChange} />
             <DaySelectButton day="FRIDAY" value={value.FRIDAY} onChange={handleDayChange} />
