@@ -8,15 +8,15 @@ import { Profile, sessionAtom } from 'app/utils/storage'
 import ProfileCarousel from 'app/components/ProfileCarousel'
 import ProfileTabs from 'app/components/ProfileTabs'
 
-export default function SitterProfile() {
-  const { sitterId, serviceType, day, timeOfDay } = useSearchParams()
+export default function OwnerProfile() {
+  const { ownerId, serviceType, day, timeOfDay } = useSearchParams()
   const router = useRouter()
 
   const [session, _] = useAtom(sessionAtom)
 
-  const { data: sitterData, error, isLoading } = api.sitter.byIdWith.useQuery({
-    id: String(sitterId),
-    include: ['images', 'reviews', 'services']
+  const { data: ownerData, error, isLoading } = api.owner.byIdWith.useQuery({
+    id: String(ownerId),
+    include: ['images', 'reviews', 'pets']
   })
 
 
@@ -26,8 +26,8 @@ export default function SitterProfile() {
   return (
     <>
     <Stack.Screen 
-      options={sitterData && {
-        headerTitle: sitterData.name,
+      options={ownerData && {
+        headerTitle: ownerData.name,
         headerTitleAlign: 'left',
       }}
     />
@@ -35,29 +35,29 @@ export default function SitterProfile() {
         <View className='bg-transparent flex-1'>
     <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <View className="flex-1 flex-col justify-center">
-            <ProfileCarousel {...sitterData.images}/>
+            <ProfileCarousel {...ownerData.images}/>
             <View className='bottom-12 flex-1'>
               <View className='flex flex-col gap-1 text-black mx-6 mb-4'>
                   <Image
-                      source={{ uri: sitterData.imageUrl }}
+                      source={{ uri: ownerData.imageUrl }}
                       className='w-16 h-16 rounded-full border-white border-2'
                   />
                   <View className='flex-row justify-between'>
                     <View>
                       <Text></Text>
-                      <Text className='text-2xl font-bold'>{sitterData.name}</Text>
-                      <Text className='text-sm'>Pet Sitter</Text>
-                      <Text>{sitterData.bio}</Text>
+                      <Text className='text-2xl font-bold'>{ownerData.name}</Text>
+                      <Text className='text-sm'>Pet Owner</Text>
+                      <Text>{ownerData.bio}</Text>
                     </View>
                     {
-                      session.currentProfile === Profile.OWNER
+                      session.currentProfile === Profile.SITTER
                       ? <View className='flex flex-row gap-2'>
                          <Button className='rounded-full'
                             onPress={() => router.replace({
                               pathname: '/messages',
                               params: {
-                                receiverId: sitterId,
-                                senderId: session.ownerId,
+                                receiverId: ownerId,
+                                senderId: session.sitterId,
                               }
                             })}
                           >
@@ -67,7 +67,7 @@ export default function SitterProfile() {
                             router.push({
                               pathname: '/report',
                               params: {
-                                sitterId: sitterData.id,
+                                ownerId: ownerData.id,
                               }
                             }) 
                           }}>
@@ -80,11 +80,11 @@ export default function SitterProfile() {
                   </View>
               </View> 
               <ProfileTabs {...{
-                description: sitterData.description,
-                location: sitterData.location,
-                proximityRadius: sitterData.proximityRadius,
-                reviews: sitterData.reviews,
-                services: sitterData.services,
+                description: ownerData.description,
+                location: ownerData.location,
+                proximityRadius: ownerData.proximityRadius,
+                reviews: ownerData.reviews,
+                pets: ownerData.pets,
               }} />
             </View>
       </View>
@@ -97,7 +97,7 @@ export default function SitterProfile() {
             onPress={() => router.push({
               pathname: '/create/booking',
               params: {
-                sitterId,
+                ownerId,
                 serviceType,
                 day,
                 timeOfDay,
@@ -111,7 +111,7 @@ export default function SitterProfile() {
             onPress={() => router.push({
               pathname: '/create/booking',
               params: {
-                sitterId,
+                ownerId,
                 serviceType,
                 day,
                 timeOfDay,
@@ -125,7 +125,7 @@ export default function SitterProfile() {
             onPress={() => router.push({
               pathname: '/create/booking',
               params: {
-                sitterId,
+                ownerId,
                 serviceType,
                 day,
                 timeOfDay,

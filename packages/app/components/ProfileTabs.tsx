@@ -1,4 +1,3 @@
-import { Profile } from 'next-auth';
 import * as React from 'react';
 import { Animated, View, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
@@ -87,12 +86,13 @@ export default function ProfileTabs(props: ProfileTabProps) {
         props.services
         ? [
             { key: 'info', title: 'Info' },
-            { key: 'reviews', title: 'Reviews' },
             { key: 'services', title: 'Services' },
+            
         ] 
         : [
             { key: 'info', title: 'Info' },
             { key: 'pets', title: 'Pets' },
+            { key: 'reviews', title: 'Reviews' },
         ]
     );
   
@@ -133,12 +133,14 @@ export default function ProfileTabs(props: ProfileTabProps) {
          props.services 
          ? {
               info: Info,
-              reviews: Reviews,
-              services: Services
+              services: Services,
+              reviews: Reviews
+              
           }
           : {
                 info: Info,
                 pets: Pets,
+                reviews: Reviews
           }
           )}
           onIndexChange={setIndex}
