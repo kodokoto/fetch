@@ -1,8 +1,4 @@
 import { View, TouchableOpacity } from 'react-native'
-import { useSearchParams, useRouter } from 'expo-router'
-import { api } from 'app/utils/trpc'
-import { StatusBar } from 'expo-status-bar'
-import { useUser } from '@clerk/clerk-expo'
 import React from 'react'
 import {
   Box,
@@ -15,31 +11,30 @@ import {
 } from 'native-base'
 import { Service, ScheduledTime, TimeOfDay, Day, BookingFrequency } from '@prisma/client'
 
+import { useRouter, useSearchParams } from 'expo-router'
+import { api } from 'app/utils/trpc'
+import { useUser } from '@clerk/clerk-expo'
+import { useAtom } from 'jotai'
+import { sessionAtom } from 'app/utils/storage'
 
-export default function AddBooking() {
-
-    const [selectedServiceType, setSelectedServiceType] = React.useState('')
-    const [selectedPet, setSelectedPet] = React.useState("")
+export default function RescheduleBooking() {
+    const router = useRouter()
+    const { bookingId, ownerId } = useSearchParams()
     const [scheduledTime, setScheduledTime] = React.useState('')
-    
-  
+    const [session, _] = useAtom(sessionAtom)
+    const {data: booking} = api.booking.byId.useQuery(Number(bookingId))
+    const serviceId = booking.serviceId
+    const {data: serviceData} = api.service.byId.useQuery(serviceId)
+    const mutation = api.report.create.useMutation()
+    const {data: petData} = api.pet.byBookingId.useQuery(Number(bookingId))
+
     return (
       <View className="flex flex-col justify-center items-center">
+        <Text>Current Booking details: </Text>
+        <Text>Here is your pet name: {petData? petData.map((pet) => pet.name).join(", ") : null}</Text>
+        <Text>Here is your booking details: {serviceData?.type}</Text>
         <FormControl>
-            <Text fontSize="2xl" fontWeight="bold" mb={4}>Send a booking request to </Text>
-            <FormControl.Label>Service:</FormControl.Label>
-            <Select 
-                selectedValue={selectedServiceType}
-                onValueChange={(itemValue) => setSelectedServiceType(itemValue)}
-            >
-            </Select>
-            <FormControl.Label>Pet:</FormControl.Label>
-            <Select 
-                selectedValue={selectedPet}
-                onValueChange={(itemValue) => setSelectedPet(itemValue)}
-                placeholder='Select a Pet'
-            >
-            </Select>
+            <Text fontSize="2xl" fontWeight="bold" mb={4}>Reschedule booking frequency </Text>
             <FormControl.Label>Frequency:</FormControl.Label>
             <Select 
                 selectedValue={scheduledTime}
@@ -51,7 +46,7 @@ export default function AddBooking() {
                 <Select.Item label="Every month" value="MONTHLY" />
             </Select>
             <Button>
-                <Text>Send Booking Request</Text>
+                <Text>Reschedule Booking</Text>
             </Button>
         </FormControl>
       </View>
