@@ -23,6 +23,7 @@ export default function OwnerProfileEdit() {
       setName(data.name)
       setLocation(data.location)
       setDescription(data.description)
+      setBio(data.bio)
     }
   })
 
@@ -30,6 +31,7 @@ export default function OwnerProfileEdit() {
   const [location, setLocation] = useState('')
   const [description, setDescription] = useState('')
   const [name, setName] = useState('')
+  const [bio, setBio] = useState('')
 
   const handleLocationSearch = () => {
     Location.getCurrentPositionAsync({}).then(
@@ -49,15 +51,13 @@ export default function OwnerProfileEdit() {
   }  
 
   const handleProfileEditing = () => {
-    console.log("Name: " + name)
-    console.log("Location: " + location)
-    console.log("Description: " + description)
     mutationOwner.mutateAsync({
         id : ownerData.id,
         name: name,
         imageUrl: ownerData.imageUrl,
         location: location,
         description: description,
+        bio: bio
     }).then(
       (data) => {
         console.log(data)
@@ -98,6 +98,11 @@ export default function OwnerProfileEdit() {
               <Ionicons name="ios-location-outline" size={18} color="black" onPress={handleLocationSearch}/>
             </Button>
           }/>
+        </View>
+
+        <View className='my-4'>
+          <Text className='text-md font-semibold mb-2'>A short bio: </Text>
+          <Input value={bio}  onChangeText={setBio} maxLength={80}/>
         </View>
 
         <View className='my-8'>

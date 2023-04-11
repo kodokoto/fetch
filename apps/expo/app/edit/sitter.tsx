@@ -127,22 +127,21 @@ export default function SitterProfileEdit() {
         <View className='my-4'>
           <Text className='text-md font-semibold mb-2'>A short bio: </Text>
           <Input value={bio}  onChangeText={setBio} maxLength={80}/>
+        </View>
 
-
-          <View className='my-4'>
-              <Text className='text-md font-semibold mb-2'>About you:</Text>
-              <TextArea 
-                  h={20} 
-                  placeholder="Text Area Placeholder" 
-                  value={description}
-                  w="100%" 
-                  autoCompleteType={undefined} 
-                  onChangeText={
-                      (text) => setDescription(text) 
-                  }
-                  maxLength={200}
-              />
-          </View>
+        <View className='my-4'>
+            <Text className='text-md font-semibold mb-2'>About you:</Text>
+            <TextArea 
+                h={20} 
+                placeholder="Text Area Placeholder" 
+                value={description}
+                w="100%" 
+                autoCompleteType={undefined} 
+                onChangeText={
+                    (text) => setDescription(text) 
+                }
+                maxLength={200}
+            />
         </View>
         <View className='my-8'>
             <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10' 
