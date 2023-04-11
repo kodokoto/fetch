@@ -44,6 +44,8 @@ import { Day, TimeOfDay, BookingFrequency } from '@prisma/client'
       .input(
         z.object({
           id: z.number(),
+          time: z.string(),
+          day: z.string(),
           frequency: z.string()
         })
       )
@@ -53,6 +55,8 @@ import { Day, TimeOfDay, BookingFrequency } from '@prisma/client'
             id: input.id,
           },
           data: {
+            time: input.time as TimeOfDay,
+            day: input.day as Day,
             frequency: input.frequency as BookingFrequency,
           },
         })
