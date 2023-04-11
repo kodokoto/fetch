@@ -15,6 +15,12 @@ export default function () {
           headerTitle: 'Create a service',
         }}
       />
+      <Stack.Screen
+        name="owner"
+        options={{
+          headerTitle: 'Create an owner profile',
+        }}
+      />
     </Stack>
   )
 }

@@ -46,12 +46,6 @@ export const ownerRouter = router({
         imageUrl: z.string(),
         description: z.string(),
         location: z.string(),
-        pets: z.array(z.object({
-          name: z.string(),
-          type: z.string(),
-          description: z.string(),
-          imageUrl: z.string(),
-        }))
       })
     )
     .mutation(async ({ input }) => {
@@ -62,15 +56,37 @@ export const ownerRouter = router({
           imageUrl: input.imageUrl,
           description: input.description,
           location: input.location,
+        },
+      })
+    }),
+    addPet: publicProcedure
+    .input(
+      z.object({
+        ownerId: z.string(),
+        pets: z.array(
+          z.object({
+            name: z.string(),
+            type: z.string(),
+            description: z.string(),
+            imageUrl: z.string(),
+        }))
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await prisma.owner.update({
+        where: {
+          id: input.ownerId,
+        },
+        data: {
           pets: {
-            create: input.pets.map(pet => ({
+            create: input.pets.map((pet) => ({
               name: pet.name,
               type: pet.type as PetType,
               description: pet.description,
               imageUrl: pet.imageUrl,
             }))
           }
-        },
+        }
       })
-    }),
+    }), 
 })

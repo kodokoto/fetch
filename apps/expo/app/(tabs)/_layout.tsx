@@ -22,6 +22,15 @@ export default function () {
           }}
         />
           <Tabs.Screen
+          name="pets"
+          options={{
+            title: 'pets',
+            tabBarIcon: ({ focused, color, size }) => {
+              return <Ionicons name={focused ? 'ios-paw' : 'ios-paw-outline'} size={size} color={color} />
+            },
+          }}
+        />
+          <Tabs.Screen
           name="search"
           options={{
             title: 'Search',
@@ -65,6 +74,13 @@ export default function () {
             tabBarIcon: ({ focused, color, size }) => {
               return <Ionicons name={focused ? 'ios-home' : 'ios-home-outline'} size={size} color={color} />
             },
+          }}
+        />
+        <Tabs.Screen
+          name="pets"
+          options={{
+            title: 'Pets',
+            href: null,
           }}
         />
         <Tabs.Screen
