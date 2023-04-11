@@ -1,6 +1,7 @@
 import { router, publicProcedure } from '../trpc'
 import { z } from 'zod'
 import { prisma } from 'db'
+import { PetType } from '@prisma/client'
 
 export const petRouter = router({
   all: publicProcedure.query(() => {
@@ -33,4 +34,27 @@ export const petRouter = router({
       },
     })
   }),
+  create : publicProcedure
+    .input(z.object({
+      name: z.string(),
+      type: z.string(),
+      ownerId: z.string(),
+      imageUrl: z.string(),
+      description: z.string()
+    }))
+    .mutation(async ({ input }) => {
+      return await prisma.pet.create({
+        data: {
+          name: input.name,
+          type: input.type as PetType,
+          imageUrl: input.imageUrl,
+          owner: {
+            connect: {
+              id: input.ownerId
+            }
+          },
+          description: input.description,
+        }
+      })
+    })
 })
