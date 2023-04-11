@@ -54,6 +54,9 @@ export default function RescheduleBooking() {
         day: scheduledDay,
         frequency: scheduledFrequency    
       })
+      router.push({
+        pathname: '/home'
+      })
       
     }
 
