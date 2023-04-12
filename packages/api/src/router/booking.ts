@@ -85,5 +85,30 @@ export const bookingRouter = router({
           },
         },
       })
-    })
-})
+    }),
+  update: publicProcedure
+    .input(z.object({
+      id: z.number(),
+      serviceId: z.number(),
+      petId: z.number(),
+    })) 
+    .mutation(async ({ input }) => {
+      return await prisma.booking.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          service: {
+            connect: {
+              id: input.serviceId,
+            }
+          },
+          pet: {
+            connect: {
+              id: input.petId,
+            },
+          },
+        },
+      })
+    }),
+  })

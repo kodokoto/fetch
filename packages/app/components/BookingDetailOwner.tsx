@@ -10,7 +10,7 @@ import { Profile, sessionAtom } from 'app/utils/storage'
 import { parseBookingFrequency, capitalizeWords, parseServiceType, parseTime } from '../utils/helpers'
 
 
-export default function BookingDetail(props: Booking) {
+export default function BookingDetailOwner(props: Booking) {
   const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
   const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(String(props.sitterId))
@@ -104,13 +104,17 @@ export default function BookingDetail(props: Booking) {
             <Button className="ml-auto rounded-2xl"
             onPress={() =>
             router.push({
-              pathname: '/reschedule',
+              pathname: '/edit/booking',
               params: {
-                bookingId: props.id
+                bookingId: props.id,
+                ownerId: props.ownerId,
+                sitterId: props.sitterId,
+                scheduledTimeId: data.scheduledTime.id,
+                day: data.scheduledTime.day,
+                timeOfDay: data.scheduledTime.time,
               }
-            })
-          }
-            >Reschedule</Button>
+            })}
+            >Manage</Button>
             <Button className="mr-auto ml-2 rounded-2xl">Cancel</Button>
           </Box>
         </Box>

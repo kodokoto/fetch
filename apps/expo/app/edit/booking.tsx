@@ -16,25 +16,20 @@ import {
 import { Service, ScheduledTime, TimeOfDay, Day, BookingFrequency } from '@prisma/client'
 
 
-export default function AddBooking() {
+export default function EditBooking() {
     const router = useRouter()
 
-    const { sitterId, serviceType, day, timeOfDay } = useSearchParams()
+    const { bookingId, sitterId, ownerId, scheduledTimeId, day, timeOfDay } = useSearchParams()
 
     console.log("Sitter Id: " + sitterId);
-    console.log("Service Type: " + serviceType);
-    console.log("Day Time: " + timeOfDay);
-    
-    
-
-    const { isLoaded, user } = useUser()
-    const userId = user?.id
-
-    const { data: ownerData} = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
-    const ownerId = ownerData?.id
-    
     console.log("Owner Id: " + ownerId);
+    console.log("Booking Id: " + bookingId);
+    console.log("Scheduled Time Id: " + scheduledTimeId);
+
+    const { data: bookingData, isLoading: bookingDataIsLoading} = api.booking.byId.useQuery(Number(bookingId))
     
+    const { data: scheduledTimeData, isLoading: scheduledTimeDataIsLoading} = api.scheduledTime.byId.useQuery(Number(scheduledTimeId))
+
     const { data: sitterData, isLoading: sitterDataIsLoading} = api.sitter.byId.useQuery(String(sitterId))
 
     const { data: pets, isLoading: petsIsLoading} = api.pet.byOwnerId.useQuery(String(ownerId), { enabled: !!ownerId, cacheTime: 0 })
@@ -44,7 +39,8 @@ export default function AddBooking() {
         day: String(day) as Day,
         time: String(timeOfDay) as TimeOfDay
     })
-    const mutation = api.booking.create.useMutation()
+
+    const mutation = api.booking.update.useMutation()
 
     const getPetByName = (name: string) => {
         return pets.find((pet) => pet.name === name)
@@ -56,32 +52,35 @@ export default function AddBooking() {
 
 
     const handleSubmit = () => {
-      mutation.mutate({
-        scheduledTime: scheduledTime,
-        sitterId: String(sitterId),
-        ownerId: ownerData.id,
+      mutation.mutateAsync({
+        id: Number(bookingId),
         serviceId: getServiceByType(selectedServiceType).id,
-        petId: getPetByName(selectedPet).id
+        petId: getPetByName(selectedPet).id,
+      }).then(() => {
+        router.replace({
+            pathname: `/booking/${bookingId}`,
+            params: {
+                bookingId: bookingId,
+            }
+        })
       })
-      router.push('/home');
     }
     function titleCase(string){
         return string[0].toUpperCase() + string.slice(1).toLowerCase();
     }
       
-    const [selectedServiceType, setSelectedServiceType] = React.useState<string>(String(serviceType));
+    const [selectedServiceType, setSelectedServiceType] = React.useState<string>(String(bookingData.serviceId));
     const [selectedPet, setSelectedPet] = React.useState("")
     const [scheduledTime, setScheduledTime] = React.useState<Partial<ScheduledTime>>({
         day: String(day) as Day,
-        time: String(timeOfDay) as TimeOfDay,
-        frequency: "ONE_OFF" as BookingFrequency
+        time: String(timeOfDay) as TimeOfDay
     })
-    if(!isLoaded || availabileServicesIsLoading || sitterDataIsLoading || petsIsLoading) return null;
-  
+    if(availabileServicesIsLoading || sitterDataIsLoading || petsIsLoading || bookingDataIsLoading || scheduledTimeDataIsLoading) return null;
+
     return (
       <View className="flex flex-col justify-center items-center">
         <FormControl>
-            <Text fontSize="2xl" fontWeight="bold" mb={4}>Send a booking request to {sitterData.name}</Text>
+            <Text fontSize="2xl" fontWeight="bold" mb={4}>Manage your booking</Text>
             <FormControl.Label>Service:</FormControl.Label>
             <Select 
                 selectedValue={selectedServiceType}
@@ -126,7 +125,7 @@ export default function AddBooking() {
                 <Select.Item label="Every month" value="MONTHLY" />
             </Select>
             <Button onPress={handleSubmit}>
-                <Text>Send Booking Request</Text>
+                <Text>Edit details</Text>
             </Button>
         </FormControl>
       </View>

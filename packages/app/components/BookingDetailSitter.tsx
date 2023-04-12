@@ -59,7 +59,7 @@ function parseTime(TimeOfDay: string){
   }
 }
 
-export default function BookingDetail(props: Booking) {
+export default function BookingDetailSitter(props: Booking) {
   const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
   const { data: ownerData, error, isLoading } = api.owner.byId.useQuery(String(props.ownerId))
@@ -150,7 +150,23 @@ export default function BookingDetail(props: Booking) {
             </Box>
           </Box>
           <Box className="flex-wrap flex-row mt-2 mb-10">
-            <Button className="ml-auto rounded-2xl">Reschedule</Button>
+            <Button 
+              className="ml-auto rounded-2xl"
+              onPress={() => router.push({
+                pathname: '/edit/booking',
+                params: {
+                  bookingId: props.id,
+                  ownerId: props.ownerId,
+                  sitterId: props.sitterId,
+                  scheduledTimeId: data.scheduledTime.id,
+                  day: data.scheduledTime.day,
+                  timeOfDay: data.scheduledTime.time,
+                }
+              })}
+              
+            >
+              Manage
+            </Button>
             <Button className="mx-2 rounded-2xl">Cancel</Button>
             <Button className="mr-auto rounded-2xl" onPress={() => router.push('/review')}>Review</Button>
           </Box>
