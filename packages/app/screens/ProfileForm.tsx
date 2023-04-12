@@ -26,19 +26,25 @@ export default function ProfileForm(formData : ProfileFormProps) {
     <>
         <View className='my-4'>
           <Text className='text-md font-semibold mb-2'>Name: </Text>
-          <Input value={formData.name}  onChangeText={formData.setName}/>
+          <Input 
+            value={formData.name}  
+            placeholder="Enter your name"
+            onChangeText={formData.setName}/>
         </View>
         
         <View className='my-4'>
           <Text className='text-md font-semibold mb-2'>A short bio: </Text>
-          <Input value={formData.bio}  onChangeText={formData.setBio} maxLength={80}/>
+          <Input 
+            value={formData.bio}  
+            placeholder="Enter a short bio"
+            onChangeText={formData.setBio} maxLength={80}/>
 
 
           <View className='my-4'>
-              <Text className='text-md font-semibold mb-2'>Give us an insight into your experience as a sitter:</Text>
+              <Text className='text-md font-semibold mb-2'>Tell us more about yourself:</Text>
               <TextArea 
                   h={20} 
-                  placeholder="Text Area Placeholder" 
+                  placeholder="Enter a description of yourself" 
                   value={formData.description}
                   w="100%" 
                   autoCompleteType={undefined} 
@@ -58,7 +64,7 @@ export default function ProfileForm(formData : ProfileFormProps) {
           }/>
         </View>
         <View className='my-4'>
-          <AddImageButton setImages={formData.setImages} />
+          <AddImageButton setImages={formData.setImages} aspect={[4,3]}/>
           <View className='my-4 bg-gray-500 '>
           </View>
         </View>

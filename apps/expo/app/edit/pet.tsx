@@ -6,6 +6,7 @@ import { sessionAtom } from 'app/utils/storage';
 import { useAtom } from 'jotai';
 import PetTypeToggle from "app/components/PetTypeToggle";
 import { useRouter, useSearchParams } from "expo-router";
+import AddPictureButton from "app/components/AddPictureButton";
 
 
 export default function petCreateForm() {
@@ -48,6 +49,7 @@ export default function petCreateForm() {
         "CAT": false,
         "OTHER": false,
     });
+    const [image, setImages] = React.useState([])
 
     function getPetByBoolean() {
         const availablePetTypes = Object.keys(petType);
