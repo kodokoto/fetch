@@ -23,6 +23,34 @@ export default function OwnerProfileCreate() {
   const [bio, setBio] = React.useState('')
   const [name, setName] = React.useState(user.firstName)
   const [images, setImages] = React.useState([])
+  const [submitPressed, setSubmitPressed] = useState(false);
+
+  useEffect(() => {
+    const handleProfileCreation = () => {
+      if (user && user.firstName) {
+        mutation.mutateAsync({
+          userId: user.id,
+          name: user.firstName,
+          imageUrl: user.profileImageUrl,
+          description: description,
+          location: location,
+          bio: bio,
+          images: images,
+        }).then(
+          (ownerProfile) =>{
+            setSession({...session, currentProfile: Profile.OWNER, ownerId: ownerProfile.id})
+            router.replace('/pets')
+          } 
+        )  
+      } else {
+        console.log('User not found')
+      }
+    }
+
+    if(submitPressed && images.length > 0){
+      handleProfileCreation();
+    }
+  }, [images, submitPressed])
   
   const handleLocationSearch = () => {
     Location.getCurrentPositionAsync({}).then(
@@ -41,27 +69,6 @@ export default function OwnerProfileCreate() {
     )
   }  
 
-  const handleProfileCreation = () => {
-    if (user && user.firstName) {
-      mutation.mutateAsync({
-        userId: user.id,
-        name: user.firstName,
-        imageUrl: user.profileImageUrl,
-        description: description,
-        location: location,
-        bio: bio,
-        images: images,
-      }).then(
-        (ownerProfile) =>{
-          setSession({...session, currentProfile: Profile.OWNER, ownerId: ownerProfile.id})
-          router.replace('/pets')
-        } 
-      )  
-    } else {
-      console.log('User not found')
-    }
-  }
-
   if (!isLoaded) return null
 
   return (
@@ -74,7 +81,7 @@ export default function OwnerProfileCreate() {
             return (
               location.length > 0
               ? (
-                <Button className='bg-transparent' onPress={()=> handleProfileCreation()}>
+                <Button className='bg-transparent' onPress={()=> setSubmitPressed(true)}>
                   <View className='flex-row items-center'>
                     <Text className='mr-2'>Next</Text>
                     <Ionicons name="ios-arrow-forward-circle-outline" size={24} color="black" />

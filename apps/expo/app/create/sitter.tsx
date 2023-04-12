@@ -1,5 +1,5 @@
 import { View, Text, Image } from 'react-native'
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Button, ScrollView } from 'native-base'
 import { api } from 'app/utils/trpc'
 import { useUser } from '@clerk/clerk-expo'
@@ -26,6 +26,7 @@ export default function SitterProfileCreate() {
   const [proximityRadius, setProximityRadius] = React.useState(5)
   const [name, setName] = React.useState(user.firstName)
   const [images, setImages] = React.useState([])
+  const [submitPressed, setSubmitPressed] = useState(false);
 
   const handleLocationSearch = () => {
     Location.getCurrentPositionAsync({}).then(
@@ -44,22 +45,28 @@ export default function SitterProfileCreate() {
     )
   }  
 
-  const handleOnSubmit = () => {
-    if (user && user.firstName) { 
-      mutation.mutateAsync({
-        userId: user.id,
-        name: name,
-        imageUrl: user.profileImageUrl,
-        bio: bio,
-        description: description,
-        location: location,
-        proximityRadius: proximityRadius,
-        images: images,
-      })
-    } else {
-      console.log('User not found')
+  useEffect(() => {
+    const handleOnSubmit = () => {
+      if (user && user.firstName) { 
+        mutation.mutateAsync({
+          userId: user.id,
+          name: name,
+          imageUrl: user.profileImageUrl,
+          bio: bio,
+          description: description,
+          location: location,
+          proximityRadius: proximityRadius,
+          images: images,
+        })
+      } else {
+        console.log('User not found')
+      }
     }
-  }
+
+    if(submitPressed && images.length > 0){
+      handleOnSubmit();
+    }
+  }, [images, submitPressed])
 
   if (!isLoaded) return null
 
@@ -72,7 +79,7 @@ export default function SitterProfileCreate() {
             return (
               location.length > 0
               ? (
-                <Button className='bg-transparent' onPress={()=> handleOnSubmit()}>
+                <Button className='bg-transparent' onPress={() => setSubmitPressed(true)}>
                   <View className=' pl-8 flex-row items-center'>
                     <Text className='text-md mr-2'>Next</Text>
                     <Ionicons name="ios-arrow-forward-circle-outline" size={24} color="black" />
@@ -118,7 +125,6 @@ export default function SitterProfileCreate() {
             setImages,
             proximityRadius,
             setProximityRadius,
-            handleOnSubmit,
             handleLocationSearch,
           }
        }/>

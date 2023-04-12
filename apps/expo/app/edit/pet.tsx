@@ -1,12 +1,13 @@
 import { Button, ScrollView, Select, FormControl, TextArea,Text,Input, Box } from "native-base";
 import { api } from 'app/utils/trpc'
 import { View } from 'react-native'
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { sessionAtom } from 'app/utils/storage';
 import { useAtom } from 'jotai';
 import PetTypeToggle from "app/components/PetTypeToggle";
 import { useRouter, useSearchParams } from "expo-router";
-import AddPictureButton from "app/components/AddPictureButton";
+import AddImageButton from "app/components/AddPictureButton";
+import { log } from "react-native-reanimated";
 
 
 export default function petCreateForm() {
@@ -14,6 +15,15 @@ export default function petCreateForm() {
     const { id } = useSearchParams();
     const mutation = api.pet.update.useMutation()
     const router = useRouter();
+    const [submitPressed, setSubmitPressed] = useState(false);
+    const [name, setName] = React.useState('')
+    const [description, setDescription] = React.useState('')
+    const [petType, setPetType] = React.useState({
+        "DOG": false,
+        "CAT": false,
+        "OTHER": false,
+    });
+    const [images, setImages] = React.useState([])
 
     const {data: pet, isLoading} = api.pet.byId.useQuery(Number(id), {
         onSuccess: (data) => {
@@ -27,14 +37,15 @@ export default function petCreateForm() {
         }
     })
 
-
-    const handleSubmit = () => {
+    useEffect(() => {
+      const handleSubmit = () => {
+        console.log(456);
         mutation.mutateAsync({
           id: Number(id),
           name: name,
           type: getPetByBoolean(),
           description: description,
-          imageUrl: 'https://i.pinimg.com/736x/ba/92/7f/ba927ff34cd961ce2c184d47e8ead9f6.jpg' // delete later
+          imageUrl: images ? String(images) : 'https://i.pinimg.com/736x/ba/92/7f/ba927ff34cd961ce2c184d47e8ead9f6.jpg' // delete later
         }).then(
           () => {
              router.replace('/pets')
@@ -42,14 +53,10 @@ export default function petCreateForm() {
         )
       }
 
-    const [name, setName] = React.useState('')
-    const [description, setDescription] = React.useState('')
-    const [petType, setPetType] = React.useState({
-        "DOG": false,
-        "CAT": false,
-        "OTHER": false,
-    });
-    const [image, setImages] = React.useState([])
+      if(submitPressed && images.length > 0){
+        handleSubmit();
+      }
+    }, [images, submitPressed])
 
     function getPetByBoolean() {
         const availablePetTypes = Object.keys(petType);
@@ -66,8 +73,11 @@ export default function petCreateForm() {
             <PetTypeToggle value={petType} onChange={setPetType} />
             <Text className="font-bold text-2xl ml-2 mt-2">Description:</Text>
             <TextArea value={description} onChangeText={text => setDescription(text)} autoCompleteType={undefined}></TextArea>
+            <View className="mt-10 ml-10 mr-10">
+            <AddImageButton setImages={setImages} aspect={[4,3]} />
+            </View>
             <View className='flex-col my-5'>
-                <Button className='h-12 rounded-full bg-blue-500 w-11/12 my-4 mx-auto' onPress={() => handleSubmit()}>
+                <Button className='h-12 rounded-full bg-blue-500 w-11/12 my-4 mx-auto' onPress={() => setSubmitPressed(true)}>
                     <Text className='text-white'>Edit details</Text>
                 </Button>
             </View>
