@@ -70,7 +70,7 @@ export default function ProfileTabs(props: ProfileTabProps) {
 
 
     const Pets = () => (
-      <View className='flex justify-center items-center mt-8 w-11/12 mx-auto bg-slate-500'>
+      <View className='flex justify-center items-center mt-8 w-11/12 mx-auto'>
             <DisplayCardList value={props.pets} Card={PetDisplayCard} emptyMessage='You have no pets'/>
       </View>
     );
