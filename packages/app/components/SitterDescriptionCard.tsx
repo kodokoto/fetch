@@ -20,12 +20,17 @@ function capitalizeWords(inputString) {
   });
 }
 
+function formatLocation(location) {
+  // 1800 Ellis St, San Francisco, CA 94115
+  // to San Francisco, CA
+  const splitLocation = location.split(',')
+  return splitLocation[1] + ', ' + splitLocation[3]  
+}
+
 export default function SitterDescriptionCard(props: SitterDescriptionCardProps) {
   const router = useRouter()
   const {data: service} = api.service.byServiceType.useQuery(props.searchParams.serviceType)
-  const {data: petType} = api.animal.byServiceId.useQuery(service ? service.id : null)
-
-
+  
   return (
     <View
       style={{
@@ -34,7 +39,7 @@ export default function SitterDescriptionCard(props: SitterDescriptionCardProps)
       }}
     >
       <TouchableOpacity
-        className='bg-slate-100 rounded-2xl p-4 w-80 h-25 m-auto mb-2 flex-wrap flex-row justify-between border-[#4c8ab9] border-solid border-2'
+        className='rounded-2xl p-4 w-80 m-auto flex-row justify-between my-4'
         onPress={() =>
           router.push({
             pathname: `/sitter/${props.sitter.id}`,
@@ -42,29 +47,30 @@ export default function SitterDescriptionCard(props: SitterDescriptionCardProps)
           })
         }
       >
-        <Box className="float-left" style={{ flexDirection: 'row' }}>
+        <Box className="flex-row">
           {props.sitter ? (
             <Avatar
-              className="w-12 h-12 ml-4 float-left"
+              className="w-12 h-12 "
               source={{ uri: props.sitter.imageUrl }}
             />
           ) : null}
-          <Box className="ml-4 float-left">
-            <Text>
+          <Box className="ml-4">
+            <Text className='text-lg'>
               {props.sitter ? props.sitter.name : null}
             </Text>
-            <Text>Location: {props.sitter ? props.sitter.location : null}</Text>
+            <Text className='text-xs'>{props.sitter.bio}</Text>
             <Text>
-              Helps with:{' '}
-              {petType ? petType.map((pet) => capitalizeWords(pet.type)).join(", ") : null}
             </Text>
           </Box>
         </Box>
-        <Text
-          className="flex-end"
-        >
-          £{service? service.price : null}
-        </Text>
+        <View>
+          <Text className=''>
+            £{service? service.price : null}
+          </Text>
+          <Text className='text-xs'>
+            per visit
+          </Text>
+        </View>
       </TouchableOpacity>
     </View>
   )

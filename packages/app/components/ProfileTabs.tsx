@@ -114,7 +114,7 @@ export default function ProfileTabs(props: ProfileTabProps) {
   
     return (
       <TabView
-          className='bg-slate-600'
+          
           navigationState={{ index, routes }}
           renderScene={SceneMap(
          props.services 

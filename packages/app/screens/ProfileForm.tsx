@@ -59,8 +59,6 @@ export default function ProfileForm(formData : ProfileFormProps) {
         </View>
         <View className='my-4'>
           <AddImageButton setImages={formData.setImages} />
-          <View className='my-4 bg-gray-500 '>
-          </View>
         </View>
 
         {

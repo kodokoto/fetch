@@ -1,5 +1,5 @@
-import { Image, View, Text, Dimensions } from 'react-native'
-import { Button, ScrollView } from 'native-base'
+import { Image, View, Text, Dimensions, Pressable } from 'react-native'
+import { Button, ScrollView, Menu } from 'native-base'
 import React, { useState } from 'react'
 import { useRouter, useSearchParams, Stack } from 'expo-router'
 import { api } from 'app/utils/trpc'
@@ -7,6 +7,7 @@ import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
 import ProfileCarousel from 'app/components/ProfileCarousel'
 import ProfileTabs from 'app/components/ProfileTabs'
+import { Entypo, Feather } from '@expo/vector-icons'
 
 export default function SitterProfile() {
   const { sitterId, serviceType, day, timeOfDay } = useSearchParams()
@@ -63,14 +64,13 @@ export default function SitterProfile() {
                   />
                   <View className='flex-row justify-between'>
                     <View>
-                      <Text></Text>
                       <Text className='text-2xl font-bold'>{sitterData.name}</Text>
                       <Text className='text-sm'>Pet Sitter</Text>
                       <Text>{sitterData.bio}</Text>
                     </View>
                     {
                       session.currentProfile === Profile.OWNER
-                      ? <View className='flex flex-row gap-2'>
+                      ? <View className='flex flex-row'>
                          <Button className='rounded-full'
                             onPress={() => router.replace({
                               pathname: '/messages',
@@ -80,18 +80,18 @@ export default function SitterProfile() {
                               }
                             })}
                           >
-                            <Text className='text-white'>Message</Text>
-                          </Button>
-                          <Button className='bg-transparent' onPress={() => {
-                            router.push({
-                              pathname: '/report',
-                              params: {
-                                sitterId: sitterData.id,
-                              }
-                            }) 
-                          }}>
-                        <Text className='text-red-500'>Report</Text>
-                      </Button>
+                            <Feather name="message-circle" size={24} color="#3b82f6" />                            </Button>
+                          <Menu 
+                            trigger={(triggerProps) => {
+                              return <Pressable {...triggerProps} className='bg-red-500'>
+                                        <Entypo name="dots-three-vertical" size={24} color="black" />
+                                      </Pressable>
+                            }
+                          }>
+                            <Menu.Item className='rounded-full'>
+                              <Text>Report</Text>
+                            </Menu.Item>
+                          </Menu>
                     </View>
                     : null
                     }
