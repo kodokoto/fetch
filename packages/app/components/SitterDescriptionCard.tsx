@@ -3,7 +3,7 @@ import { api } from '../utils/trpc'
 import { Avatar } from 'native-base'
 import { useRouter } from 'expo-router'
 import { Box } from 'native-base'
-import { Sitter } from '@prisma/client'
+import { Sitter, Service } from '@prisma/client'
 
 type SitterDescriptionCardProps = {
   sitter: Sitter
@@ -20,9 +20,9 @@ function capitalizeWords(inputString) {
   });
 }
 
-export default function SitterDescriptionCard(props: SitterDescriptionCardProps) {
+export default function SitterDescriptionCard({sitter, searchParams}: SitterDescriptionCardProps) {
   const router = useRouter()
-  const {data: service} = api.service.byServiceType.useQuery(props.searchParams.serviceType)
+  const {data: service} = api.service.byServiceType.useQuery(searchParams.serviceType)
   // const {data: petType} = api.animal.byServiceId.useQuery(service ? service.id : null)
 
 
@@ -37,26 +37,26 @@ export default function SitterDescriptionCard(props: SitterDescriptionCardProps)
         className='bg-slate-100 rounded-2xl p-4 w-80 h-25 m-auto mb-2 flex-wrap flex-row justify-between border-[#4c8ab9] border-solid border-2'
         onPress={() =>
           router.push({
-            pathname: `/sitter/${props.sitter.id}`,
-            params: props.searchParams
+            pathname: `/sitter/${sitter.id}`,
+            params: searchParams
           })
         }
       >
         <Box className="float-left" style={{ flexDirection: 'row' }}>
-          {props.sitter ? (
+          {sitter ? (
             <Avatar
               className="w-12 h-12 ml-4 float-left"
-              source={{ uri: props.sitter.imageUrl }}
+              source={{ uri: sitter.imageUrl }}
             />
           ) : null}
           <Box className="ml-4 float-left">
             <Text>
-              {props.sitter ? props.sitter.name : null}
+              {sitter ? sitter.name : null}
             </Text>
-            <Text>Location: {props.sitter ? props.sitter.location : null}</Text>
+            <Text>Location: {sitter ? sitter.location : null}</Text>
             <Text>
               Helps with:{' '}
-              {props.searchParams.petTypes ? props.searchParams.petTypes.map((pet) => capitalizeWords(pet)).join(", ") : null}
+              {searchParams.petTypes ? searchParams.petTypes.map((pet) => capitalizeWords(pet)).join(", ") : null}
             </Text>
           </Box>
         </Box>

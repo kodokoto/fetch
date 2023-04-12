@@ -105,7 +105,7 @@ export default function BookingDetail(props: Booking) {
       <Avatar className="mx-auto mt-28 mb-20 w-32 h-32" source={{ uri: ownerData?.imageUrl }}>
         LB
       </Avatar>
-      <Box className="rounded-2xl border-[#4c8ab9] border-solid border-2 bg-slate-100 h-116 w-96">
+      <Box className="rounded-2xl ml-auto mr-auto border-[#4c8ab9] border-solid border-2 bg-slate-100 h-116 w-96">
         <Box className="flex-wrap flex-row my-4 justify-between">
           <Box className="flex-start">
             <Text className="text-2xl font-bold ml-4">{ownerData?.name}</Text>

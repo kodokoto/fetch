@@ -12,6 +12,7 @@ import { scheduledTimeRouter } from './scheduledTime'
 import { animalRouter } from './animal'
 import { locationRouter } from './location'
 import { imageRouter } from './image'
+import { reviewRouter } from './review'
 
 
 export const appRouter = router({
@@ -27,7 +28,8 @@ export const appRouter = router({
   scheduledTime: scheduledTimeRouter,
   animal: animalRouter,
   location: locationRouter,
-  image: imageRouter
+  image: imageRouter,
+  review: reviewRouter
 })
 
 export type AppRouter = typeof appRouter
