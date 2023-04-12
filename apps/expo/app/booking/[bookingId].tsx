@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native'
-import { Button } from 'native-base'
+import { Button, Stack } from 'native-base'
 import { useSearchParams, useNavigation, Link } from 'expo-router'
 import { api } from 'app/utils/trpc'
 import { StatusBar } from 'expo-status-bar'
@@ -24,6 +24,10 @@ export default function Booking() {
   // a full screen page. You may need to change the UI to account for this.
   const isPresented = navigation.canGoBack()
 
+  const options = {
+    headerTitle: 'Booking Details'
+  };
+
 
   if (isLoading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
@@ -33,5 +37,9 @@ export default function Booking() {
   if (session.currentProfile === Profile.SITTER) {
     return <SitterBookingDetail {...data}/>
   }
+
+  return (
+    <Stack.Screen name="Booking" component={Booking} options={options} />
+  );
   
 }
