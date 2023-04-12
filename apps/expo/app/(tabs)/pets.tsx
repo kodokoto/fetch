@@ -30,6 +30,17 @@ export default function Pets() {
       router.push('/create/pet')
     }
 
+    const handleEditPet = (pet: Pet) => {
+      console.log("Edit pet: " + pet)
+      router.push({
+        pathname: '/edit/pet',
+        params: {
+          
+          id: pet.id
+        }
+      })
+    }
+
     if (isLoading) {
         return <Text>Loading...</Text>
     }
@@ -41,6 +52,7 @@ export default function Pets() {
             editable 
             value={pets} 
             onAdd={handleAddPet} 
+            onEdit={handleEditPet}
             onDelete={handleDeletePet}
             addButtonTitle='Add a pet'
             emptyMessage='You have no pets yet!'

@@ -27,19 +27,25 @@ export default function ProfileForm(formData : ProfileFormProps) {
     <View className='m-4 mt-0'>
         <View className='my-4'>
           <Text className='text-md font-semibold mb-2'>Name: </Text>
-          <Input value={formData.name}  onChangeText={formData.setName} rounded={'full'}/>
+          <Input 
+            value={formData.name}  
+            placeholder="Enter your name"
+            onChangeText={formData.setName} rounded={'full'}/>
         </View>
         
         <View className='my-4'>
           <Text className='text-md font-semibold mb-2'>A short bio: </Text>
-          <Input value={formData.bio}  onChangeText={formData.setBio} maxLength={80} rounded={'full'}/>
+          <Input 
+            value={formData.bio}  
+            placeholder="Enter a short bio"
+            onChangeText={formData.setBio} maxLength={80} rounded={'full'}/>
 
 
           <View className='my-4 mt-8'>
               <Text className='text-md font-semibold mb-2'>Give us an insight into your experience as a sitter:</Text>
               <TextArea 
                   h={20} 
-                  placeholder="Description" 
+                  placeholder="Enter a description of yourself" 
                   value={formData.description}
                   w="100%" 
                   autoCompleteType={undefined} 

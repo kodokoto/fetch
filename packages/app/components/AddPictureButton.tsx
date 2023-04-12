@@ -4,6 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 type AddImageButtonProps = {
     setImages: (images: string[] | ((images: string[]) => void)) => void
+    aspect?: number[]
 }
 
 export default function AddImageButton(props: AddImageButtonProps) {

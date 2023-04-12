@@ -5,7 +5,7 @@ import { Ionicons, Entypo } from '@expo/vector-icons';
 import { EditableDisplayCard } from './DisplayCardList';
 import { Pet } from '@prisma/client'
 
-export default function PetDisplayCard({ value, editable = false, onDelete }: EditableDisplayCard<Pet>) {
+export default function PetDisplayCard({ value, editable = false, onDelete, onEdit }: EditableDisplayCard<Pet>) {
 
     return (
       <View className='flex-row h-24 justify-between'>
@@ -34,9 +34,13 @@ export default function PetDisplayCard({ value, editable = false, onDelete }: Ed
                               <Entypo name="dots-three-vertical" size={24} color="gray" />
                             </Pressable>;
                     }}>
+                    <Menu.Item onPress={() => {onEdit(value)}}>
+                        <Ionicons name="ios-create-outline" size={16} color="blue" />
+                        <Text className='text-blue-500'>Edit</Text>
+                    </Menu.Item>
                     <Menu.Item onPress={() => {onDelete(value)}}>
-                            <Ionicons name="ios-trash-outline" size={16} color="red" />
-                            <Text className='text-red-500'>Delete</Text>
+                        <Ionicons name="ios-trash-outline" size={16} color="red" />
+                        <Text className='text-red-500'>Delete</Text>
                     </Menu.Item>
                 </Menu>
             </View>
