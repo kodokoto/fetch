@@ -141,7 +141,7 @@ model Message {
   sitterId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  sender    Role
   @@index([ownerId])
   @@index([sitterId])
 }
