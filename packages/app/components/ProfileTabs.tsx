@@ -1,8 +1,10 @@
-import { Profile } from 'next-auth';
 import * as React from 'react';
-import { Animated, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { Animated, View, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { Pet, Review, Service } from '@prisma/client';
+import ServiceDescription from './ServiceDescription';
+import ReviewDescription from './ReviewDescription';
+import PetDescription from './PetDescription';
 
 type ProfileTabProps = {
     description: string;
@@ -14,6 +16,8 @@ type ProfileTabProps = {
 
 export default function ProfileTabs(props: ProfileTabProps) {
 
+
+    //TODO: turn all these into scrollable views
     const Info = () => (
       <View className='flex flex-1 flex-col gap-8 mx-4 my-0'
         style={{flex: 1}}
@@ -40,8 +44,7 @@ export default function ProfileTabs(props: ProfileTabProps) {
             {
                 props.reviews?.length > 0
                 ? props.reviews.map((review) => (
-                    null
-                    // <ReviewDescription key={review.id} review={review} />
+                    <ReviewDescription key={review.id} review={review} />
                 ))
                 : <Text>No reviews yet</Text>
             }
@@ -52,9 +55,8 @@ export default function ProfileTabs(props: ProfileTabProps) {
       <View className='flex justify-center items-center mt-8'>
             {
                 props.services?.length > 0
-                ? props.services.map((review) => (
-                    null
-                    // <ServiceDescription key={review.id} review={review} />
+                ? props.services.map((service) => (
+                    <ServiceDescription key={service.id} service={service}/>
                 ))
                 : <Text>No services yet</Text>
             }
@@ -66,9 +68,8 @@ export default function ProfileTabs(props: ProfileTabProps) {
       <View className='flex justify-center items-center mt-8'>
             {
                 props.pets?.length > 0
-                ? props.pets.map((review) => (
-                    null
-                    // <PetDescription key={review.id} review={review} />
+                ? props.pets.map((pet) => (
+                    <PetDescription key={pet.id} pet={pet} />
                 ))
                 : <Text>No pets yet</Text>
             }
@@ -81,12 +82,13 @@ export default function ProfileTabs(props: ProfileTabProps) {
         props.services
         ? [
             { key: 'info', title: 'Info' },
-            { key: 'reviews', title: 'Reviews' },
             { key: 'services', title: 'Services' },
+            { key: 'reviews', title: 'Reviews' },
+            
         ] 
         : [
             { key: 'info', title: 'Info' },
-            { key: 'pets', title: 'Pets' },
+            { key: 'pets', title: 'Pets' }
         ]
     );
   
@@ -127,12 +129,13 @@ export default function ProfileTabs(props: ProfileTabProps) {
          props.services 
          ? {
               info: Info,
-              reviews: Reviews,
-              services: Services
+              services: Services,
+              reviews: Reviews
+              
           }
           : {
-                info: Info,
-                pets: Pets,
+              info: Info,
+              pets: Pets
           }
           )}
           onIndexChange={setIndex}
