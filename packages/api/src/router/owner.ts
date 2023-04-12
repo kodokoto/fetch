@@ -19,7 +19,7 @@ export const ownerRouter = router({
       },
     })
   }),
-  
+
   byIdWith: publicProcedure
     .input(
       z.object({

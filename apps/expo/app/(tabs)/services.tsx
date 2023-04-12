@@ -30,7 +30,12 @@ export default function Services() {
     }
 
     const handleOnedit = (service: Service) => {
-        router.push(`/edit/service/${service.id}`)
+        router.push({
+            pathname: '/edit/service/',
+            params: {
+                serviceId: service.id
+            }
+        })
     }
 
     const handleOnDelete = (service: Service) => {

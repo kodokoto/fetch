@@ -28,7 +28,7 @@ export const sitterRouter = router({
         },
         include: {
           images: input.include.includes('images'),
-          services: input.include.includes('services'),
+          services: input.include.includes('services') ? { include: { petTypes: true } } : false,
           reviews: input.include.includes('reviews'),
         },
       })

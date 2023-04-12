@@ -41,14 +41,14 @@ export default function OwnerHomeScreen() {
           bookings && bookings.length > 0 
           ? bookings.filter((booking) => booking.status === "ACCEPTED")
                     .map((booking, index) => <BookingPreview key={index} {...booking} />)
-          : <Text>You have no upcoming bookings</Text>
+          : <Text className='ml-8'>You have no upcoming bookings</Text>
         }
-        <Text className="font-bold text-xl ml-8 mb-8">Pending Bookings</Text>
+        <Text className="font-bold text-xl ml-8 my-8">Pending Bookings</Text>
         {
           bookings && bookings.length > 0 
           ? bookings.filter((booking) => booking.status === "PENDING")
                     .map((booking, index) => <BookingPreview key={index} {...booking} />)
-          : <Text>You have no pending bookings</Text>
+          : <Text className='ml-8'>You have no pending bookings</Text>
         }
       </View>
     </ScrollView>

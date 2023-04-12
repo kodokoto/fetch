@@ -1,6 +1,6 @@
 import { Image, View, Text, Dimensions } from 'react-native'
 import { Button, ScrollView } from 'native-base'
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter, useSearchParams, Stack } from 'expo-router'
 import { api } from 'app/utils/trpc'
 import { useAtom } from 'jotai'
@@ -17,12 +17,31 @@ export default function SitterProfile() {
   const { data: sitterData, error, isLoading } = api.sitter.byIdWith.useQuery({
     id: String(sitterId),
     include: ['images', 'reviews', 'services']
+  }, {
+    cacheTime: 0,
+    onSuccess: (data) => {
+      console.log("data: ", data)
+      setName(data.name)
+      setLocation(data.location)
+      setDescription(data.description)
+      setImageUrl(data.imageUrl)
+      setImages(data.images)
+      setReviews(data.reviews)
+      setServices(data.services)
+    }
   })
+
+  const [name, setName] = useState('')
+  const [location, setLocation] = useState('')
+  const [description, setDescription] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
+  const [images, setImages] = useState([])
+  const [reviews, setReviews] = useState([])
+  const [services, setServices] = useState([])
 
 
   if (isLoading) return <Text>Loading...</Text>
   if (error) return <Text>{error.message}</Text>
-
   return (
     <>
     <Stack.Screen 
@@ -80,10 +99,10 @@ export default function SitterProfile() {
                   </View>
               </View> 
               <ProfileTabs {...{
-                description: sitterData.description,
-                location: sitterData.location,
-                services: sitterData.services,
-                reviews: sitterData.reviews,
+                description: description,
+                location: location,
+                services: services,
+                reviews: reviews,
               }} />
             </View>
       </View>

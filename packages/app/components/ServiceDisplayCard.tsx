@@ -34,8 +34,8 @@ function petTypeToIcon(petType: string) {
 export default function ServiceDisplayCard({ value, editable = false, onEdit, onDelete }: EditableDisplayCard<ServiceWithPetType>) {
 
     return (
-      <View className='flex-row h-16 mb-2'>
-        <View className='flex-row items-center pl-4 gap-x-8  w-[100%]'>
+      <View className='flex-row h-16 mb-2 pl-4 justify-start'>
+        <View className='flex-row items-center gap-x-8 w-[100%] justify-center'>
             <View className='flex-col justify-between items-center '>
                 {serviceTypeToIcon(value.type)}
                 <Text className='text-sm'>{parseServiceType(value.type)}</Text>
@@ -58,10 +58,9 @@ export default function ServiceDisplayCard({ value, editable = false, onEdit, on
                 </View>
                 <Text className='text-sm'>Pets</Text>
             </View>
-        </View>
-        {
+            {
           editable && (
-             <View className='flex-col m-4 my-auto'>
+             <View className='flex-col'>
               <Menu 
                   placement='left'
                   className='mr-4'
@@ -82,6 +81,8 @@ export default function ServiceDisplayCard({ value, editable = false, onEdit, on
             </View>
           )
         }
+        </View>
+   
       </View>
     )
 }
