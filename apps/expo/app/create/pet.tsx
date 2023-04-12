@@ -1,26 +1,37 @@
 import { Button, ScrollView, Select, FormControl, TextArea,Text,Input, Box } from "native-base";
 import { api } from 'app/utils/trpc'
 import { View } from 'react-native'
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { sessionAtom } from 'app/utils/storage';
 import { useAtom } from 'jotai';
 import PetTypeSelect from "app/components/PetTypeSelect";
 import { useRouter, useSearchParams } from "expo-router";
+import AddImageButton from "app/components/AddPictureButton";
+import { sub } from "react-native-reanimated";
 
 
 export default function petCreateForm() {
     const [session, _] = useAtom(sessionAtom)
     const { redirectUrl } = useSearchParams();
     const mutation = api.pet.create.useMutation()
+    const [images,setImages] = useState([]);
+    const [submitPressed, setSubmitPressed] = useState(false);
     const router = useRouter();
-    const handleSubmit = () => {
+    useEffect(() => {
+      function handleSubmit() {
         console.log("CURRENT SESSION", session)
+        console.log("Images: " + images);
+
+        // if(images.length <= 0){
+        //   return
+        // }
+        
         mutation.mutateAsync({
           name: name,
           type: getPetByBoolean(),
           ownerId: session.ownerId,
           description: description,
-          imageUrl: 'https://i.pinimg.com/736x/ba/92/7f/ba927ff34cd961ce2c184d47e8ead9f6.jpg' // delete later
+          imageUrl: images ? String(images) : 'https://i.pinimg.com/736x/ba/92/7f/ba927ff34cd961ce2c184d47e8ead9f6.jpg' // delete later
         }).then(
           () => {
             redirectUrl 
@@ -29,6 +40,12 @@ export default function petCreateForm() {
           }
         )
       }
+
+      if(submitPressed && images.length > 0){
+        handleSubmit();
+      }
+    }, [images, submitPressed])
+    
 
       const [SelectedPetType, setSelectedPetType] = React.useState("DOG")
       const [name, setName] = React.useState("")
@@ -58,8 +75,11 @@ export default function petCreateForm() {
             <Text className="font-bold text-2xl ml-2 mt-2">Description:</Text>
             <Text className="ml-2 mb-2">Tell us a bit about your pet.</Text>
             <TextArea value={description} onChangeText={text => setDescription(text)} autoCompleteType={undefined}></TextArea>
+            <View className="mt-10 ml-10 mr-10">
+            <AddImageButton setImages={setImages} aspect={[4,3]} />
+            </View>
             <View className='flex-col my-5'>
-                <Button className='h-12 rounded-full bg-blue-500 w-11/12 my-4 mx-auto' onPress={() => handleSubmit()}>
+                <Button className='h-12 rounded-full bg-blue-500 w-11/12 my-4 mx-auto' onPress={() => setSubmitPressed(true)}>
                     <Text className='text-white'>Submit</Text>
                 </Button>
             </View>

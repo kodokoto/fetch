@@ -1,5 +1,5 @@
 import { View, Text, Image } from 'react-native'
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Button, ScrollView } from 'native-base'
 import { api } from 'app/utils/trpc'
 import { useUser } from '@clerk/clerk-expo'
@@ -27,6 +27,7 @@ export default function SitterProfileCreate() {
   const [proximityRadius, setProximityRadius] = React.useState(5)
   const [name, setName] = React.useState(user.firstName)
   const [images, setImages] = React.useState([])
+  const [submitPressed, setSubmitPressed] = useState(false);
 
   const handleLocationSearch = () => {
     Location.getCurrentPositionAsync({}).then(
@@ -44,7 +45,6 @@ export default function SitterProfileCreate() {
       }
     )
   }  
-
   const handleSubmit = () => {
     if (user && user.firstName) { 
       mutation.mutateAsync({
@@ -61,6 +61,13 @@ export default function SitterProfileCreate() {
       console.log('User not found')
     }
   }
+  useEffect(() => {
+
+
+    if(submitPressed && images.length > 0){
+      handleSubmit();
+    }
+  }, [images, submitPressed])
 
   if (!isLoaded) return null
 
