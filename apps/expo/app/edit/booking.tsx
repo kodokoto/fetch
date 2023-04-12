@@ -21,14 +21,10 @@ export default function EditBooking() {
 
     const { bookingId, sitterId, ownerId, scheduledTimeId, day, timeOfDay } = useSearchParams()
 
-    console.log("Sitter Id: " + sitterId);
-    console.log("Owner Id: " + ownerId);
-    console.log("Booking Id: " + bookingId);
-    console.log("Scheduled Time Id: " + scheduledTimeId);
 
-    const { data: bookingData, isLoading: bookingDataIsLoading} = api.booking.byId.useQuery(Number(bookingId))
+    const { data: bookingData, isLoading: bookingDataIsLoading} = api.booking.byId.useQuery(Number(bookingId), )
 
-    const { data: pets, isLoading: petsIsLoading} = api.pet.byOwnerId.useQuery(String(ownerId), { enabled: !!ownerId, cacheTime: 0 })
+    const { data: pets, isLoading: petsIsLoading} = api.pet.byOwnerId.useQuery(String(ownerId))
     
     const { data: availableServices, isLoading : availabileServicesIsLoading } = api.service.bySitterIdAndAvailableTime.useQuery({
         sitterId: String(sitterId),
@@ -50,6 +46,7 @@ export default function EditBooking() {
     const handleSubmit = () => {
       mutation.mutateAsync({
         id: Number(bookingId),
+
         serviceId: getServiceByType(selectedServiceType).id,
         petId: getPetByName(selectedPet).id,
       }).then(() => {
@@ -67,10 +64,6 @@ export default function EditBooking() {
       
     const [selectedServiceType, setSelectedServiceType] = React.useState<string>(String(bookingData.serviceId));
     const [selectedPet, setSelectedPet] = React.useState("")
-    const [scheduledTime, setScheduledTime] = React.useState<Partial<ScheduledTime>>({
-        day: String(day) as Day,
-        time: String(timeOfDay) as TimeOfDay
-    })
     if(availabileServicesIsLoading || petsIsLoading || bookingDataIsLoading) return null;
 
     return (
@@ -109,16 +102,6 @@ export default function EditBooking() {
                         onPress={() => router.push('/create/pet')
                     }/>
                 }
-            </Select>
-            <FormControl.Label>Frequency:</FormControl.Label>
-            <Select 
-                selectedValue={scheduledTime.frequency}
-                onValueChange={(itemValue) => setScheduledTime({...scheduledTime, frequency: itemValue as BookingFrequency})}
-            >
-                <Select.Item label="One Off" value="ONE_OFF" />
-                <Select.Item label="Every week" value="WEEKLY" />
-                <Select.Item label="Every two weeks" value="BI_WEEKLY" />
-                <Select.Item label="Every month" value="MONTHLY" />
             </Select>
             <Button onPress={handleSubmit}>
                 <Text>Edit details</Text>
