@@ -1,11 +1,15 @@
 import { Text, View } from 'react-native'
 import React from 'react'
 
-export default function ProfileRating() {
+type ProfileRatingProps = {
+  rating: number
+}
+
+export default function ProfileRating(props) {
   return (
     <View className="flex flex-row">
       {[1, 2, 3, 4, 5].map((_, i) => {
-        if (i < 3) {
+        if (i < props.rating) {
           return (
             <Text key={i} className="text-xl text-yellow-500">
               &#9733;

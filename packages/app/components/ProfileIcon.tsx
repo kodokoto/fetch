@@ -37,19 +37,19 @@ export default function ProfileIcon(props: User) {
 
 
   return (
-    <Box className="items-end">
+    <Box className="">
       <Menu
         trigger={(triggerProps) => {
           return (
             <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-              <Avatar className="w-8 h-8 mr-2 ml-14 mt-10 mb-4" source={{ uri: props.iconUrl }} />
+              <Avatar className="w-10 h-10 mr-8" source={{ uri: props.iconUrl }} />
             </Pressable>
           )
         }}
       >
           <Menu.Item onPress={() => router.push(`/${getDefaultValue().toLowerCase()}/${
             session.currentProfile === 'Owner' ? ownerProfile?.id : sitterProfile?.id
-          }`)}>View Profile</Menu.Item>
+          }`)}>Your Profile</Menu.Item>
           <Menu.Item onPress={() => router.push('Setting')}>Setting</Menu.Item>
           <Menu.Item
             onPress={() => {

@@ -1,14 +1,12 @@
-import { Button } from 'native-base';
+import { Button, Text, View } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'
-import { api } from '../utils/trpc';
-import { useAtom } from 'jotai'
-import { sessionAtom } from 'app/utils/storage'
 import * as ImagePicker from 'expo-image-picker';
 
-export default function AddPictureButton(props) {
-    const [session, _] = useAtom(sessionAtom)
+type AddImageButtonProps = {
+    setImages: (images: string[] | ((images: string[]) => void)) => void
+}
 
-    const mutation = api.image.create.useMutation()
+export default function AddImageButton(props: AddImageButtonProps) {
 
     const selectPhotoTapped = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -36,21 +34,19 @@ export default function AddPictureButton(props) {
         }).then(res => res.json()).
           then(data => {
             console.log(data.url)
-            mutation.mutate({
-                sitterId: session.sitterId,
-                url: data.url
-            })
+            props.setImages((images) => [...images, data.url])
           }).catch(err => {
             console.log("An Error Occured While Uploading")
           })
       }
     return (
         <>
-        {props.showAddPictureButton && (
-            <Button onPress={() => selectPhotoTapped()} className="bg-white absolute top-20 mt-20 right-0">
-            <Ionicons name='camera-outline' size={20} color="black" />
+            <Button onPress={() => selectPhotoTapped()} className="bg-white rounded-md">
+              <View className='flex-row'>
+                <Ionicons name='camera-outline' size={20} color="black" />
+                <Text className='ml-3'>Add an image</Text>
+              </View>
             </Button>
-        )}
         </>
     )
 }

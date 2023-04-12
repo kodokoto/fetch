@@ -36,4 +36,3 @@ function checkIfSessionExists(): any {
 
 export const sessionAtom = atomWithStorage<Session>('session', checkIfSessionExists(), storage)
 
-

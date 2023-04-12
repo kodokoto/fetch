@@ -6,8 +6,10 @@ import { Text, View } from "react-native";
 type DisplayCardListProps<T> = {
     value: T[],
     Card: ComponentType<DisplayCard | EditableDisplayCard<T>>
-    editable?: boolean,
     addButtonTitle?: string,
+    emptyMessage?: string,
+    maxedOutMessage?: string,
+    editable?: boolean,
     onAdd?: () => void,
     onEdit?: (value: T) => void,
     onDelete?: (value: T) => void
@@ -26,20 +28,21 @@ export type EditableDisplayCard<T> = {
     onDelete?: (value: T) => void
 }
 
-export default function DisplayCardList({ value, Card, addButtonTitle, editable, onAdd, onDelete, maxCards=6 } : DisplayCardListProps<any>) {
+export default function DisplayCardList({ value, Card, addButtonTitle, editable, onAdd, onEdit, onDelete, emptyMessage, maxedOutMessage, maxCards=6 } : DisplayCardListProps<any>) {
 
     return (
         <View className="flex flex-col space-y-4">
             {value && value.map((v, i) => (
-                <Card value={v} key={i} editable={editable} onDelete={onDelete}/>
+                <Card value={v} key={i} editable={editable} onEdit={onEdit} onDelete={onDelete}/>
             ))}
+            {value?.length === 0 && <Text>{emptyMessage}</Text>}
             {
                 editable
                 ? (
                 <AddButton title={addButtonTitle} onPress={onAdd} />
                 ) 
                 : (value?.length > maxCards) 
-                    ? <Text>You have reached your maximum amout of pets, please subscribe to our pro plan to get more!</Text>
+                    ? <Text>{maxedOutMessage}</Text>
                     : null
             }
         </View>

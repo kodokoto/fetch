@@ -14,6 +14,24 @@ export const serviceRouter = router({
       },
     })
   }),
+  byIdWith: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        include: z.array(z.string()),
+      })
+    )
+    .query(({ input }) => {
+      return prisma.service.findFirst({
+        where: {
+          id: input.id,
+        },
+        include: {
+          petTypes: input.include.includes('petTypes'),
+          availableTimes: input.include.includes('availableTimes'),
+        }
+      })
+    }),
   byBookingId: publicProcedure.input(z.number()).query(({ input }) => {
     return prisma.service.findFirst({
       where: {
@@ -118,6 +136,48 @@ export const serviceRouter = router({
               type: petType as PetType,
             })),
           },
+          type: input.serviceType as ServiceType,
+          price: input.price,
+          availableTimes: {
+            create: input.availableTimes.map((time) => ({
+              day: time.day as Day,
+              time: time.time as TimeOfDay,
+            })),
+          },
+        },
+      })
+    }),
+  update: publicProcedure
+    .input(
+      z.object({
+        serviceId: z.number(),
+        serviceType: z.string(),
+        price: z.number(),
+        petTypes: z.array(z.string()),
+        description: z.string(),
+        duration: z.number(),
+        availableTimes: z.array(
+          z.object({
+            day: z.string(),
+            time: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await prisma.service.update({
+        where: {
+          id: input.serviceId,
+        },
+        data: {
+          duration: input.duration,
+          description: input.description,
+          petTypes: {
+            create: input.petTypes.map((petType) => ({
+              type: petType as PetType,
+            })),
+          },
+
           type: input.serviceType as ServiceType,
           price: input.price,
           availableTimes: {

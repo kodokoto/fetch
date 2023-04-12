@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, Image } from 'react-native'
 import { Menu, Pressable, ThreeDotsIcon, Button } from 'native-base'
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Entypo } from '@expo/vector-icons';
 import { EditableDisplayCard } from './DisplayCardList';
 import { Pet } from '@prisma/client'
 
@@ -31,7 +31,7 @@ export default function PetDisplayCard({ value, editable = false, onDelete }: Ed
                   className='mr-4'
                   trigger={triggerProps => {
                       return <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-                              <ThreeDotsIcon />
+                              <Entypo name="dots-three-vertical" size={24} color="gray" />
                             </Pressable>;
                     }}>
                     <Menu.Item onPress={() => {onDelete(value)}}>
