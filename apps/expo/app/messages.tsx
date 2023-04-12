@@ -65,6 +65,8 @@ export default function Messages() {
   }, [currentMessageContent])
 
   const onSend = () => {
+    console.log("Owner Id 3: " + receiverId);
+    console.log("Sitter Id 3: " + senderId);
     mutation.mutate({ content: currentMessageContent, ownerId: String(receiverId), sitterId: String(senderId) })
     setfilteredMessages([
       ...filteredMessages,

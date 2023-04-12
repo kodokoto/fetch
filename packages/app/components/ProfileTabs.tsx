@@ -1,14 +1,19 @@
 import * as React from 'react';
 import { Animated, View, Text, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { Button } from 'native-base';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import { Pet, Review, Service } from '@prisma/client';
+import { useRouter } from "expo-router";
 import ServiceDescription from './ServiceDescription';
 import ReviewDescription from './ReviewDescription';
 import DisplayCardList from './DisplayCardList';
 import PetDisplayCard from './PetDisplayCard';
 import ServiceDisplayCard from './ServiceDisplayCard';
+import { useAtom } from 'jotai'
+import { Profile, sessionAtom } from 'app/utils/storage'
 
 type ProfileTabProps = {
+    sitterId: string | string[];
     description: string;
     location: string;
     reviews?: Review[];
@@ -17,7 +22,23 @@ type ProfileTabProps = {
 }
 
 export default function ProfileTabs(props: ProfileTabProps) {
+    const router = useRouter();
+    const [session, _] = useAtom(sessionAtom)
 
+    console.log("Sitter Idddd: " + props.sitterId);
+
+    let sitterId = props.sitterId;
+
+    let totalOfRatings = 0;
+
+    props.reviews.map(review => {
+      totalOfRatings += review.rating;
+    })
+
+    let averageRating = (totalOfRatings / props.reviews.length).toFixed(1);
+
+    console.log("Total of ratings: " + totalOfRatings);
+    
 
     //TODO: turn all these into scrollable views
     const Info = () => (
@@ -42,7 +63,17 @@ export default function ProfileTabs(props: ProfileTabProps) {
     
   
     const Reviews = () => (
-      <View className='flex justify-center items-center mt-8'>
+      <ScrollView contentContainerStyle={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingBottom: 40
+      }} className='flex mt-8'>
+            <Text className="text-xl">Average Rating: {averageRating}</Text>
+            {session.currentProfile == Profile.OWNER && (
+              <Button className="mt-5 mb-5" onPress={() => router.push({pathname: '/review', params: {
+                sitterId: props.sitterId
+              }})}>Add Review</Button>
+            )}
             {
                 props.reviews?.length > 0
                 ? props.reviews.map((review) => (
@@ -50,7 +81,7 @@ export default function ProfileTabs(props: ProfileTabProps) {
                 ))
                 : <Text>No reviews yet</Text>
             }
-      </View>
+      </ScrollView>
     );
   
     const Services = () => (
