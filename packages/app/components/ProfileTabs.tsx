@@ -24,20 +24,6 @@ type ProfileTabProps = {
 export default function ProfileTabs(props: ProfileTabProps) {
     const router = useRouter();
     const [session, _] = useAtom(sessionAtom)
-
-    console.log("Sitter Idddd: " + props.sitterId);
-
-    let sitterId = props.sitterId;
-
-    let totalOfRatings = 0;
-
-    props.reviews.map(review => {
-      totalOfRatings += review.rating;
-    })
-
-    let averageRating = (totalOfRatings / props.reviews.length).toFixed(1);
-
-    console.log("Total of ratings: " + totalOfRatings);
     
 
     //TODO: turn all these into scrollable views
@@ -68,7 +54,6 @@ export default function ProfileTabs(props: ProfileTabProps) {
         alignItems: 'center',
         paddingBottom: 40
       }} className='flex mt-8'>
-            <Text className="text-xl">Average Rating: {averageRating}</Text>
             {session.currentProfile == Profile.OWNER && (
               <Button className="mt-5 mb-5" onPress={() => router.push({pathname: '/review', params: {
                 sitterId: props.sitterId
