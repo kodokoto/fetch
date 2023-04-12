@@ -3,6 +3,7 @@ import { Box, TextArea } from 'native-base'
 import React, { useEffect, useState, useRef } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import ChatLog, { FilteredMessages } from 'app/components/ChatLog'
+import ChatHeader from 'app/components/ChatHeader'
 // import 'react-native-get-random-values';
 import { useSearchParams, useRouter } from 'expo-router'
 import { api } from 'app/utils/trpc'
@@ -91,6 +92,12 @@ export default function Messages() {
 
   return (
     <>
+      <ChatHeader
+        receiverId={String(receiverId)}
+        senderId={String(senderId)}
+        receiverName={String(receiverName)}
+        receiverImgUrl={String(receiverImgUrl)}
+      ></ChatHeader>
       <KeyboardAwareScrollView
         keyboardShouldPersistTaps={'always'}
         contentContainerStyle={{
