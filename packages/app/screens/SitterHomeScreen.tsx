@@ -48,7 +48,7 @@ export default function SitterHomeScreen() {
         {
           bookings && bookings.length > 0 
           ? bookings.filter((booking) => booking.status === "PENDING")
-                    .map((booking, index) => <SitterBookingPreview key={index} {...booking} />)
+                    .map((booking, index) => <AcceptBooking key={index} {...booking} />)
           : <Text className='ml-8'>You have no pending bookings</Text>
         }
       </View>
