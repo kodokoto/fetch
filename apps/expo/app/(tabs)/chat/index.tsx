@@ -22,6 +22,8 @@ export default function Chat() {
   const { user, isLoaded } = useUser()
   const userId = user?.id
 
+  console.log("User Idddd: " + userId);
+
   const { data: owner } = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
   const ownerId = owner?.id
 
@@ -38,6 +40,8 @@ export default function Chat() {
   } else {
     isSitter = true;
   }
+
+  console.log(JSON.stringify(session));
 
   let filtercontacts = (filterWord) => {
     const filteredcontacts = contacts.filter((sitter) => {
@@ -72,8 +76,8 @@ export default function Chat() {
             const userId = user.id
             return (
               <ChatPreview
-                receiverId={isSitter ? sitterId : ownerId}
-                senderId={user.id}
+                senderId={isSitter ? session.sitterId : user.id}
+                receiverId={isOwner ? session.ownerId : user.id}
                 name={user.name}
                 key={user.id}
                 imageUrl={user.imageUrl}

@@ -16,6 +16,11 @@ export enum Profile {
     SITTER = 'Sitter',
 }
 
+export enum Role {
+    OWNER = 'Owner',
+    SITTER = 'Sitter',
+}
+
 const content = {
     currentProfile: Profile.NONE,
     currentUser: null,

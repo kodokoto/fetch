@@ -76,17 +76,17 @@ export default function SitterBookingPreview(props: Booking) {
           </Avatar>
           <Box className="ml-4 float-left">
             <Text className="font-bold text-lg">{ownerData?.name}</Text>
-            <Text>{petData? petData.map((pet) => pet.name).join(", ") : null}</Text>
+            <Text>{petData ? petData.map((pet) => pet.name).join(", ") : null}</Text>
           </Box>
         </Box>
-        <Text className="flex-end">{data.scheduledTime ? parseBookingFrequency(data.scheduledTime.frequency) : null}</Text>
+        <Text className="flex-end">{data && data.scheduledTime ? parseBookingFrequency(data.scheduledTime.frequency) : null}</Text>
       </Box>
       <Box className="ml-4 flex-wrap flex-row">
         <Ionicons size={24} className="flex-start" name="ios-calendar-outline"></Ionicons>
         {/* <Text>{typeof props.startDate}</Text> */}
-        <Text className='mx-2 text-md'>{data.scheduledTime ? capitalizeWords(data.scheduledTime.day) : null}</Text>
+        <Text className='mx-2 text-md'>{data && data.scheduledTime ? capitalizeWords(data.scheduledTime.day) : null}</Text>
         <Ionicons size={24} name="ios-time-outline"></Ionicons>
-        <Text className="mx-2 text-md">{data.scheduledTime ? parseTime(data.scheduledTime.time) : null}</Text>
+        <Text className="mx-2 text-md">{data && data.scheduledTime ? parseTime(data.scheduledTime.time) : null}</Text>
       </Box>
     </Button>
   )
