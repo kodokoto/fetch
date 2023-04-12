@@ -17,7 +17,6 @@ export default function OwnerProfile() {
 
   const { data: ownerData, error, isLoading } = api.owner.byIdWith.useQuery({
     id: String(ownerId),
-
     include: ['images', 'reviews', 'pets']
   }, {
     cacheTime: 0,
@@ -29,7 +28,6 @@ export default function OwnerProfile() {
       setImages(data.images)
       setReviews(data.reviews)
       setPets(data.pets)
-
     }
   })
 

@@ -15,7 +15,9 @@ export default function Services() {
     const router = useRouter();
     const [session, _] = useAtom(sessionAtom);
     const [services, setServices] = React.useState<ServiceWithPetType[]>([])
+
     const { isLoading } = api.service.bySitterId.useQuery(session.sitterId, {
+        cacheTime: 0,
         onSuccess: (data) => {
             setServices(data)
         }
@@ -28,7 +30,12 @@ export default function Services() {
     }
 
     const handleOnedit = (service: Service) => {
-        router.push(`/edit/service/${service.id}`)
+        router.push({
+            pathname: '/edit/service/',
+            params: {
+                serviceId: service.id
+            }
+        })
     }
 
     const handleOnDelete = (service: Service) => {
@@ -44,8 +51,8 @@ export default function Services() {
 
   return (
     <ScrollView>
-      <View className='my-2 m-8'>
-        <Text className='text-2xl font-semibold mb-2'>Your services</Text>
+      <View className='my-2 m-6'>
+        <Text className='text-2xl font-semibold mb-6'>Your services</Text>
         <DisplayCardList editable Card={ServiceDisplayCard} value={services} onAdd={handleOnAdd} onEdit={handleOnedit} onDelete={handleOnDelete} addButtonTitle='Add Service'/>
       </View>
     </ScrollView>

@@ -4,7 +4,9 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 import { Pet, Review, Service } from '@prisma/client';
 import ServiceDescription from './ServiceDescription';
 import ReviewDescription from './ReviewDescription';
-import PetDescription from './PetDescription';
+import DisplayCardList from './DisplayCardList';
+import PetDisplayCard from './PetDisplayCard';
+import ServiceDisplayCard from './ServiceDisplayCard';
 
 type ProfileTabProps = {
     description: string;
@@ -53,26 +55,14 @@ export default function ProfileTabs(props: ProfileTabProps) {
   
     const Services = () => (
       <View className='flex justify-center items-center mt-8'>
-            {
-                props.services?.length > 0
-                ? props.services.map((service) => (
-                    <ServiceDescription key={service.id} service={service}/>
-                ))
-                : <Text>No services yet</Text>
-            }
+            <DisplayCardList value={props.services} Card={ServiceDisplayCard} emptyMessage='You have no services'/>
       </View>
     );
 
 
-      const Pets = () => (
-      <View className='flex justify-center items-center mt-8'>
-            {
-                props.pets?.length > 0
-                ? props.pets.map((pet) => (
-                    <PetDescription key={pet.id} pet={pet} />
-                ))
-                : <Text>No pets yet</Text>
-            }
+    const Pets = () => (
+      <View className='flex justify-center items-center mt-8 w-11/12 mx-auto'>
+            <DisplayCardList value={props.pets} Card={PetDisplayCard} emptyMessage='You have no pets'/>
       </View>
     );
 

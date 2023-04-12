@@ -71,9 +71,6 @@ export default function Home() {
     setSession({...session, sitterId: data.sitter.id})
   }
 
-
-
-
   if (session.currentProfile === Profile.OWNER) {
     return <OwnerHomeScreen />
   } 

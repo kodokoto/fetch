@@ -28,7 +28,7 @@ export const sitterRouter = router({
         },
         include: {
           images: input.include.includes('images'),
-          services: input.include.includes('services'),
+          services: input.include.includes('services') ? { include: { petTypes: true } } : false,
           reviews: input.include.includes('reviews'),
         },
       })
@@ -59,10 +59,10 @@ export const sitterRouter = router({
         name: z.string(),
         imageUrl: z.string(),
         bio: z.string(),
-        proximityRadius: z.number(),
         location: z.string(),
         description: z.string(),
-
+        proximityRadius: z.number(),
+        images: z.array(z.string()),
       })
     )
     .mutation(async ({ input }) => {
@@ -75,6 +75,12 @@ export const sitterRouter = router({
           proximityRadius: input.proximityRadius,
           location: input.location,
           description: input.description,
+          images: {
+            create: input.images.map((image) => ({
+              url: image,
+            })),
+          },
+
         },
       })
     }),

@@ -1,4 +1,4 @@
-import { ScrollView, Text, Button, Box } from 'native-base'
+import { ScrollView, Text, View, Box } from 'native-base'
 import React from 'react'
 import { useUser } from '@clerk/clerk-expo'
 import ProfileIcon from 'app/components/ProfileIcon'
@@ -21,6 +21,7 @@ export default function SitterHomeScreen() {
   
   const { data: bookings, isLoading: bookingsLoading } = api.booking.bySitterId.useQuery(sitterProfile?.id, {
     enabled: !!sitterProfile?.id,
+    cacheTime: 0,
   })
 
   if (!isLoaded) return null
@@ -28,19 +29,29 @@ export default function SitterHomeScreen() {
 
   return (
     <ScrollView>
+      <View className='m-4'>
       {/* <Text>Sitter Home Screen</Text> */}
-      <Box className="flex-wrap flex-row">
-        <WelcomeMessage name={sitterProfile.name} />
-        <ProfileIcon iconUrl={sitterProfile.imageUrl} />
-      </Box>
-      <Text className="font-bold text-xl ml-2 mb-2">Upcoming Bookings</Text>
-      {bookings && bookings
-      .filter((booking) => booking.status === "ACCEPTED")
-      .map((booking, index) => <SitterBookingPreview key={index} {...booking} />)}
-      <Text className="font-bold text-xl ml-2">Pending Bookings</Text>
-      {bookings && bookings
-      .filter((booking) => booking.status === "PENDING")
-      .map((booking, index) => <AcceptBooking key={index} {...booking} />)}
+      <Box className="flex-row justify-between my-8">
+          <WelcomeMessage name={sitterProfile.name} />
+          <View className=' justify-center'>
+            <ProfileIcon iconUrl={sitterProfile.imageUrl} />
+          </View>
+        </Box>
+      <Text className="font-bold text-xl ml-8 mb-8">Upcoming Bookings</Text>
+        {
+          bookings && bookings.length > 0 
+          ? bookings.filter((booking) => booking.status === "ACCEPTED")
+                    .map((booking, index) => <SitterBookingPreview key={index} {...booking} />)
+          : <Text className='ml-8'>You have no upcoming bookings</Text>
+        }
+        <Text className="font-bold text-xl ml-8 my-8">Pending Bookings</Text>
+        {
+          bookings && bookings.length > 0 
+          ? bookings.filter((booking) => booking.status === "PENDING")
+                    .map((booking, index) => <SitterBookingPreview key={index} {...booking} />)
+          : <Text className='ml-8'>You have no pending bookings</Text>
+        }
+      </View>
     </ScrollView>
   )
 }

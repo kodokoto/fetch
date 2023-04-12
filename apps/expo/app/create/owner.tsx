@@ -9,17 +9,20 @@ import { Profile, sessionAtom } from 'app/utils/storage'
 import { Ionicons } from '@expo/vector-icons'
 
 import * as Location from 'expo-location';
+import ProfileForm from 'app/screens/ProfileForm'
 
 export default function OwnerProfileCreate() {
 
-  const [location, setLocation] = useState('');
 
   const router = useRouter()
   const { user, isLoaded } = useUser()
   const mutation = api.owner.create.useMutation()
   const [session, setSession] = useAtom(sessionAtom)
   const [description, setDescription] = React.useState('')
+  const [location, setLocation] = React.useState('')
+  const [bio, setBio] = React.useState('')
   const [name, setName] = React.useState(user.firstName)
+  const [images, setImages] = React.useState([])
   
   const handleLocationSearch = () => {
     Location.getCurrentPositionAsync({}).then(
@@ -46,6 +49,8 @@ export default function OwnerProfileCreate() {
         imageUrl: user.profileImageUrl,
         description: description,
         location: location,
+        bio: bio,
+        images: images,
       }).then(
         (ownerProfile) =>{
           setSession({...session, currentProfile: Profile.OWNER, ownerId: ownerProfile.id})
@@ -71,7 +76,7 @@ export default function OwnerProfileCreate() {
               ? (
                 <Button className='bg-transparent' onPress={()=> handleProfileCreation()}>
                   <View className='flex-row items-center'>
-                    <Text className='ml-2'>Next</Text>
+                    <Text className='mr-2'>Next</Text>
                     <Ionicons name="ios-arrow-forward-circle-outline" size={24} color="black" />
                   </View>
                 </Button>
@@ -97,35 +102,22 @@ export default function OwnerProfileCreate() {
             />
           </View>
         </View>
-        <View className='my-8'>
-          <Text className='text-md font-semibold mb-2'>Name: </Text>
-          <Input value={name}  onChangeText={setName}/>
+        <ProfileForm {
+          ...{
+            description,
+            setDescription,
+            name,
+            setName,
+            location,
+            setLocation,
+            bio,
+            setBio,
+            images,
+            setImages,
+            handleLocationSearch,
+          }
+        }/>
         </View>
-        
-        <View className='my-8'>
-          <Text className='text-md font-semibold mb-2'>Location: </Text>
-          <Input value={location}  onChangeText={setLocation} InputRightElement={
-            <Button className='bg-gray-200 rounded-l-none'>
-              <Ionicons name="ios-location-outline" size={18} color="black" onPress={handleLocationSearch}/>
-            </Button>
-          }/>
-        </View>
-
-        <View className='my-8'>
-          <Text className='text-md font-semibold mb-2'>Tell us a little bit about yourself:</Text>
-          <TextArea 
-              h={20} 
-              placeholder="Text Area Placeholder" 
-              value={description}
-              w="100%" 
-              autoCompleteType={undefined} 
-              onChangeText={
-                  (text) => setDescription(text) 
-              }
-          />
-        </View>
-      </View>
-
       </ScrollView>
     </>
 

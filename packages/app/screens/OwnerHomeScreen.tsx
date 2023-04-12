@@ -13,12 +13,14 @@ export default function OwnerHomeScreen() {
   const router = useRouter()
   const { user, isLoaded } = useUser();
   const userId = user?.id
+
   const { data: ownerProfile, isLoading: ownerProfileLoading } = api.owner.byUserId.useQuery(userId, {
     enabled: !!userId,
     cacheTime: 0,
   })
   const { data: bookings, isLoading: bookingsLoading } = api.booking.byOwnerId.useQuery(ownerProfile?.id, {
     enabled: !!ownerProfile?.id,
+    cacheTime: 0,
   })
 
   if (!isLoaded) return null
@@ -27,18 +29,28 @@ export default function OwnerHomeScreen() {
 
   return (
     <ScrollView>
-      <Box className="flex-wrap flex-row">
-        <WelcomeMessage name={ownerProfile.name} />
-        <ProfileIcon iconUrl={ownerProfile.imageUrl} />
-      </Box>
-      <Text className="font-bold text-xl ml-2 mb-2">Upcoming Bookings</Text>
-      {bookings && bookings
-      .filter((booking) => booking.status === "ACCEPTED")
-      .map((booking, index) => <BookingPreview key={index} {...booking} />)}
-      <Text className="font-bold text-xl ml-2">Pending Bookings</Text>
-      {bookings && bookings
-      .filter((booking) => booking.status === "PENDING")
-      .map((booking, index) => <BookingPreview key={index} {...booking} />)}
+      <View className='m-4'>
+        <Box className="flex-row justify-between my-8">
+          <WelcomeMessage name={ownerProfile.name} />
+          <View className=' justify-center'>
+            <ProfileIcon iconUrl={ownerProfile.imageUrl} />
+          </View>
+        </Box>
+        <Text className="font-bold text-xl ml-8 mb-8">Upcoming Bookings</Text>
+        {
+          bookings && bookings.length > 0 
+          ? bookings.filter((booking) => booking.status === "ACCEPTED")
+                    .map((booking, index) => <BookingPreview key={index} {...booking} />)
+          : <Text className='ml-8'>You have no upcoming bookings</Text>
+        }
+        <Text className="font-bold text-xl ml-8 my-8">Pending Bookings</Text>
+        {
+          bookings && bookings.length > 0 
+          ? bookings.filter((booking) => booking.status === "PENDING")
+                    .map((booking, index) => <BookingPreview key={index} {...booking} />)
+          : <Text className='ml-8'>You have no pending bookings</Text>
+        }
+      </View>
     </ScrollView>
   )
 }
