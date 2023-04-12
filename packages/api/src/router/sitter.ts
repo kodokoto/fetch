@@ -62,6 +62,7 @@ export const sitterRouter = router({
         location: z.string(),
         description: z.string(),
         proximityRadius: z.number(),
+        images: z.array(z.string()),
       })
     )
     .mutation(async ({ input }) => {
@@ -74,6 +75,12 @@ export const sitterRouter = router({
           proximityRadius: input.proximityRadius,
           location: input.location,
           description: input.description,
+          images: {
+            create: input.images.map((image) => ({
+              url: image,
+            })),
+          },
+
         },
       })
     }),

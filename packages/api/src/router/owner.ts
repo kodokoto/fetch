@@ -65,6 +65,8 @@ export const ownerRouter = router({
         imageUrl: z.string(),
         location : z.string(),
         description: z.string(),
+        bio: z.string(),
+        images: z.array(z.string()),
       })
     )
     .mutation(async ({ input }) => {
@@ -75,6 +77,12 @@ export const ownerRouter = router({
           imageUrl: input.imageUrl,
           description: input.description,
           location: input.location,
+          bio: input.bio,
+          images: {
+            create: input.images.map((image) => ({
+              url: image,
+            })),
+          },
         },
       })
     }),
