@@ -53,7 +53,7 @@ export default function OwnerProfile() {
     />
 
         <View className='bg-transparent flex-grow'>
-    <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor : '#50dc64' }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1}}>
       <View className="flex-1 flex-col justify-center ">
             <ProfileCarousel images={ownerData.images}/>
             <View className='bottom-12 flex-col flex-grow '>
