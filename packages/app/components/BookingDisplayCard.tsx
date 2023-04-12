@@ -67,7 +67,7 @@ export default function BookingDisplayCard(props: EditableDisplayCard<Booking>) 
                 session.currentProfile === Profile.SITTER && props.value.status === "PENDING"
                 ? ( <>
                     <Button className='bg-[#50dc64] w-[47%] m-0 rounded-none rounded-bl-3xl' onPress={() => props.onEdit(props.value)}><Text>Accept</Text></Button>
-                    <Button className='bg-[#fc511c] w-[47%] m-0 rounded-none rounded-br-3xl'><Text>Deny</Text></Button>
+                    <Button className='bg-[#fc511c] w-[47%] m-0 rounded-none rounded-br-3xl' onPress={() => props.onDelete(props.value)}><Text>Deny</Text></Button>
                     </> ) 
                 : null
             }

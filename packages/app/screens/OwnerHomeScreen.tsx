@@ -5,13 +5,12 @@ import { Box, ScrollView, Button } from 'native-base'
 import { useRouter } from 'expo-router'
 import ProfileIcon from 'app/components/ProfileIcon'
 import WelcomeMessage from 'app/components/WelcomeMessage'
-import BookingPreview from 'app/components/BookingPreview'
 import { api } from 'app/utils/trpc'
 import { router } from 'api/src/trpc'
+import BookingDisplayCard from '../components/BookingDisplayCard'
 
 export default function OwnerHomeScreen() {
 
-  const router = useRouter()
   const { user, isLoaded } = useUser();
   const userId = user?.id
 
@@ -41,14 +40,14 @@ export default function OwnerHomeScreen() {
         {
           bookings && bookings.length > 0 
           ? bookings.filter((booking) => booking.status === "ACCEPTED")
-                    .map((booking, index) => <BookingPreview key={index} {...booking} />)
+                    .map((booking, index) => <BookingDisplayCard key={index} value={booking} />)
           : <Text className='ml-8'>You have no upcoming bookings</Text>
         }
         <Text className="font-bold text-xl ml-8 my-8">Pending Bookings</Text>
         {
           bookings && bookings.length > 0 
           ? bookings.filter((booking) => booking.status === "PENDING")
-                    .map((booking, index) => <BookingPreview key={index} {...booking} />)
+                    .map((booking, index) => <BookingDisplayCard key={index} value={booking} />)
           : <Text className='ml-8'>You have no pending bookings</Text>
         }
       </View>

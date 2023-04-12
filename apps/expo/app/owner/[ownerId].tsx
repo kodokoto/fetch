@@ -1,5 +1,5 @@
 import { Image, View, Text, Dimensions } from 'react-native'
-import { Button, ScrollView } from 'native-base'
+import { Button, Menu, Pressable, ScrollView } from 'native-base'
 
 import React, {useState} from 'react'
 import { useRouter, useSearchParams, Stack } from 'expo-router'
@@ -8,6 +8,7 @@ import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
 import ProfileCarousel from 'app/components/ProfileCarousel'
 import ProfileTabs from 'app/components/ProfileTabs'
+import { Entypo, Feather } from '@expo/vector-icons'
 
 export default function OwnerProfile() {
   const { ownerId, serviceType, day, timeOfDay } = useSearchParams()
@@ -71,29 +72,37 @@ export default function OwnerProfile() {
                     </View>
                     {
                       session.currentProfile === Profile.SITTER
-                      ? <View className='flex flex-row gap-2'>
-                         <Button className='rounded-full'
-                            onPress={() => router.replace({
-                              pathname: '/messages',
-                              params: {
-                                receiverId: ownerId,
-                                senderId: session.sitterId,
-                              }
-                            })}
-                          >
-                            <Text className='text-white'>Message</Text>
-                          </Button>
-                          <Button className='bg-transparent' onPress={() => {
-                            router.push({
-                              pathname: '/report',
-                              params: {
-                                ownerId: ownerData.id,
-                              }
-                            }) 
-                          }}>
-                        <Text className='text-red-500'>Report</Text>
-                      </Button>
-                    </View>
+                      ? <View className='flex flex-row justify-between items-center'>
+                      <Button 
+
+                         className='rounded-full w-12 h-12 bg-gray-100 shadow-sm mr-10'
+                         onPress={() => router.replace({
+                           pathname: '/messages',
+                           params: {
+                             receiverId: ownerId,
+                             senderId: session.sitterId,
+                           }
+                         })}
+                       > 
+                         <View>
+                         <Feather name="message-circle" size={24} color="#3b82f6" />                            
+
+                         </View>
+                       </Button>
+                       <Menu 
+                         className='mt-8 mr-4'
+                         placement='bottom left'
+                         trigger={(triggerProps) => {
+                           return <Pressable {...triggerProps} className='mr-2'>
+                                     <Entypo name="dots-three-vertical" size={24} color="black" />
+                                   </Pressable>
+                         }
+                       }>
+                         <Menu.Item className='rounded-full'>
+                           <Text>Report</Text>
+                         </Menu.Item>
+                       </Menu>
+                 </View>
                     : null
                     }
                     
