@@ -7,6 +7,7 @@ import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
 import ProfileCarousel from 'app/components/ProfileCarousel'
 import ProfileTabs from 'app/components/ProfileTabs'
+import ProfileRating from 'app/components/ProfileRating'
 import { Entypo, Feather } from '@expo/vector-icons'
 
 export default function SitterProfile() {
@@ -29,6 +30,16 @@ export default function SitterProfile() {
       setImages(data.images)
       setReviews(data.reviews)
       setServices(data.services)
+      let totalOfRatings = 0;
+
+    data.reviews.map(review => {
+      totalOfRatings += review.rating;
+    })
+
+    let averageRating = (totalOfRatings / data.reviews.length).toFixed(1);
+    console.log("Average Rating 2: " + totalOfRatings);
+    
+    setAverageRating(averageRating);
     }
   })
 
@@ -39,6 +50,7 @@ export default function SitterProfile() {
   const [images, setImages] = useState([])
   const [reviews, setReviews] = useState([])
   const [services, setServices] = useState([])
+  const [averageRating, setAverageRating] = useState("");
 
 
   if (isLoading) return <Text>Loading...</Text>
@@ -67,6 +79,10 @@ export default function SitterProfile() {
                       <Text className='text-2xl font-bold'>{sitterData.name}</Text>
                       <Text className='text-sm'>Pet Sitter</Text>
                       <Text>{sitterData.bio}</Text>
+                      <View className="flex-row items-center">
+                      <Text>Rating: </Text>
+                      <ProfileRating className="mt-auto" rating={averageRating && Number(Number(averageRating).toFixed())} />
+                      </View>
                     </View>
                     {
                       session.currentProfile === Profile.OWNER
@@ -99,6 +115,7 @@ export default function SitterProfile() {
                   </View>
               </View> 
               <ProfileTabs {...{
+                sitterId: sitterId,
                 description: description,
                 location: location,
                 services: services,
@@ -125,7 +142,7 @@ export default function SitterProfile() {
             <Text className='text-white'>Request Booking</Text>
           </Button>
           {/* Button for messaging */}
-          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+          {/* <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
             onPress={() => router.push({
               pathname: '/create/booking',
               params: {
@@ -137,9 +154,9 @@ export default function SitterProfile() {
             })}
           >
             <Text className='text-white'>Message</Text>
-          </Button>
+          </Button> */}
           {/* Button for reporting user */}
-          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+          {/* <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
             onPress={() => router.push({
               pathname: '/create/booking',
               params: {
@@ -151,7 +168,7 @@ export default function SitterProfile() {
             })}
           >
             <Text className='text-white'>Report</Text>
-          </Button>
+          </Button> */}
         </View>
       : <View className='absolute bottom-0 w-full h-20 bg-transparent'>
           <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'

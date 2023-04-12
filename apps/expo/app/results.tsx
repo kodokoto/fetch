@@ -22,6 +22,9 @@ export default function Results() {
 
   const { data: sitters } = api.sitter.bySearchParams.useQuery(searchParamsObject)
 
+  console.log("Sitters in results: " + JSON.stringify(sitters));
+  
+
   return (
     <View className='m-8'>
       <Text className="font-bold text-xl ml-2 mb-4">Search Results</Text>

@@ -6,11 +6,14 @@ import ChatLog, { FilteredMessages } from 'app/components/ChatLog'
 // import 'react-native-get-random-values';
 import { useSearchParams, useRouter } from 'expo-router'
 import { api } from 'app/utils/trpc'
+import { useAtom } from 'jotai'
+import { sessionAtom, Profile } from 'app/utils/storage'
 import { Message } from '@prisma/client'
 
 export default function Messages() {
   const { receiverId, senderId, receiverName, receiverImgUrl } = useSearchParams()
   const router = useRouter()
+  const [session, _] = useAtom(sessionAtom)
   // router.setParams({ headerTitle: String(receiverName)});
   const [filteredMessages, setfilteredMessages] = useState<FilteredMessages[]>([])
 
@@ -23,13 +26,17 @@ export default function Messages() {
       onSuccess: (data: Message[]) => {
         // filter out id from each message
         const filteredData = data.map((message) => {
+          console.log("Message: " + JSON.stringify(message));
           return {
             content: message.content,
             createdAt: message.createdAt,
             ownerId: message.ownerId,
             sitterId: message.sitterId,
+            sender: message.sender
           }
         })
+
+        console.log("Filtered Data: " + JSON.stringify(filteredData));
 
         setfilteredMessages(filteredData)
       },
@@ -65,7 +72,9 @@ export default function Messages() {
   }, [currentMessageContent])
 
   const onSend = () => {
-    mutation.mutate({ content: currentMessageContent, ownerId: String(receiverId), sitterId: String(senderId) })
+    console.log("Owner Id 3: " + receiverId);
+    console.log("Sitter Id 3: " + senderId);
+    mutation.mutate({ content: currentMessageContent, ownerId: String(senderId), sitterId: String(receiverId), sender: String(session.currentProfile.toUpperCase()) })
     setfilteredMessages([
       ...filteredMessages,
       {
@@ -73,6 +82,7 @@ export default function Messages() {
         createdAt: new Date(),
         ownerId: String(receiverId),
         sitterId: String(senderId),
+        sender: session.currentProfile.toUpperCase()
       },
     ])
     setCurrentMessageContent('')

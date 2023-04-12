@@ -3,7 +3,7 @@ import { api } from '../utils/trpc'
 import { Avatar } from 'native-base'
 import { useRouter } from 'expo-router'
 import { Box } from 'native-base'
-import { Sitter } from '@prisma/client'
+import { Sitter, Service } from '@prisma/client'
 
 type SitterDescriptionCardProps = {
   sitter: Sitter
@@ -42,7 +42,7 @@ export default function SitterDescriptionCard(props: SitterDescriptionCardProps)
         className='rounded-2xl p-4 w-80 m-auto flex-row justify-between my-4'
         onPress={() =>
           router.push({
-            pathname: `/sitter/${props.sitter.id}`,
+            pathname: `/sitter/${sitter.id}`,
             params: props.searchParams
           })
         }
