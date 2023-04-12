@@ -19,10 +19,11 @@ export default function SitterProfileCreate() {
       router.replace('/services')
     }
   })
+
   const [session, setSession] = useAtom(sessionAtom)
-  const [description, setDescription] = React.useState('')
+  const [description, setDescription] = React.useState('I dont have a description yet.')
   const [location, setLocation] = React.useState('')
-  const [bio, setBio] = React.useState('')
+  const [bio, setBio] = React.useState('Hello! I\'m a new sitter.')
   const [proximityRadius, setProximityRadius] = React.useState(5)
   const [name, setName] = React.useState(user.firstName)
   const [images, setImages] = React.useState([])
@@ -44,7 +45,7 @@ export default function SitterProfileCreate() {
     )
   }  
 
-  const handleOnSubmit = () => {
+  const handleSubmit = () => {
     if (user && user.firstName) { 
       mutation.mutateAsync({
         userId: user.id,
@@ -65,28 +66,9 @@ export default function SitterProfileCreate() {
 
   return (
     <>
-      <Stack.Screen 
-        options={{
-          headerTitle: 'Create Profile',
-          headerRight() {
-            return (
-              location.length > 0
-              ? (
-                <Button className='bg-transparent' onPress={()=> handleOnSubmit()}>
-                  <View className=' pl-8 flex-row items-center'>
-                    <Text className='text-md mr-2'>Next</Text>
-                    <Ionicons name="ios-arrow-forward-circle-outline" size={24} color="black" />
-                  </View>
-                </Button>
-              )
-              : null
-            )
-          },
-        }}
-      />
       <ScrollView>
         <View className='m-6'>
-        <View className='my-8 flex-row justify-between'>
+        <View className='my-8 mx-2 flex-row justify-between'>
           <View className='ml-2'>
             <Text className='text-3xl font-bold'>Hi {user.firstName}!</Text>
             <Text className=''>Welcome to fetch.</Text>
@@ -100,7 +82,7 @@ export default function SitterProfileCreate() {
             />
           </View>
         </View>
-        <View className='my-4'>
+        <View className='my-4 mx-4'>
           <Text className='text-md font-semibold mb-2'>We are exited to have you as a pet sitter!</Text>
           <Text className='text-md font-semibold mb-2'>But first, please tell us a little bit about yourself:</Text>
         </View>
@@ -118,8 +100,8 @@ export default function SitterProfileCreate() {
             setImages,
             proximityRadius,
             setProximityRadius,
-            handleOnSubmit,
             handleLocationSearch,
+            handleSubmit
           }
        }/>
       </View>   

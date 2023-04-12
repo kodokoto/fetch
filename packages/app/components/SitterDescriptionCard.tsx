@@ -14,17 +14,12 @@ type SitterDescriptionCardProps = {
     petTypes: string[],
   }
 }
-function capitalizeWords(inputString) {
-  return inputString.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-    return letter.toUpperCase();
-  });
-}
+
+
 
 export default function SitterDescriptionCard({sitter, searchParams}: SitterDescriptionCardProps) {
   const router = useRouter()
   const {data: service} = api.service.byServiceType.useQuery(searchParams.serviceType)
-  // const {data: petType} = api.animal.byServiceId.useQuery(service ? service.id : null)
-
 
   return (
     <View
@@ -34,7 +29,7 @@ export default function SitterDescriptionCard({sitter, searchParams}: SitterDesc
       }}
     >
       <TouchableOpacity
-        className='bg-slate-100 rounded-2xl p-4 w-80 h-25 m-auto mb-2 flex-wrap flex-row justify-between border-[#4c8ab9] border-solid border-2'
+        className='rounded-2xl p-4 w-80 m-auto flex-row justify-between my-4'
         onPress={() =>
           router.push({
             pathname: `/sitter/${sitter.id}`,
@@ -42,29 +37,30 @@ export default function SitterDescriptionCard({sitter, searchParams}: SitterDesc
           })
         }
       >
-        <Box className="float-left" style={{ flexDirection: 'row' }}>
+        <Box className="flex-row">
           {sitter ? (
             <Avatar
-              className="w-12 h-12 ml-4 float-left"
+              className="w-12 h-12 "
               source={{ uri: sitter.imageUrl }}
             />
           ) : null}
-          <Box className="ml-4 float-left">
-            <Text>
+          <Box className="ml-4">
+            <Text className='text-lg'>
               {sitter ? sitter.name : null}
             </Text>
-            <Text>Location: {sitter ? sitter.location : null}</Text>
+            <Text className='text-xs'>{sitter.bio}</Text>
             <Text>
-              Helps with:{' '}
-              {searchParams.petTypes ? searchParams.petTypes.map((pet) => capitalizeWords(pet)).join(", ") : null}
             </Text>
           </Box>
         </Box>
-        <Text
-          className="flex-end"
-        >
-          £{service? service.price : null}
-        </Text>
+        <View>
+          <Text className=''>
+            £{service? service.price : null}
+          </Text>
+          <Text className='text-xs'>
+            per visit
+          </Text>
+        </View>
       </TouchableOpacity>
     </View>
   )

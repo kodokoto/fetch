@@ -22,14 +22,15 @@ export default function Results() {
   console.log("Search Params: " + JSON.stringify(searchParamsObject));
   
 
-  const { data: sitters } = api.sitter.bySearchParams.useQuery(searchParamsObject)
+  const { data: sitters, isLoading } = api.sitter.bySearchParams.useQuery(searchParamsObject)
 
   console.log("Sitters in results: " + JSON.stringify(sitters));
   
+  if (isLoading) return <Text>Loading...</Text>
 
   return (
-    <View className="flex gap-8">
-      <Text className="font-bold text-xl ml-2">Search Results</Text>
+    <View className="m-8">
+      <Text className="font-bold text-xl ml-2 mb-4">Search Results</Text>
       {
       sitters ? (
         sitters.map((sitter) => {
@@ -37,7 +38,7 @@ export default function Results() {
             serviceType: String(serviceType),
             day: String(day),
             timeOfDay: String(timeOfDay),
-            petTypes: Array(String(petTypes)),
+            petTypes: String(petTypes).split(","),
           }} key={sitter.id} />
         })
       ) : (

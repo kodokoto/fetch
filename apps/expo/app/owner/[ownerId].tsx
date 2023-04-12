@@ -19,6 +19,7 @@ export default function OwnerProfile() {
     id: String(ownerId),
     include: ['images', 'reviews', 'pets']
   }, {
+    enabled: !!ownerId,
     cacheTime: 0,
     onSuccess: (data) => {
       setName(data.name)
@@ -51,11 +52,11 @@ export default function OwnerProfile() {
       }}
     />
 
-        <View className='bg-transparent flex-1'>
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View className="flex-1 flex-col justify-center">
+        <View className='bg-transparent flex-grow'>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor : '#50dc64' }}>
+      <View className="flex-1 flex-col justify-center ">
             <ProfileCarousel images={ownerData.images}/>
-            <View className='bottom-12 flex-1'>
+            <View className='bottom-12 flex-col flex-grow '>
               <View className='flex flex-col gap-1 text-black mx-6 mb-4'>
                   <Image
                       source={{ uri: imageUrl }}
@@ -98,13 +99,19 @@ export default function OwnerProfile() {
                     
                   </View>
               </View> 
-              <ProfileTabs {...{
-                description: description,
-                location: location,
-                reviews: reviews,
-                pets: pets,
-              }} />
+              <View className='flex-1 h-fit'>
+                <ProfileTabs {...{
+                  description: description,
+                  location: location,
+                  reviews: reviews,
+                  pets: pets,
+                }} />
+                <View className='h-18'>
+
+                </View>
+              </View>
             </View>
+            
       </View>
 
     </ScrollView>
@@ -146,7 +153,7 @@ export default function OwnerProfile() {
           </Button>
         </View>
       : <View className='absolute bottom-0 w-full h-20 bg-transparent'>
-            <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+            <Button className='fixed bottom-0 rounded-full bg-blue-500 w-11/12 m-auto mb-8 h-10'
                 onPress={() => router.push({
                 pathname: '/edit/owner',
                 params: {
@@ -154,7 +161,7 @@ export default function OwnerProfile() {
                 }
                 })}
             >
-                <Text className='text-white'>Edit Profile</Text>
+                <Text className='text-white text-bold'>Edit Profile</Text>
             </Button>
         </View>
         

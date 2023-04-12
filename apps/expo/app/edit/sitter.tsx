@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons'
 
 import * as Location from 'expo-location';
 import { BounceIn } from 'react-native-reanimated'
+import ProfileForm from 'app/screens/ProfileForm'
 
 export default function SitterProfileEdit() {
   const router = useRouter()
@@ -34,6 +35,7 @@ export default function SitterProfileEdit() {
   const [name, setName] = useState('')
   const [bio, setBio] = useState('')
   const [proximityRadius, setProximityRadius] = useState(0)
+  const [images, setImages] = useState([])
 
   const handleLocationSearch = () => {
     Location.getCurrentPositionAsync({}).then(
@@ -52,7 +54,7 @@ export default function SitterProfileEdit() {
     )
   }  
 
-  const handleProfileEditing = () => {
+  const handleSubmit = () => {
     console.log("Name: " + name)
     console.log("Location: " + location)
     console.log("Description: " + description)
@@ -77,84 +79,33 @@ export default function SitterProfileEdit() {
   return (
 
     <>
+      <Stack.Screen
+        options={{
+          headerTitle: 'Edit Profile',
+        }}
+      />
       <ScrollView>
         <View className='m-6'>
-        <View className='my-8 flex-row justify-between'>
-          <View className='ml-2'>
-            <Text className='text-3xl font-bold'>Edit your details</Text>
-          </View>
-          <View className=' flex-col justify-center'>
-            <Image
-              className='rounded-full w-12 h-12 mr-4'  
-              source={{
-                uri: sitterData.imageUrl,
-              }}
-            />
-          </View>
+        <ProfileForm {
+          ...{
+            description,
+            setDescription,
+            name,
+            setName,
+            location,
+            setLocation,
+            bio,
+            setBio,
+            images,
+            setImages,
+            handleLocationSearch,
+            handleSubmit,
+          }
+        }/>
         </View>
-        <View className='my-4'>
-          <Text className='text-md font-semibold mb-2'>Name: </Text>
-          <Input value={name}  onChangeText={setName}/>
-        </View>
-        
-        <View className='my-4'>
-          <Text className='text-md font-semibold mb-2'>Location: </Text>
-          <Input value={location}  onChangeText={setLocation} InputRightElement={
-            <Button className='bg-gray-200 rounded-l-none'>
-              <Ionicons name="ios-location-outline" size={18} color="black" onPress={handleLocationSearch}/>
-            </Button>
-          }/>
-        </View>
-
-        <View className='my-4'>
-          <Text className='text-md font-semibold mb-2'>Proximity Radius: </Text>
-          <Slider 
-            value={proximityRadius}
-            onChange={setProximityRadius}
-            minValue={1}
-            maxValue={20}
-            step={1}
-            className='w-11/12'
-          >
-            <Slider.Track>
-              <Slider.FilledTrack />
-            </Slider.Track>
-            <Slider.Thumb />
-          </Slider>
-          <Text className='text-md font-semibold mb-2'>{proximityRadius} miles</Text>
-        </View>
-
-        <View className='my-4'>
-          <Text className='text-md font-semibold mb-2'>A short bio: </Text>
-          <Input value={bio}  onChangeText={setBio} maxLength={80}/>
-        </View>
-
-        <View className='my-4'>
-            <Text className='text-md font-semibold mb-2'>About you:</Text>
-            <TextArea 
-                h={20} 
-                placeholder="Text Area Placeholder" 
-                value={description}
-                w="100%" 
-                autoCompleteType={undefined} 
-                onChangeText={
-                    (text) => setDescription(text) 
-                }
-                maxLength={200}
-            />
-        </View>
-        <View className='my-8'>
-            <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10' 
-                onPress={handleProfileEditing}
-            >
-                <Text className='text-white'>Submit</Text>
-            </Button>
-        </View>
-      </View>   
-
       </ScrollView>
-    
     </>
+    
     )
   }
 
