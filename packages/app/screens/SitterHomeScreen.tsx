@@ -7,7 +7,7 @@ import SitterBookingPreview from 'app/components/SitterBookingPreview'
 import AcceptBooking from '../components/AcceptBooking'
 import { Link, useRouter, useSearchParams } from 'expo-router'
 import { api } from 'app/utils/trpc'
-import BookingPreview from '../components/BookingPreview'
+import BookingPreview from '../components/OLDDD'
 import DisplayCardList from '../components/DisplayCardList'
 import BookingDisplayCard from '../components/BookingDisplayCard'
 
@@ -46,7 +46,9 @@ export default function SitterHomeScreen() {
   } 
 
   const handleDeclinePending = (booking) => {
-    deleteBooking.mutateAsync(booking.id)
+    deleteBooking.mutateAsync({
+      id: booking.id,
+    })
     setPendingBookings(pendingBookings.filter((b) => b.id !== b.id))
   }
 
