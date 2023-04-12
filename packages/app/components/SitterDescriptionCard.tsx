@@ -10,24 +10,20 @@ type SitterDescriptionCardProps = {
   searchParams: {
     serviceType: string
     day: string
-    timeOfDay: string
+    timeOfDay: string,
+    petTypes: string[],
   }
 }
-
 function capitalizeWords(inputString) {
   return inputString.toLowerCase().replace(/\b[a-z]/g, function(letter) {
     return letter.toUpperCase();
   });
 }
 
-export default function SitterDescriptionCard(props: SitterDescriptionCardProps) {
+export default function SitterDescriptionCard({sitter, searchParams}: SitterDescriptionCardProps) {
   const router = useRouter()
-  const {data: service} = api.service.byServiceType.useQuery(props.searchParams.serviceType)
-  console.log("Service: " + JSON.stringify(service));
-  const {data: petType} = api.animal.byServiceId.useQuery(service && service.id)
-  const {data: sitter} = api.sitter.byId.useQuery(props.sitter.id)
-
-  console.log("Sitter: " + JSON.stringify(petType));
+  const {data: service} = api.service.byServiceType.useQuery(searchParams.serviceType)
+  // const {data: petType} = api.animal.byServiceId.useQuery(service ? service.id : null)
 
 
   return (
@@ -42,7 +38,7 @@ export default function SitterDescriptionCard(props: SitterDescriptionCardProps)
         onPress={() =>
           router.push({
             pathname: `/sitter/${sitter.id}`,
-            params: props.searchParams
+            params: searchParams
           })
         }
       >
@@ -60,7 +56,7 @@ export default function SitterDescriptionCard(props: SitterDescriptionCardProps)
             <Text>Location: {sitter ? sitter.location : null}</Text>
             <Text>
               Helps with:{' '}
-              {petType ? petType.map((pet) => capitalizeWords(pet.type)).join(", ") : null}
+              {searchParams.petTypes ? searchParams.petTypes.map((pet) => capitalizeWords(pet)).join(", ") : null}
             </Text>
           </Box>
         </Box>

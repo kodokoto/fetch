@@ -10,7 +10,7 @@ import ProfileTabs from 'app/components/ProfileTabs'
 import ProfileRating from 'app/components/ProfileRating'
 
 export default function SitterProfile() {
-  const { sitterId, serviceType, day, timeOfDay } = useSearchParams()
+  const { sitterId, serviceType, day, timeOfDay, petTypes } = useSearchParams()
   const router = useRouter()
 
   const [session, _] = useAtom(sessionAtom)
@@ -126,7 +126,7 @@ export default function SitterProfile() {
 
     </ScrollView>
     {
-      serviceType && day && timeOfDay && session.currentProfile === Profile.OWNER 
+      serviceType && day && timeOfDay && petTypes && session.currentProfile === Profile.OWNER 
       ? <View className='absolute bottom-0 w-full h-20 bg-transparent'>
           <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
             onPress={() => router.push({
@@ -136,6 +136,7 @@ export default function SitterProfile() {
                 serviceType,
                 day,
                 timeOfDay,
+                petTypes,
               }
             })}
           >
