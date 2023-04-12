@@ -7,6 +7,7 @@ import { Booking } from '@prisma/client'
 import { api } from '../utils/trpc'
 import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
+import { useSearchParams } from 'expo-router'
 import { parseBookingFrequency, capitalizeWords, parseServiceType, parseTime } from '../utils/helpers'
 import DisplayCardList from 'app/components/DisplayCardList'
 import PetDisplayCard from 'app/components/PetDisplayCard'
@@ -125,7 +126,13 @@ export default function BookingDetail(props: Booking) {
             })
           }
             >Reschedule</Button>
-            <Button className="rounded-full bg-[#fc511c] mx-auto w-10/12">Cancel</Button>
+            <Button className="mr-auto rounded-2xl" onPress={() => router.push({
+              pathname: '/create/review',
+              params: {
+                sitterId: props.sitterId,
+              }})}>Review</Button>
+
+            <Button className="mr-auto ml-2 rounded-2xl">Cancel</Button>
           </Box>
         </Box>
       </Box>

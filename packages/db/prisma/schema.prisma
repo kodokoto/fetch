@@ -42,7 +42,7 @@ model Sitter {
   images          Image[]
   bio             String    @default("Hello! I'm a new sitter.")
   description     String    @default("I dont have a description yet.")
-  proximityRadius Int       @default(10)
+  proximityRadius Int       @default(5)
   reviews         Review[]
   location        String    @default("London, UK")
   reports         Report[]
