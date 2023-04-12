@@ -76,10 +76,10 @@ export default function SitterProfile() {
                   <View className='flex-row justify-between'>
                     <View>
                       <Text></Text>
-                      <Text className='text-2xl font-bold'>{sitterData && sitterData.name}</Text>
+                      <Text className='text-2xl font-bold w-20'>{sitterData && sitterData.name}</Text>
                       <Text className='text-sm'>Pet Sitter</Text>
                       <Text>{sitterData.bio}</Text>
-                      <View className="flex-row justify-center items-center">
+                      <View className="flex-row items-center">
                       <Text>Rating: </Text>
                       <ProfileRating className="mt-auto" rating={averageRating && Number(Number(averageRating).toFixed())} />
                       </View>

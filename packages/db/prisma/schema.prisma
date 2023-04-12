@@ -69,7 +69,6 @@ model AvailableTime {
   day       Day
   serviceId Int
   service   Service   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-
   @@index([serviceId])
 }
 
@@ -99,7 +98,6 @@ model Booking {
   petId           Int
   scheduledTime   ScheduledTime @relation(fields: [scheduledTimeId], references: [id])
   scheduledTimeId Int           @unique
-
   @@index([ownerId])
   @@index([sitterId])
   @@index([serviceId])
@@ -141,7 +139,7 @@ model Message {
   sitterId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  sender    Role
   @@index([ownerId])
   @@index([sitterId])
 }
@@ -170,7 +168,6 @@ model Service {
   sitterId       String
   availableTimes AvailableTime[]
   bookings       Booking[]
-
   @@index([sitterId])
 }
 
@@ -184,7 +181,6 @@ model Review {
   from      Owner    @relation(fields: [fromId], references: [id])
   toId      String
   to        Sitter   @relation(fields: [toId], references: [id])
-
   @@index([fromId])
   @@index([toId])
 }
@@ -199,7 +195,6 @@ model Report {
   from       Owner      @relation(fields: [fromId], references: [id])
   toId       String
   to         Sitter     @relation(fields: [toId], references: [id])
-
   @@index([fromId])
   @@index([toId])
 }
@@ -211,7 +206,6 @@ model Animal {
   type      PetType
   service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   serviceId Int
-
   @@index([serviceId])
 }
 

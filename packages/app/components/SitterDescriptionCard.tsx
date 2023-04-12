@@ -23,10 +23,11 @@ function capitalizeWords(inputString) {
 export default function SitterDescriptionCard(props: SitterDescriptionCardProps) {
   const router = useRouter()
   const {data: service} = api.service.byServiceType.useQuery(props.searchParams.serviceType)
-  const {data: petType} = api.animal.byServiceId.useQuery(service ? service.id : null)
+  console.log("Service: " + JSON.stringify(service));
+  const {data: petType} = api.animal.byServiceId.useQuery(service && service.id)
   const {data: sitter} = api.sitter.byId.useQuery(props.sitter.id)
 
-  console.log("Sitter: " + JSON.stringify(sitter));
+  console.log("Sitter: " + JSON.stringify(petType));
 
 
   return (
