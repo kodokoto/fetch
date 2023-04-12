@@ -111,4 +111,13 @@ export const bookingRouter = router({
         },
       })
     }),
+  delete: publicProcedure
+    .input(z.number())
+    .mutation(async ({ input }) => {
+      return await prisma.booking.delete({
+        where: {
+          id: input,
+        },
+      })
+    }),
   })

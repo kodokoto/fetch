@@ -69,7 +69,15 @@ export default function BookingDetailSitter(props: Booking) {
     id: props.id,
     include: 'scheduledTime',
   })
- 
+  
+  const mutationDelete = api.booking.delete.useMutation()
+
+  const handleCancelBooking = () => {
+    mutationDelete.mutate(props.id)
+    router.push({
+      pathname: '/home',
+  })}
+
   const handleMessagePress = () => {
     router.replace({
       pathname: '/messages',
@@ -165,9 +173,29 @@ export default function BookingDetailSitter(props: Booking) {
               })}
               
             >
-              Manage
+              Edit details
             </Button>
-            <Button className="mx-2 rounded-2xl">Cancel</Button>
+            {/* <Button
+              className="mx-2 rounded-2xl"
+              onPress={() => router.push({
+                pathname: '/edit/scheduledTime',
+                params: {
+                  bookingId: props.id,
+                  ownerId: props.ownerId,
+                  sitterId: props.sitterId,
+                  scheduledTimeId: data.scheduledTime.id,
+                  day: data.scheduledTime.day,
+                  timeOfDay: data.scheduledTime.time,
+                }
+              })}
+            >
+              Reschedule
+            </Button> */}
+            <Button className="mx-2 rounded-2xl"
+              onPress = {handleCancelBooking}
+            >
+              Cancel
+            </Button>
             <Button className="mr-auto rounded-2xl" onPress={() => router.push('/review')}>Review</Button>
           </Box>
         </Box>

@@ -27,10 +27,6 @@ export default function EditBooking() {
     console.log("Scheduled Time Id: " + scheduledTimeId);
 
     const { data: bookingData, isLoading: bookingDataIsLoading} = api.booking.byId.useQuery(Number(bookingId))
-    
-    const { data: scheduledTimeData, isLoading: scheduledTimeDataIsLoading} = api.scheduledTime.byId.useQuery(Number(scheduledTimeId))
-
-    const { data: sitterData, isLoading: sitterDataIsLoading} = api.sitter.byId.useQuery(String(sitterId))
 
     const { data: pets, isLoading: petsIsLoading} = api.pet.byOwnerId.useQuery(String(ownerId), { enabled: !!ownerId, cacheTime: 0 })
     
@@ -75,7 +71,7 @@ export default function EditBooking() {
         day: String(day) as Day,
         time: String(timeOfDay) as TimeOfDay
     })
-    if(availabileServicesIsLoading || sitterDataIsLoading || petsIsLoading || bookingDataIsLoading || scheduledTimeDataIsLoading) return null;
+    if(availabileServicesIsLoading || petsIsLoading || bookingDataIsLoading) return null;
 
     return (
       <View className="flex flex-col justify-center items-center">

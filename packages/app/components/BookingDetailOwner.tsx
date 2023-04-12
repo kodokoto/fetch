@@ -21,6 +21,14 @@ export default function BookingDetailOwner(props: Booking) {
     include: 'scheduledTime',
   })
  
+  const mutationDelete = api.booking.delete.useMutation()
+
+  const handleCancelBooking = () => {
+    mutationDelete.mutate(props.id)
+    router.push({
+      pathname: '/home',
+  })}
+
   const handleMessagePress = () => {
     router.replace({
       pathname: '/messages',
@@ -115,8 +123,11 @@ export default function BookingDetailOwner(props: Booking) {
               }
             })}
             >Manage</Button>
-            <Button className="mr-auto ml-2 rounded-2xl">Cancel</Button>
-          </Box>
+            <Button className="mx-2 rounded-2xl"
+              onPress = {handleCancelBooking}
+            >
+              Cancel
+            </Button></Box>
         </Box>
       </Box>
       
