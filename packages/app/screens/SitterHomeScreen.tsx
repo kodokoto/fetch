@@ -21,6 +21,7 @@ export default function SitterHomeScreen() {
   
   const { data: bookings, isLoading: bookingsLoading } = api.booking.bySitterId.useQuery(sitterProfile?.id, {
     enabled: !!sitterProfile?.id,
+    cacheTime: 0,
   })
 
   if (!isLoaded) return null

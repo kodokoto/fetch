@@ -86,10 +86,9 @@ export const sitterRouter = router({
         name: z.string(),
         imageUrl: z.string(),
         bio: z.string(),
-        proximityRadius: z.number(),
         location: z.string(),
         description: z.string(),
-
+        proximityRadius: z.number(),
       })
     )
     .mutation(async ({ input }) => {

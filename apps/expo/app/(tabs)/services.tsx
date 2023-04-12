@@ -15,7 +15,9 @@ export default function Services() {
     const router = useRouter();
     const [session, _] = useAtom(sessionAtom);
     const [services, setServices] = React.useState<ServiceWithPetType[]>([])
+
     const { isLoading } = api.service.bySitterId.useQuery(session.sitterId, {
+        cacheTime: 0,
         onSuccess: (data) => {
             setServices(data)
         }

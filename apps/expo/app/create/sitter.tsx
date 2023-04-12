@@ -12,7 +12,12 @@ import * as Location from 'expo-location';
 export default function SitterProfileCreate() {
   const router = useRouter()
   const { user, isLoaded } = useUser()
-  const mutation = api.sitter.create.useMutation()
+  const mutation = api.sitter.create.useMutation({
+    onSuccess: (sitterProfile) => {
+      setSession({...session, currentProfile: Profile.SITTER, sitterId: sitterProfile.id})
+      router.replace('/services')
+    }
+  })
   const [session, setSession] = useAtom(sessionAtom)
   const [description, setDescription] = React.useState('')
   const [location, setLocation] = React.useState('')
@@ -43,16 +48,11 @@ export default function SitterProfileCreate() {
         userId: user.id,
         name: name,
         imageUrl: user.profileImageUrl,
+        bio: bio,
         description: description,
         location: location,
         proximityRadius: proximityRadius,
-        bio: bio,
-      }).then(
-        (sitterProfile) =>{
-          setSession({...session, currentProfile: Profile.SITTER, sitterId: sitterProfile.id})
-          router.push('/services')
-        } 
-      )
+      })
     } else {
       console.log('User not found')
     }

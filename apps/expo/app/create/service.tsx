@@ -73,7 +73,9 @@ export default function services() {
             duration: Number(duration),
             availableTimes,
         }).then(
-          () => router.replace('/services')
+          () => {
+            router.replace('/services')
+          }
         )
     }
 
