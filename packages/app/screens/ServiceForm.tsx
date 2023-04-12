@@ -96,7 +96,7 @@ export default function ServiceForm(formData: ServiceFormData) {
         <Text className='mb-4'>Tell pet owners a bit about what you provide for this service.</Text>
         <TextArea 
             h={20} 
-            placeholder="Text Area Placeholder" 
+            placeholder="Enter a description" 
             value={formData.description}
             w="100%" 
             autoCompleteType={undefined} 

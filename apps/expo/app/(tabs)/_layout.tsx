@@ -9,7 +9,7 @@ export default function () {
     return (
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: '#4c8ab9',
+          tabBarActiveTintColor: '#3b82f6',
         }}
       >
         <Tabs.Screen
@@ -64,7 +64,7 @@ export default function () {
     return (
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: '#4c8ab9',
+          tabBarActiveTintColor: '#3b82f6',
         }}
       >
         <Tabs.Screen

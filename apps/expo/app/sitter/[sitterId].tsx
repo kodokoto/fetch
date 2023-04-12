@@ -1,5 +1,5 @@
-import { Image, View, Text, Dimensions } from 'react-native'
-import { Button, ScrollView } from 'native-base'
+import { Image, View, Text, Dimensions, Pressable } from 'react-native'
+import { Button, ScrollView, Menu } from 'native-base'
 import React, { useState } from 'react'
 import { useRouter, useSearchParams, Stack } from 'expo-router'
 import { api } from 'app/utils/trpc'
@@ -8,9 +8,10 @@ import { Profile, sessionAtom } from 'app/utils/storage'
 import ProfileCarousel from 'app/components/ProfileCarousel'
 import ProfileTabs from 'app/components/ProfileTabs'
 import ProfileRating from 'app/components/ProfileRating'
+import { Entypo, Feather } from '@expo/vector-icons'
 
 export default function SitterProfile() {
-  const { sitterId, serviceType, day, timeOfDay } = useSearchParams()
+  const { sitterId, serviceType, day, timeOfDay, petTypes } = useSearchParams()
   const router = useRouter()
 
   const [session, _] = useAtom(sessionAtom)
@@ -35,7 +36,7 @@ export default function SitterProfile() {
       totalOfRatings += review.rating;
     })
 
-    let averageRating = (totalOfRatings / data.reviews.length).toFixed(1);
+    const averageRating = (totalOfRatings / data.reviews.length).toFixed(1);
     console.log("Average Rating 2: " + totalOfRatings);
     
     setAverageRating(averageRating);
@@ -74,20 +75,21 @@ export default function SitterProfile() {
                       className='w-16 h-16 rounded-full border-white border-2'
                   />
                   <View className='flex-row justify-between'>
-                    <View>
-                      <Text></Text>
-                      <Text className='text-2xl font-bold w-20'>{sitterData && sitterData.name}</Text>
+                    <View className='flex-col justify-evenly'>
+                      <Text className='text-2xl font-bold'>{sitterData.name}</Text>
                       <Text className='text-sm'>Pet Sitter</Text>
                       <Text>{sitterData.bio}</Text>
                       <View className="flex-row items-center">
                       <Text>Rating: </Text>
                       <ProfileRating className="mt-auto" rating={averageRating && Number(Number(averageRating).toFixed())} />
-                      </View>
+                    </View>
                     </View>
                     {
                       session.currentProfile === Profile.OWNER
-                      ? <View className='flex flex-row items-start gap-2'>
-                         <Button className='rounded-full h-10'
+                      ? <View className='flex flex-row justify-between items-center'>
+                         <Button 
+
+                            className='rounded-full w-12 h-12 bg-gray-100 shadow-sm mr-10'
                             onPress={() => router.replace({
                               pathname: '/messages',
                               params: {
@@ -95,19 +97,25 @@ export default function SitterProfile() {
                                 senderId: session.ownerId,
                               }
                             })}
-                          >
-                            <Text className='text-white'>Message</Text>
+                          > 
+                            <View>
+                            <Feather name="message-circle" size={24} color="#3b82f6" />                            
+
+                            </View>
                           </Button>
-                          <Button className='bg-transparent' onPress={() => {
-                            router.push({
-                              pathname: '/report',
-                              params: {
-                                sitterId: sitterData.id,
-                              }
-                            }) 
-                          }}>
-                        <Text className='text-red-500'>Report</Text>
-                      </Button>
+                          <Menu 
+                            className='mt-8 mr-4'
+                            placement='bottom left'
+                            trigger={(triggerProps) => {
+                              return <Pressable {...triggerProps} className='mr-2'>
+                                        <Entypo name="dots-three-vertical" size={24} color="black" />
+                                      </Pressable>
+                            }
+                          }>
+                            <Menu.Item className='rounded-full'>
+                              <Text>Report</Text>
+                            </Menu.Item>
+                          </Menu>
                     </View>
                     : null
                     }
@@ -126,9 +134,9 @@ export default function SitterProfile() {
 
     </ScrollView>
     {
-      serviceType && day && timeOfDay && session.currentProfile === Profile.OWNER 
+      serviceType && day && timeOfDay && session.currentProfile === Profile.OWNER  
       ? <View className='absolute bottom-0 w-full h-20 bg-transparent'>
-          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10 bg-blue-500'
             onPress={() => router.push({
               pathname: '/create/booking',
               params: {
@@ -136,52 +144,27 @@ export default function SitterProfile() {
                 serviceType,
                 day,
                 timeOfDay,
+                petTypes,
               }
             })}
           >
             <Text className='text-white'>Request Booking</Text>
           </Button>
-          {/* Button for messaging */}
-          {/* <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
-            onPress={() => router.push({
-              pathname: '/create/booking',
-              params: {
-                sitterId,
-                serviceType,
-                day,
-                timeOfDay,
-              }
-            })}
-          >
-            <Text className='text-white'>Message</Text>
-          </Button> */}
-          {/* Button for reporting user */}
-          {/* <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
-            onPress={() => router.push({
-              pathname: '/create/booking',
-              params: {
-                sitterId,
-                serviceType,
-                day,
-                timeOfDay,
-              }
-            })}
-          >
-            <Text className='text-white'>Report</Text>
-          </Button> */}
         </View>
-      : <View className='absolute bottom-0 w-full h-20 bg-transparent'>
-          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
-              onPress={() => router.push({
-              pathname: '/edit/sitter',
-              params: {
-                  sitterId
-              }
-              })}
-          >
-              <Text className='text-white'>Edit Profile</Text>
-          </Button>
-      </View>
+      : session.currentProfile === Profile.SITTER 
+          ? <View className='absolute bottom-0 w-full h-20 bg-transparent'>
+              <Button className='fixed bottom-0 rounded-full bg-blue-500 w-11/12 m-auto mb-8 h-10'
+                  onPress={() => router.push({
+                  pathname: '/edit/sitter',
+                  params: {
+                      sitterId
+                  }
+                  })}
+              >
+                    <Text className='text-white font-bold'>Edit Profile</Text>
+                </Button>
+            </View>
+            : null
     }
     </View>
     </>

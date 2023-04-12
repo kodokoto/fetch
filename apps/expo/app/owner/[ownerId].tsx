@@ -1,5 +1,5 @@
 import { Image, View, Text, Dimensions } from 'react-native'
-import { Button, ScrollView } from 'native-base'
+import { Button, Menu, Pressable, ScrollView } from 'native-base'
 
 import React, {useState} from 'react'
 import { useRouter, useSearchParams, Stack } from 'expo-router'
@@ -8,6 +8,7 @@ import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
 import ProfileCarousel from 'app/components/ProfileCarousel'
 import ProfileTabs from 'app/components/ProfileTabs'
+import { Entypo, Feather } from '@expo/vector-icons'
 
 export default function OwnerProfile() {
   const { ownerId, serviceType, day, timeOfDay } = useSearchParams()
@@ -19,6 +20,7 @@ export default function OwnerProfile() {
     id: String(ownerId),
     include: ['images', 'reviews', 'pets']
   }, {
+    enabled: !!ownerId,
     cacheTime: 0,
     onSuccess: (data) => {
       setName(data.name)
@@ -51,11 +53,11 @@ export default function OwnerProfile() {
       }}
     />
 
-        <View className='bg-transparent flex-1'>
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View className="flex-1 flex-col justify-center">
+        <View className='bg-transparent flex-grow'>
+    <ScrollView contentContainerStyle={{ flexGrow: 1}}>
+      <View className="flex-1 flex-col justify-center ">
             <ProfileCarousel images={ownerData.images}/>
-            <View className='bottom-12 flex-1'>
+            <View className='bottom-12 flex-col flex-grow '>
               <View className='flex flex-col gap-1 text-black mx-6 mb-4'>
                   <Image
                       source={{ uri: imageUrl }}
@@ -70,41 +72,55 @@ export default function OwnerProfile() {
                     </View>
                     {
                       session.currentProfile === Profile.SITTER
-                      ? <View className='flex flex-row gap-2'>
-                         <Button className='rounded-full'
-                            onPress={() => router.replace({
-                              pathname: '/messages',
-                              params: {
-                                receiverId: ownerId,
-                                senderId: session.sitterId,
-                              }
-                            })}
-                          >
-                            <Text className='text-white'>Message</Text>
-                          </Button>
-                          <Button className='bg-transparent' onPress={() => {
-                            router.push({
-                              pathname: '/report',
-                              params: {
-                                ownerId: ownerData.id,
-                              }
-                            }) 
-                          }}>
-                        <Text className='text-red-500'>Report</Text>
-                      </Button>
-                    </View>
+                      ? <View className='flex flex-row justify-between items-center'>
+                      <Button 
+
+                         className='rounded-full w-12 h-12 bg-gray-100 shadow-sm mr-10'
+                         onPress={() => router.replace({
+                           pathname: '/messages',
+                           params: {
+                             receiverId: ownerId,
+                             senderId: session.sitterId,
+                           }
+                         })}
+                       > 
+                         <View>
+                         <Feather name="message-circle" size={24} color="#3b82f6" />                            
+
+                         </View>
+                       </Button>
+                       <Menu 
+                         className='mt-8 mr-4'
+                         placement='bottom left'
+                         trigger={(triggerProps) => {
+                           return <Pressable {...triggerProps} className='mr-2'>
+                                     <Entypo name="dots-three-vertical" size={24} color="black" />
+                                   </Pressable>
+                         }
+                       }>
+                         <Menu.Item className='rounded-full'>
+                           <Text>Report</Text>
+                         </Menu.Item>
+                       </Menu>
+                 </View>
                     : null
                     }
                     
                   </View>
               </View> 
-              <ProfileTabs {...{
-                description: description,
-                location: location,
-                reviews: reviews,
-                pets: pets,
-              }} />
+              <View className='flex-1 h-fit'>
+                <ProfileTabs {...{
+                  description: description,
+                  location: location,
+                  reviews: reviews,
+                  pets: pets,
+                }} />
+                <View className='h-18'>
+
+                </View>
+              </View>
             </View>
+            
       </View>
 
     </ScrollView>
@@ -146,7 +162,7 @@ export default function OwnerProfile() {
           </Button>
         </View>
       : <View className='absolute bottom-0 w-full h-20 bg-transparent'>
-            <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+            <Button className='fixed bottom-0 rounded-full bg-blue-500 w-11/12 m-auto mb-8 h-10'
                 onPress={() => router.push({
                 pathname: '/edit/owner',
                 params: {
@@ -154,7 +170,7 @@ export default function OwnerProfile() {
                 }
                 })}
             >
-                <Text className='text-white'>Edit Profile</Text>
+                <Text className='text-white text-bold'>Edit Profile</Text>
             </Button>
         </View>
         

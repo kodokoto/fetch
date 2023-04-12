@@ -4,10 +4,10 @@ import { View } from 'react-native'
 import React, { useState, useEffect } from "react";
 import { sessionAtom } from 'app/utils/storage';
 import { useAtom } from 'jotai';
-import PetTypeToggle from "app/components/PetTypeToggle";
 import { useRouter, useSearchParams } from "expo-router";
 import AddImageButton from "app/components/AddPictureButton";
 import { log } from "react-native-reanimated";
+import PetTypeSelect from "app/components/PetTypeSelect";
 
 
 export default function petCreateForm() {
@@ -70,7 +70,7 @@ export default function petCreateForm() {
             <Text className="font-bold text-2xl ml-2 mt-5">Name:</Text>
             <Input value={name} onChangeText={text => setName(text)} variant={'rounded'} ></Input>
             <Text className="font-bold text-2xl ml-2 mt-2">Animals:</Text>
-            <PetTypeToggle value={petType} onChange={setPetType} />
+            <PetTypeSelect toggle value={petType} onChange={setPetType} />
             <Text className="font-bold text-2xl ml-2 mt-2">Description:</Text>
             <TextArea value={description} onChangeText={text => setDescription(text)} autoCompleteType={undefined}></TextArea>
             <View className="mt-10 ml-10 mr-10">

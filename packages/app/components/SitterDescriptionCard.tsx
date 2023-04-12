@@ -10,25 +10,16 @@ type SitterDescriptionCardProps = {
   searchParams: {
     serviceType: string
     day: string
-    timeOfDay: string
+    timeOfDay: string,
+    petTypes: string[],
   }
 }
 
-function capitalizeWords(inputString) {
-  return inputString.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-    return letter.toUpperCase();
-  });
-}
 
-export default function SitterDescriptionCard(props: SitterDescriptionCardProps) {
+
+export default function SitterDescriptionCard({sitter, searchParams}: SitterDescriptionCardProps) {
   const router = useRouter()
-  const {data: service} = api.service.byServiceType.useQuery(props.searchParams.serviceType)
-  console.log("Service: " + JSON.stringify(service));
-  const {data: petType} = api.animal.byServiceId.useQuery(service && service.id)
-  const {data: sitter} = api.sitter.byId.useQuery(props.sitter.id)
-
-  console.log("Sitter: " + JSON.stringify(petType));
-
+  const {data: service} = api.service.byServiceType.useQuery(searchParams.serviceType)
 
   return (
     <View
@@ -38,37 +29,38 @@ export default function SitterDescriptionCard(props: SitterDescriptionCardProps)
       }}
     >
       <TouchableOpacity
-        className='bg-slate-100 rounded-2xl p-4 w-80 h-25 m-auto mb-2 flex-wrap flex-row justify-between border-[#4c8ab9] border-solid border-2'
+        className='rounded-2xl p-4 w-80 m-auto flex-row justify-between my-4'
         onPress={() =>
           router.push({
             pathname: `/sitter/${sitter.id}`,
-            params: props.searchParams
+            params: searchParams
           })
         }
       >
-        <Box className="float-left" style={{ flexDirection: 'row' }}>
+        <Box className="flex-row">
           {sitter ? (
             <Avatar
-              className="w-12 h-12 ml-4 float-left"
+              className="w-12 h-12 "
               source={{ uri: sitter.imageUrl }}
             />
           ) : null}
-          <Box className="ml-4 float-left">
-            <Text>
+          <Box className="ml-4">
+            <Text className='text-lg'>
               {sitter ? sitter.name : null}
             </Text>
-            <Text>Location: {sitter ? sitter.location : null}</Text>
+            <Text className='text-xs'>{sitter.bio}</Text>
             <Text>
-              Helps with:{' '}
-              {petType ? petType.map((pet) => capitalizeWords(pet.type)).join(", ") : null}
             </Text>
           </Box>
         </Box>
-        <Text
-          className="flex-end"
-        >
-          £{service? service.price : null}
-        </Text>
+        <View>
+          <Text className=''>
+            £{service? service.price : null}
+          </Text>
+          <Text className='text-xs'>
+            per visit
+          </Text>
+        </View>
       </TouchableOpacity>
     </View>
   )
