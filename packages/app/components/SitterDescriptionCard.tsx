@@ -6,7 +6,7 @@ import { Box } from 'native-base'
 import { Sitter, Service } from '@prisma/client'
 
 type SitterDescriptionCardProps = {
-  service: Service
+  sitter: Sitter
   searchParams: {
     serviceType: string
     day: string
@@ -24,7 +24,7 @@ export default function SitterDescriptionCard(props: SitterDescriptionCardProps)
   const router = useRouter()
   const {data: service} = api.service.byServiceType.useQuery(props.searchParams.serviceType)
   const {data: petType} = api.animal.byServiceId.useQuery(service ? service.id : null)
-  const {data: sitter} = api.sitter.byId.useQuery(props.service.sitterId)
+  const {data: sitter} = api.sitter.byId.useQuery(props.sitter.id)
 
   console.log("Sitter: " + JSON.stringify(sitter));
 

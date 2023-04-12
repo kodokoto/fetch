@@ -20,19 +20,22 @@ export default function Results() {
   console.log("Search Params: " + JSON.stringify(searchParamsObject));
   
 
-  const { data: services } = api.service.bySearchParams.useQuery(searchParamsObject)
+  const { data: sitters } = api.sitter.bySearchParams.useQuery(searchParamsObject)
+
+  console.log("Sitters in results: " + JSON.stringify(sitters));
+  
 
   return (
     <View className="flex gap-8">
       <Text className="font-bold text-xl ml-2">Search Results</Text>
       {
-      services ? (
-        services.map((service) => {
-          return <SitterDescriptionCard service={service} searchParams={{
+      sitters ? (
+        sitters.map((sitter) => {
+          return <SitterDescriptionCard sitter={sitter} searchParams={{
             serviceType: String(serviceType),
             day: String(day),
             timeOfDay: String(timeOfDay),
-          }} key={service.id} />
+          }} key={sitter.id} />
         })
       ) : (
         <Text>No Results</Text>
