@@ -10,6 +10,7 @@ type AvailablepetType = {
 }
 
 export default function PetTypeSelect({value, onChange} : {value: AvailablepetType, onChange: (value: AvailablepetType) => void}) {
+    console.log("current value: ", value)
 
     const handleChange = (key, newValue) => {
         onChange({

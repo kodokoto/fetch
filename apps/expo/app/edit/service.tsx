@@ -88,10 +88,10 @@ export default function EditService() {
             }
         }
 
-        const petTypes = [];
+        const pts = [];
         for (const pet in petTypes) {
             if (petTypes[pet]) {
-                petTypes.push(pet)
+                pts.push(pet)
             }
         }
 
@@ -99,7 +99,7 @@ export default function EditService() {
             serviceId: Number(serviceId),
             serviceType: serviceType,
             price: Number(price),
-            petTypes: petTypes,
+            petTypes: pts,
             description: description,
             duration: Number(duration),
             availableTimes,
