@@ -35,14 +35,14 @@ export default function Pets() {
     }
     return (
       <View className='my-2 m-8'>
-          <Text className='text-2xl font-semibold mb-2'>Your pets</Text>
+          <Text className='text-2xl mb-2'>Your pets</Text>
           <DisplayCardList 
             Card={PetDisplayCard} 
             editable 
             value={pets} 
             onAdd={handleAddPet} 
             onDelete={handleDeletePet}
-            addButtonTitle='Add Pet'
+            addButtonTitle='Add a pet'
             emptyMessage='You have no pets yet!'
             maxedOutMessage='You have reached your maximum amout of pets, please subscribe to our pro plan to get more!'
             />

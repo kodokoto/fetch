@@ -20,7 +20,7 @@ export default function OwnerProfileCreate() {
   const [session, setSession] = useAtom(sessionAtom)
   const [description, setDescription] = React.useState('I dont have a description yet.')
   const [location, setLocation] = React.useState('')
-  const [bio, setBio] = React.useState('Hello! I\'m a new sitter.')
+  const [bio, setBio] = React.useState('Hello! I\'m a new pet owner.')
   const [name, setName] = React.useState(user.firstName)
   const [images, setImages] = React.useState([])
   
@@ -68,11 +68,11 @@ export default function OwnerProfileCreate() {
 
     <>
       <ScrollView>
-        <View className='m-6'>
+        <View className='m-6 mt-0'>
         <View className='my-8 flex-row justify-between'>
           <View className='ml-2'>
             <Text className='text-3xl font-bold'>Hi {user.firstName}!</Text>
-            <Text className=''>Welcome to fetch.</Text>
+            <Text className=''>Welcome to <Text className='font-[Vulf-mono]'>fetch</Text></Text>
           </View>
           <View className=' flex-col justify-center'>
             <Image

@@ -10,6 +10,7 @@ import { api } from 'app/utils/trpc'
 import { router } from 'api/src/trpc'
 
 export default function OwnerHomeScreen() {
+
   const router = useRouter()
   const { user, isLoaded } = useUser();
   const userId = user?.id

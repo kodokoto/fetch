@@ -48,7 +48,7 @@ export default function Filter() {
   const [showDate, setShowDate] = React.useState(false)
   const [serviceType, setServiceType] = React.useState<ServiceType>('WALK')
   const [timeOfDay, setTimeOfDay] = React.useState<TimeOfDay>('ANY')
-  const [maxPrice, setMaxPrice] = React.useState(0)
+  const [maxPrice, setMaxPrice] = React.useState(100)
   const [petTypes, setPetTypes] = React.useState({
     "DOG": false,
     "CAT": false,
@@ -161,7 +161,7 @@ export default function Filter() {
           display={Platform.OS === 'ios' ? 'inline' : 'default'}
         />
         <Button
-          className="w-[300px] m-auto mt-10"
+          className="w-10/12 rounded-full bg-blue-500 m-auto mt-10"
           onPress={handleSubmit}
         >
           Submit

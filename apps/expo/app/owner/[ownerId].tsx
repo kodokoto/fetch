@@ -54,7 +54,7 @@ export default function OwnerProfile() {
 
         <View className='bg-transparent flex-grow'>
     <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor : '#50dc64' }}>
-      <View className="flex-1 flex-col justify-center bg-slate-800">
+      <View className="flex-1 flex-col justify-center ">
             <ProfileCarousel images={ownerData.images}/>
             <View className='bottom-12 flex-col flex-grow '>
               <View className='flex flex-col gap-1 text-black mx-6 mb-4'>
@@ -106,7 +106,7 @@ export default function OwnerProfile() {
                   reviews: reviews,
                   pets: pets,
                 }} />
-                <View className='h-18 bg-green-500'>
+                <View className='h-18'>
 
                 </View>
               </View>
