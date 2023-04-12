@@ -10,30 +10,40 @@ import { useRouter, useSearchParams } from "expo-router";
 
 export default function petCreateForm() {
     const [session, _] = useAtom(sessionAtom)
-    const { redirectUrl } = useSearchParams();
-    const mutation = api.pet.create.useMutation()
+    const { id } = useSearchParams();
+    const mutation = api.pet.update.useMutation()
     const router = useRouter();
+
+    const {data: pet, isLoading} = api.pet.byId.useQuery(Number(id), {
+        onSuccess: (data) => {
+            setName(data.name)
+            setDescription(data.description)
+            setPetType({
+                "DOG": data.type === "DOG",
+                "CAT": data.type === "CAT",
+                "OTHER": data.type === "OTHER",
+            })
+        }
+    })
+
+
     const handleSubmit = () => {
-        console.log("CURRENT SESSION", session)
         mutation.mutateAsync({
+          id: Number(id),
           name: name,
           type: getPetByBoolean(),
-          ownerId: session.ownerId,
           description: description,
           imageUrl: 'https://i.pinimg.com/736x/ba/92/7f/ba927ff34cd961ce2c184d47e8ead9f6.jpg' // delete later
         }).then(
           () => {
-            redirectUrl 
-            ? router.replace(String(redirectUrl))
-            : router.replace('/pets')
+             router.replace('/pets')
           }
         )
       }
 
-      const [SelectedPetType, setSelectedPetType] = React.useState("DOG")
-      const [name, setName] = React.useState("")
-      const [description, setDescription] = React.useState("")
-      const [petType, setPetType] = React.useState({
+    const [name, setName] = React.useState('')
+    const [description, setDescription] = React.useState('')
+    const [petType, setPetType] = React.useState({
         "DOG": false,
         "CAT": false,
         "OTHER": false,
@@ -45,22 +55,18 @@ export default function petCreateForm() {
         console.log(PetType)
         return PetType
     }
-  
       return (
         <>
           <View className="mx-4">
             <Text className="font-bold text-2xl ml-2 mt-5">Name:</Text>
-            <Text className="ml-2 mb-2">What is your pet's name?</Text>
             <Input value={name} onChangeText={text => setName(text)} variant={'rounded'} ></Input>
             <Text className="font-bold text-2xl ml-2 mt-2">Animals:</Text>
-            <Text className="ml-2 mb-2">What animal do you want taken care of?</Text>
             <PetTypeToggle value={petType} onChange={setPetType} />
             <Text className="font-bold text-2xl ml-2 mt-2">Description:</Text>
-            <Text className="ml-2 mb-2">Tell us a bit about your pet.</Text>
             <TextArea value={description} onChangeText={text => setDescription(text)} autoCompleteType={undefined}></TextArea>
             <View className='flex-col my-5'>
                 <Button className='h-12 rounded-full bg-blue-500 w-11/12 my-4 mx-auto' onPress={() => handleSubmit()}>
-                    <Text className='text-white'>Submit</Text>
+                    <Text className='text-white'>Edit details</Text>
                 </Button>
             </View>
           </View>

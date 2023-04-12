@@ -30,6 +30,17 @@ export default function Pets() {
       router.push('/create/pet')
     }
 
+    const handleEditPet = (pet: Pet) => {
+      console.log("Edit pet: " + pet)
+      router.push({
+        pathname: '/edit/pet',
+        params: {
+          
+          id: pet.id
+        }
+      })
+    }
+
     if (isLoading) {
         return <Text>Loading...</Text>
     }
@@ -41,9 +52,10 @@ export default function Pets() {
             editable 
             value={pets} 
             onAdd={handleAddPet} 
+            onEdit={handleEditPet}
             onDelete={handleDeletePet}
             addButtonTitle='Add Pet'
-            emptyMessage='You have reached your maximum amout of pets, please subscribe to our pro plan to get more!'
+            emptyMessage='You have no pets. Add one now!'
             />
         </View>
     )
