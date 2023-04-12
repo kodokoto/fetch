@@ -177,7 +177,6 @@ export const serviceRouter = router({
               type: petType as PetType,
             })),
           },
-
           type: input.serviceType as ServiceType,
           price: input.price,
           availableTimes: {

@@ -24,6 +24,7 @@ export default function Home() {
 
   // if the user is different from the previous user, update the session
   if (session.currentUser != userId) {
+    console.log('user is different from previous user, updating session')
     setSession({
       currentUser: userId,
       currentProfile: data.owner ? Profile.OWNER : data.sitter ? Profile.SITTER : Profile.NONE,
@@ -34,18 +35,21 @@ export default function Home() {
 
   // if both data.owner and data.sitter are null, redirect to create profile
   if (data == undefined || (!data.owner && !data.sitter)) {
+    console.log('no users exist redirecting to create profile')
     return <Redirect href="/create" />
   }
 
-  // if data.sitter is null, and session.sitterId is not null, update the session
-  if (!data.sitter && session.sitterId) {
-    setSession({...session, sitterId: null})
-  }
+  // // if data.sitter is null, and session.sitterId is not null, update the session
+  // if (!data.sitter && session.sitterId) {
+  //   console.log('sitter is null in server, but not in session, updating session')
+  //   setSession({...session, sitterId: null})
+  // }
 
-  // if data.owner is null, and session.ownerId is not null, update the ownerId in the session, keep the rest the same
-  if (!data.owner && session.ownerId) {
-    setSession({...session, ownerId: null})
-  }
+  // // if data.owner is null, and session.ownerId is not null, update the ownerId in the session, keep the rest the same
+  // if (!data.owner && session.ownerId) {
+  //   console.log('owner is null in server, but not in session, updating session')
+  //   setSession({...session, ownerId: null})
+  // }
 
   // if a owner id or a sitter id exists, but the session does not have a current profile, update the session
   // to owner id (if it exists) or sitter id 

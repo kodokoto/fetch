@@ -42,7 +42,7 @@ export default function AddImageButton(props: AddImageButtonProps) {
       }
     return (
         <>
-            <Button onPress={() => selectPhotoTapped()} className="bg-white rounded-md">
+            <Button onPress={() => selectPhotoTapped()} className="bg-white rounded-full">
               <View className='flex-row'>
                 <Ionicons name='camera-outline' size={20} color="black" />
                 <Text className='ml-3'>Add an image</Text>
