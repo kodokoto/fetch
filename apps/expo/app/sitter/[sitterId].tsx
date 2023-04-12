@@ -112,7 +112,14 @@ export default function SitterProfile() {
                                       </Pressable>
                             }
                           }>
-                            <Menu.Item className='rounded-full'>
+                            <Menu.Item className='rounded-full' onPress={
+                              () => router.push({
+                                pathname: '/create/report',
+                                params: {
+                                  sitterId,
+                                }
+                              })
+                            }>
                               <Text>Report</Text>
                             </Menu.Item>
                           </Menu>

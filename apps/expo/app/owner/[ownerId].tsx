@@ -89,19 +89,6 @@ export default function OwnerProfile() {
 
                          </View>
                        </Button>
-                       <Menu 
-                         className='mt-8 mr-4'
-                         placement='bottom left'
-                         trigger={(triggerProps) => {
-                           return <Pressable {...triggerProps} className='mr-2'>
-                                     <Entypo name="dots-three-vertical" size={24} color="black" />
-                                   </Pressable>
-                         }
-                       }>
-                         <Menu.Item className='rounded-full'>
-                           <Text>Report</Text>
-                         </Menu.Item>
-                       </Menu>
                  </View>
                     : null
                     }
@@ -125,43 +112,8 @@ export default function OwnerProfile() {
 
     </ScrollView>
     {
-      serviceType && day && timeOfDay && session.currentProfile === Profile.OWNER 
+      session.currentProfile === Profile.OWNER 
       ? <View className='absolute bottom-0 w-full h-20 bg-transparent'>
-          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
-            onPress={() => router.push({
-              pathname: '/create/booking',
-              params: {
-                ownerId,
-                serviceType,
-                day,
-                timeOfDay,
-              }
-            })}
-          >
-            <Text className='text-white'>Request Booking</Text>
-          </Button>
-          {/* Button for messaging */}
-          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
-            onPress={() => router.push({
-              pathname: '',
-              params: {
-              }
-            })}
-          >
-            <Text className='text-white'>Message</Text>
-          </Button>
-          {/* Button for reporting user */}
-          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
-            onPress={() => router.push({
-              pathname: '',
-              params: {
-              }
-            })}
-          >
-            <Text className='text-white'>Report</Text>
-          </Button>
-        </View>
-      : <View className='absolute bottom-0 w-full h-20 bg-transparent'>
             <Button className='fixed bottom-0 rounded-full bg-blue-500 w-11/12 m-auto mb-8 h-10'
                 onPress={() => router.push({
                 pathname: '/edit/owner',
@@ -173,6 +125,7 @@ export default function OwnerProfile() {
                 <Text className='text-white text-bold'>Edit Profile</Text>
             </Button>
         </View>
+      : null
         
     }
     </View>
