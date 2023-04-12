@@ -20,8 +20,6 @@ type SitterDescriptionCardProps = {
 export default function SitterDescriptionCard({sitter, searchParams}: SitterDescriptionCardProps) {
   const router = useRouter()
   const {data: service} = api.service.byServiceType.useQuery(searchParams.serviceType)
-  // const {data: petType} = api.animal.byServiceId.useQuery(service ? service.id : null)
-
 
   return (
     <View
