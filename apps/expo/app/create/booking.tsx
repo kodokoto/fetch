@@ -19,7 +19,7 @@ import { Service, ScheduledTime, TimeOfDay, Day, BookingFrequency } from '@prism
 export default function AddBooking() {
     const router = useRouter()
 
-    const { sitterId, serviceType, day, timeOfDay } = useSearchParams()
+    const { sitterId, serviceType, day, timeOfDay, petTypes } = useSearchParams()
 
     console.log("Sitter Id: " + sitterId);
     console.log("Service Type: " + serviceType);
@@ -54,6 +54,8 @@ export default function AddBooking() {
         return availabileServices.find((service) => service.type === name)
     }
 
+    const petType: string[] = String(petTypes).split(",");
+    const filteredPets = pets.filter((pet) => petType.includes(pet.type));
 
     const handleSubmit = () => {
       mutation.mutate({
@@ -102,8 +104,8 @@ export default function AddBooking() {
                 placeholder='Select a Pet'
             >
                 {
-                    pets && pets.length > 0
-                    ? pets.map((pet) => {
+                    filteredPets && filteredPets.length > 0 
+                    ? filteredPets.map((pet) => {
                         return (
                             <Select.Item key={pet.id} label={pet.name} value={pet.name} />
                         )
