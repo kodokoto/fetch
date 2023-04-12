@@ -43,7 +43,8 @@ export default function Pets() {
             onAdd={handleAddPet} 
             onDelete={handleDeletePet}
             addButtonTitle='Add Pet'
-            emptyMessage='You have reached your maximum amout of pets, please subscribe to our pro plan to get more!'
+            emptyMessage='You have no pets yet!'
+            maxedOutMessage='You have reached your maximum amout of pets, please subscribe to our pro plan to get more!'
             />
         </View>
     )

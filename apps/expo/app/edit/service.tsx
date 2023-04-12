@@ -50,7 +50,7 @@ export default function EditService() {
             setPrice(String(data.price))
             setDescription(data.description)
             setDuration(String(data.duration))
-
+            
             for (const availableTime of data.availableTimes) {
                 setDays({
                     ...days,

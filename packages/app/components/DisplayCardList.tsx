@@ -31,7 +31,7 @@ export type EditableDisplayCard<T> = {
 export default function DisplayCardList({ value, Card, addButtonTitle, editable, onAdd, onEdit, onDelete, emptyMessage, maxedOutMessage, maxCards=6 } : DisplayCardListProps<any>) {
 
     return (
-        <View className="flex flex-col space-y-4">
+        <View className="flex flex-col space-y-4 h-full">
             {value && value.map((v, i) => (
                 <Card value={v} key={i} editable={editable} onEdit={onEdit} onDelete={onDelete}/>
             ))}

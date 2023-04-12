@@ -19,6 +19,7 @@ export default function OwnerProfile() {
     id: String(ownerId),
     include: ['images', 'reviews', 'pets']
   }, {
+    enabled: !!ownerId,
     cacheTime: 0,
     onSuccess: (data) => {
       setName(data.name)
@@ -51,11 +52,11 @@ export default function OwnerProfile() {
       }}
     />
 
-        <View className='bg-transparent flex-1'>
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View className="flex-1 flex-col justify-center">
+        <View className='bg-transparent flex-grow'>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, backgroundColor : '#50dc64' }}>
+      <View className="flex-1 flex-col justify-center bg-slate-800">
             <ProfileCarousel images={ownerData.images}/>
-            <View className='bottom-12 flex-1'>
+            <View className='bottom-12 flex-col flex-grow '>
               <View className='flex flex-col gap-1 text-black mx-6 mb-4'>
                   <Image
                       source={{ uri: imageUrl }}
@@ -98,13 +99,19 @@ export default function OwnerProfile() {
                     
                   </View>
               </View> 
-              <ProfileTabs {...{
-                description: description,
-                location: location,
-                reviews: reviews,
-                pets: pets,
-              }} />
+              <View className='flex-1 h-fit'>
+                <ProfileTabs {...{
+                  description: description,
+                  location: location,
+                  reviews: reviews,
+                  pets: pets,
+                }} />
+                <View className='h-18 bg-green-500'>
+
+                </View>
+              </View>
             </View>
+            
       </View>
 
     </ScrollView>

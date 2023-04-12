@@ -61,7 +61,7 @@ export default function ProfileTabs(props: ProfileTabProps) {
 
 
     const Pets = () => (
-      <View className='flex justify-center items-center mt-8 w-11/12 mx-auto'>
+      <View className='flex justify-center items-center mt-8 w-11/12 mx-auto bg-slate-500'>
             <DisplayCardList value={props.pets} Card={PetDisplayCard} emptyMessage='You have no pets'/>
       </View>
     );
@@ -114,6 +114,7 @@ export default function ProfileTabs(props: ProfileTabProps) {
   
     return (
       <TabView
+          className='bg-slate-600'
           navigationState={{ index, routes }}
           renderScene={SceneMap(
          props.services 

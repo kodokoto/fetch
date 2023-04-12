@@ -64,7 +64,7 @@ export default function ProfileIcon(props: User) {
             ownerProfile != null
             ? <Menu.ItemOption value={'Owner'} onPress={() => {
               switchProfile(Profile.OWNER)
-              router.push('/home')
+              // router.push('/home')
             }}>Owner</Menu.ItemOption>
             : <Menu.Item onPress={() => {
               router.push('/create/owner')
@@ -79,7 +79,7 @@ export default function ProfileIcon(props: User) {
             sitterProfile != null
             ? <Menu.ItemOption value={'Sitter'} onPress={() => {
               switchProfile(Profile.SITTER)
-              router.push('/home')
+              // router.push('/home')
             }}>Sitter</Menu.ItemOption>
             : <Menu.Item onPress={() => {
               router.push('/create/sitter')
