@@ -11,7 +11,7 @@ import ProfileRating from 'app/components/ProfileRating'
 import { Entypo, Feather } from '@expo/vector-icons'
 
 export default function SitterProfile() {
-  const { sitterId, serviceType, day, timeOfDay } = useSearchParams()
+  const { sitterId, serviceType, day, timeOfDay, petTypes } = useSearchParams()
   const router = useRouter()
 
   const [session, _] = useAtom(sessionAtom)
@@ -144,6 +144,7 @@ export default function SitterProfile() {
                 serviceType,
                 day,
                 timeOfDay,
+                petTypes,
               }
             })}
           >

@@ -86,6 +86,32 @@ export const bookingRouter = router({
         },
       })
     }),
+  updateStatusById: publicProcedure
+    .input(z.object({
+      bookingId: z.number(),
+      status: z.string()
+    }))
+    .mutation(async ({ input }) => {
+      return await prisma.booking.update({
+        where: {
+          id:  input.bookingId
+        },
+        data: {
+          status: input.status as BookingStatus
+        }
+      })
+    }),
+  delete: publicProcedure
+    .input(z.object({
+      id: z.number()
+    }))
+    .mutation(async ({ input }) => {
+      return await prisma.booking.delete({
+        where: {
+          id: input.id
+        }
+      }),
+    }),
   update: publicProcedure
     .input(z.object({
       id: z.number(),
@@ -142,8 +168,8 @@ export const bookingRouter = router({
         id: input,
       },
     })
-  }
-  ),
+  }),
+
   updateStatus: publicProcedure
     .input(z.object({
       id: z.number(),

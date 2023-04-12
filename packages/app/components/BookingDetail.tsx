@@ -7,13 +7,16 @@ import { Booking } from '@prisma/client'
 import { api } from '../utils/trpc'
 import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
+import { useSearchParams } from 'expo-router'
 import { parseBookingFrequency, capitalizeWords, parseServiceType, parseTime } from '../utils/helpers'
-
 
 export default function BookingDetail(props: Booking) {
   const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
-  const { data: sitterData, error, isLoading } = api.sitter.byId.useQuery(String(props.sitterId))
+  const { redirectUrl } = useSearchParams();
+  const [booking, setBooking] = React.useState({} as Booking)
+  const { data: ownerData, error, isLoading } = api.owner.byId.useQuery(String(props.ownerId))
+  const { data: sitterData } = api.sitter.byId.useQuery(String(props.sitterId))
   const {data: serviceData} = api.service.byId.useQuery(props.serviceId)
   const {data: petData} = api.pet.byBookingId.useQuery(props.id)
   const { data } = api.booking.byIdWithScheduledTime.useQuery({
@@ -25,10 +28,25 @@ export default function BookingDetail(props: Booking) {
     router.replace({
       pathname: '/messages',
       params: {
-        receiverId: props.ownerId,
-        senderId: props.sitterId,
-        receiverName: sitterData?.name,
+        receiverId: props.sitterId,
+        senderId: props.ownerId,
+        receiverName: ownerData?.name,
       },
+    })
+  }
+  const mutation = api.booking.delete.useMutation()
+
+  const handleDeleteBooking = () => {
+    console.log("Delete")
+    mutation.mutateAsync({
+      id: props.id
+    }).then(() => {
+      () => {
+        redirectUrl 
+        ? router.replace(String(redirectUrl))
+        : router.replace('/home'),
+        setBooking(null);
+      }
     })
   }
   if (isLoading) return <Text>Loading...</Text>
@@ -101,7 +119,7 @@ export default function BookingDetail(props: Booking) {
             </Box>
           </Box>
           <Box className="flex-wrap flex-row mt-2 mb-10">
-            <Button className="ml-auto rounded-2xl"
+          <Button className="ml-auto rounded-2xl"
             onPress={() =>
             router.push({
               pathname: '/reschedule',

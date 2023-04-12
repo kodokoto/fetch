@@ -7,61 +7,14 @@ import { Booking } from '@prisma/client'
 import { api } from '../utils/trpc'
 import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
-
-function parseBookingFrequency(bookingFrequency: string) {
-  switch (bookingFrequency) {
-    case 'ONE_OFF':
-      return 'One Off'
-    case 'WEEKLY':
-      return 'Every Week'
-    case 'BI_WEEKLY':
-      return 'Every Two Weeks'
-    case 'MONTHLY':
-      return 'Every Month'
-    default:
-      return ''
-  }
-}
-
-function parseServiceType(serviceType: string) {
-  switch (serviceType) {
-    case 'WALK':
-      return 'Walking'
-    case 'PET_CARE':
-      return 'Pet care'
-    case 'HOUSE_SITTING':
-      return 'House sitting'
-    case 'MONTHLY':
-      return 'Every Month'
-    default:
-      return ''
-  }
-}
-
-function capitalizeWords(inputString) {
-  return inputString.toLowerCase().replace(/\b[a-z]/g, function(letter) {
-    return letter.toUpperCase();
-  });
-}
-
-function parseTime(TimeOfDay: string){
-  switch (TimeOfDay) {
-    case 'ANY':
-      return 'Any'
-    case 'MORNING':
-      return '6am-11am'
-    case 'AFTERNOON':
-      return '11am-3pm'
-    case 'EVENING':
-      return '3pm-10pm'
-    default:
-      return ''
-  }
-}
+import { useSearchParams } from 'expo-router'
+import { parseBookingFrequency, capitalizeWords, parseServiceType, parseTime } from '../utils/helpers'
 
 export default function BookingDetail(props: Booking) {
   const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
+  const { redirectUrl } = useSearchParams()
+  const [booking, setBooking] = React.useState({} as Booking)
   const { data: ownerData, error, isLoading } = api.owner.byId.useQuery(String(props.ownerId))
   const {data: serviceData} = api.service.byId.useQuery(props.serviceId)
   const {data: petData} = api.pet.byBookingId.useQuery(props.id)
@@ -78,6 +31,21 @@ export default function BookingDetail(props: Booking) {
         senderId: props.ownerId,
         receiverName: ownerData?.name,
       },
+    })
+  }
+  const mutation = api.booking.delete.useMutation()
+
+  const handleDeleteBooking = () => {
+    console.log("Delete")
+    mutation.mutateAsync({
+      id: props.id
+    }).then(() => {
+      () => {
+        redirectUrl 
+        ? router.replace(String(redirectUrl))
+        : router.replace('/home'),
+        setBooking(null);
+      }
     })
   }
   if (isLoading) return <Text>Loading...</Text>

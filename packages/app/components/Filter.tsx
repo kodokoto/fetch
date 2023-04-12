@@ -1,30 +1,45 @@
 import React from 'react'
-import { Box, Select, FormControl, Text, Button, Input, HStack, CheckIcon, Slider, VStack } from 'native-base'
+import { Box, Select, FormControl, Text, Button, Input, HStack, CheckIcon, Slider, VStack, Center } from 'native-base'
 import { TouchableOpacity, Platform } from 'react-native'
 import { useRouter } from 'expo-router'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import { TimeOfDay, Day, ServiceType } from '@prisma/client'
+import { TimeOfDay, Day, ServiceType, PetType } from '@prisma/client'
+import PetTypeSelect from './PetTypeSelect'
+import { api } from 'app/utils/trpc'
+import { sessionAtom } from 'app/utils/storage';
+import { useAtom } from 'jotai';
 
 export type FilterSearchParams = {
   serviceType: string
   day: Day
   timeOfDay: TimeOfDay
+  petTypes: PetType[]
   maxPrice: number
 }
 
 export default function Filter() {
   const router = useRouter()
+  // const [session, _] = useAtom(sessionAtom)
 
-  const handleSubmit = (data: FilterSearchParams) => {
-    console.log("Dataaaaaa: " + JSON.stringify(data));
-    
+  const handleSubmit = () => { 
+    const pt = [];
+    for (const pet in petTypes) {
+      if (petTypes[pet]) {
+        pt.push(pet)
+      }
+    }   
+    console.log(pt)
     router.push({
       pathname: '/results',
       params: {
-        day: data.day,
-        serviceType: data.serviceType,
-        timeOfDay: data.timeOfDay,
-        maxPrice: data.maxPrice,
+        day: date
+              .toLocaleDateString('en-us', { weekday: 'long' })
+              .replace(/[^a-z]/gi, '')
+              .toUpperCase() as Day,
+        serviceType: serviceType,
+        timeOfDay: timeOfDay,
+        petTypes: pt,
+        maxPrice: maxPrice,
       },
     })
   }
@@ -33,7 +48,12 @@ export default function Filter() {
   const [showDate, setShowDate] = React.useState(false)
   const [serviceType, setServiceType] = React.useState<ServiceType>('WALK')
   const [timeOfDay, setTimeOfDay] = React.useState<TimeOfDay>('ANY')
-  const [maxPrice, setMaxPrice] = React.useState(100)
+  const [maxPrice, setMaxPrice] = React.useState(0)
+  const [petTypes, setPetTypes] = React.useState({
+    "DOG": false,
+    "CAT": false,
+    "OTHER": false,
+  });
 
   const onConfirmDate = (date: Date) => {
     setShowDate(false)
@@ -104,6 +124,11 @@ export default function Filter() {
               <Select.Item label="3pm-10pm" value="EVENING" />
             </Select>
           </Box>
+          <FormControl.Label _text={{ bold: true }}>Pets:</FormControl.Label>
+          <Box alignItems="center" w="100%">
+            <Center></Center>
+            <PetTypeSelect value={petTypes} onChange={setPetTypes} />
+          </Box>
           <FormControl.Label _text={{ bold: true }}>Maximum Price:</FormControl.Label>
           <Box alignItems="center" w="100%">
             <HStack>
@@ -136,18 +161,8 @@ export default function Filter() {
           display={Platform.OS === 'ios' ? 'inline' : 'default'}
         />
         <Button
-          className="w-10/12 m-auto mt-10 rounded-full bg-blue-500"
-          onPress={() =>
-            handleSubmit({
-              day: date
-                .toLocaleDateString('en-us', { weekday: 'long' })
-                .replace(/[^a-z]/gi, '')
-                .toUpperCase() as Day,
-              timeOfDay,
-              serviceType,
-              maxPrice,
-            })
-          }
+          className="w-[300px] m-auto mt-10"
+          onPress={handleSubmit}
         >
           Submit
         </Button>
