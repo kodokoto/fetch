@@ -20,10 +20,11 @@ export default function Results() {
   console.log("Search Params: " + JSON.stringify(searchParamsObject));
   
 
-  const { data: sitters } = api.sitter.bySearchParams.useQuery(searchParamsObject)
+  const { data: sitters, isLoading } = api.sitter.bySearchParams.useQuery(searchParamsObject)
 
   console.log("Sitters in results: " + JSON.stringify(sitters));
   
+  if (isLoading) return <Text>Loading...</Text>
 
   return (
     <View className='m-8'>

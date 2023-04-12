@@ -111,6 +111,12 @@ export default function BookingDetail(props: Booking) {
             })
           }
             >Reschedule</Button>
+            <Button className="mr-auto rounded-2xl" onPress={() => router.push({
+              pathname: '/create/review',
+              params: {
+                sitterId: props.sitterId,
+              }})}>Review</Button>
+
             <Button className="mr-auto ml-2 rounded-2xl">Cancel</Button>
           </Box>
         </Box>

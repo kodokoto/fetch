@@ -39,6 +39,7 @@ export default function ProfileIcon(props: User) {
   return (
     <Box className="">
       <Menu
+        className='mt-4 mr-4'
         trigger={(triggerProps) => {
           return (
             <Pressable accessibilityLabel="More options menu" {...triggerProps}>

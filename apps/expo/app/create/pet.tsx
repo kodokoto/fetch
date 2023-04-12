@@ -4,7 +4,7 @@ import { View } from 'react-native'
 import React from "react";
 import { sessionAtom } from 'app/utils/storage';
 import { useAtom } from 'jotai';
-import PetTypeToggle from "app/components/PetTypeToggle";
+import PetTypeSelect from "app/components/PetTypeSelect";
 import { useRouter, useSearchParams } from "expo-router";
 
 
@@ -54,7 +54,7 @@ export default function petCreateForm() {
             <Input value={name} onChangeText={text => setName(text)} variant={'rounded'} ></Input>
             <Text className="font-bold text-2xl ml-2 mt-2">Animals:</Text>
             <Text className="ml-2 mb-2">What animal do you want taken care of?</Text>
-            <PetTypeToggle value={petType} onChange={setPetType} />
+            <PetTypeSelect toggle value={petType} onChange={setPetType} />
             <Text className="font-bold text-2xl ml-2 mt-2">Description:</Text>
             <Text className="ml-2 mb-2">Tell pet sitter a bit about your pet.</Text>
             <TextArea value={description} onChangeText={text => setDescription(text)} autoCompleteType={undefined}></TextArea>

@@ -22,7 +22,7 @@ function DaySelectButton({ day, value, onChange, roundedLeft = false, roundedRig
             className={`flex-row w-12 h-12 justify-center items-center text-center bg-transparent border-2 rounded-none ${className}`}
             onPress={() => onChange(day, !value)}
             style={{ 
-                borderColor: value ? '#808080' : '#C5C5C5',
+                borderColor: value ? '#3b82f6' : '#C5C5C5',
                 borderTopLeftRadius: roundedLeft ? 10 : 0,
                 borderBottomLeftRadius: roundedLeft ? 10 : 0,
                 borderTopRightRadius: roundedRight ? 10 : 0,

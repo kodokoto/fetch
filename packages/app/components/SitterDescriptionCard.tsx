@@ -42,7 +42,7 @@ export default function SitterDescriptionCard(props: SitterDescriptionCardProps)
         className='rounded-2xl p-4 w-80 m-auto flex-row justify-between my-4'
         onPress={() =>
           router.push({
-            pathname: `/sitter/${sitter.id}`,
+            pathname: `/sitter/${props.sitter.id}`,
             params: props.searchParams
           })
         }

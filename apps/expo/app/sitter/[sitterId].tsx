@@ -36,7 +36,7 @@ export default function SitterProfile() {
       totalOfRatings += review.rating;
     })
 
-    let averageRating = (totalOfRatings / data.reviews.length).toFixed(1);
+    const averageRating = (totalOfRatings / data.reviews.length).toFixed(1);
     console.log("Average Rating 2: " + totalOfRatings);
     
     setAverageRating(averageRating);
@@ -75,19 +75,21 @@ export default function SitterProfile() {
                       className='w-16 h-16 rounded-full border-white border-2'
                   />
                   <View className='flex-row justify-between'>
-                    <View>
+                    <View className='flex-col justify-evenly'>
                       <Text className='text-2xl font-bold'>{sitterData.name}</Text>
                       <Text className='text-sm'>Pet Sitter</Text>
                       <Text>{sitterData.bio}</Text>
                       <View className="flex-row items-center">
                       <Text>Rating: </Text>
                       <ProfileRating className="mt-auto" rating={averageRating && Number(Number(averageRating).toFixed())} />
-                      </View>
+                    </View>
                     </View>
                     {
                       session.currentProfile === Profile.OWNER
-                      ? <View className='flex flex-row'>
-                         <Button className='rounded-full'
+                      ? <View className='flex flex-row justify-between items-center'>
+                         <Button 
+
+                            className='rounded-full w-12 h-12 bg-gray-100 shadow-sm mr-10'
                             onPress={() => router.replace({
                               pathname: '/messages',
                               params: {
@@ -95,11 +97,17 @@ export default function SitterProfile() {
                                 senderId: session.ownerId,
                               }
                             })}
-                          >
-                            <Feather name="message-circle" size={24} color="#3b82f6" />                            </Button>
+                          > 
+                            <View>
+                            <Feather name="message-circle" size={24} color="#3b82f6" />                            
+
+                            </View>
+                          </Button>
                           <Menu 
+                            className='mt-8 mr-4'
+                            placement='bottom left'
                             trigger={(triggerProps) => {
-                              return <Pressable {...triggerProps} className='bg-red-500'>
+                              return <Pressable {...triggerProps} className='mr-2'>
                                         <Entypo name="dots-three-vertical" size={24} color="black" />
                                       </Pressable>
                             }
@@ -126,9 +134,9 @@ export default function SitterProfile() {
 
     </ScrollView>
     {
-      serviceType && day && timeOfDay && session.currentProfile === Profile.OWNER 
+      serviceType && day && timeOfDay && session.currentProfile === Profile.OWNER  
       ? <View className='absolute bottom-0 w-full h-20 bg-transparent'>
-          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10 bg-blue-500'
             onPress={() => router.push({
               pathname: '/create/booking',
               params: {
@@ -141,47 +149,21 @@ export default function SitterProfile() {
           >
             <Text className='text-white'>Request Booking</Text>
           </Button>
-          {/* Button for messaging */}
-          {/* <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
-            onPress={() => router.push({
-              pathname: '/create/booking',
-              params: {
-                sitterId,
-                serviceType,
-                day,
-                timeOfDay,
-              }
-            })}
-          >
-            <Text className='text-white'>Message</Text>
-          </Button> */}
-          {/* Button for reporting user */}
-          {/* <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
-            onPress={() => router.push({
-              pathname: '/create/booking',
-              params: {
-                sitterId,
-                serviceType,
-                day,
-                timeOfDay,
-              }
-            })}
-          >
-            <Text className='text-white'>Report</Text>
-          </Button> */}
         </View>
-      : <View className='absolute bottom-0 w-full h-20 bg-transparent'>
-          <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
-              onPress={() => router.push({
-              pathname: '/edit/sitter',
-              params: {
-                  sitterId
-              }
-              })}
-          >
-              <Text className='text-white'>Edit Profile</Text>
-          </Button>
-      </View>
+      : session.currentProfile === Profile.SITTER 
+          ? <View className='absolute bottom-0 w-full h-20 bg-transparent'>
+              <Button className='fixed bottom-0 rounded-full bg-blue-500 w-11/12 m-auto mb-8 h-10'
+                  onPress={() => router.push({
+                  pathname: '/edit/sitter',
+                  params: {
+                      sitterId
+                  }
+                  })}
+              >
+                    <Text className='text-white font-bold'>Edit Profile</Text>
+                </Button>
+            </View>
+            : null
     }
     </View>
     </>

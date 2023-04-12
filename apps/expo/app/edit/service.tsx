@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ScrollView } from 'native-base'
 import ServiceForm from 'app/screens/ServiceForm'
-import { useRouter, useSearchParams } from 'expo-router'
+import { Stack, useRouter, useSearchParams } from 'expo-router'
 import { api } from 'app/utils/trpc'
 
 export default function EditService() {
@@ -114,7 +114,13 @@ export default function EditService() {
 
 
   return (
-    <ScrollView>
+    <>
+        <Stack.Screen
+            options={{
+                headerTitle: 'Edit Service',
+            }}
+        />
+        <ScrollView>
         <ServiceForm {
             ...{
                 serviceType,
@@ -135,5 +141,7 @@ export default function EditService() {
             }
         } />
     </ScrollView>
+
+    </>
   )
 }

@@ -79,22 +79,25 @@ export default function AddBooking() {
     if(!isLoaded || availabileServicesIsLoading || sitterDataIsLoading || petsIsLoading) return null;
   
     return (
-      <View className="flex flex-col justify-center items-center">
+      <View className="flex flex-col justify-center items-center m-8">
         <FormControl>
             <Text fontSize="2xl" fontWeight="bold" mb={4}>Send a booking request to {sitterData.name}</Text>
-            <FormControl.Label>Service:</FormControl.Label>
-            <Select 
-                selectedValue={selectedServiceType}
-                onValueChange={(itemValue) => setSelectedServiceType(itemValue)}
-            >
-                {
-                    availabileServices && availabileServices.map((service) => {
-                        return (
-                            <Select.Item key={service.id} label={titleCase(service.type)} value={service.type} />
-                        )
-                    })
-                }
-            </Select>
+            <View className='my-4'>
+                <FormControl.Label>Service:</FormControl.Label>
+                <Select 
+                    selectedValue={selectedServiceType}
+                    onValueChange={(itemValue) => setSelectedServiceType(itemValue)}
+                >
+                    {
+                        availabileServices && availabileServices.map((service) => {
+                            return (
+                                <Select.Item key={service.id} label={titleCase(service.type)} value={service.type} />
+                            )
+                        })
+                    }
+                </Select>
+            </View>
+            <View className='my-4'>
             <FormControl.Label>Pet:</FormControl.Label>
             <Select 
                 selectedValue={selectedPet}
@@ -115,6 +118,8 @@ export default function AddBooking() {
                     }/>
                 }
             </Select>
+            </View>
+            <View className='my-4'>
             <FormControl.Label>Frequency:</FormControl.Label>
             <Select 
                 selectedValue={scheduledTime.frequency}
@@ -125,8 +130,9 @@ export default function AddBooking() {
                 <Select.Item label="Every two weeks" value="BI_WEEKLY" />
                 <Select.Item label="Every month" value="MONTHLY" />
             </Select>
-            <Button onPress={handleSubmit}>
-                <Text>Send Booking Request</Text>
+            </View>
+            <Button className='w-11/12 mx-auto my-8 bg-blue-500 rounded-full' onPress={handleSubmit}>
+                <Text className='text-white'>Send Booking Request</Text>
             </Button>
         </FormControl>
       </View>

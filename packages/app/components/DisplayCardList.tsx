@@ -37,7 +37,7 @@ export default function DisplayCardList({ value, Card, addButtonTitle, editable,
             ))}
             {value?.length === 0 && <Text>{emptyMessage}</Text>}
             {
-                editable
+                editable && onAdd
                 ? (
                 <AddButton title={addButtonTitle} onPress={onAdd} />
                 ) 

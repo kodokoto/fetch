@@ -153,7 +153,7 @@ export default function OwnerProfile() {
           </Button>
         </View>
       : <View className='absolute bottom-0 w-full h-20 bg-transparent'>
-            <Button className='fixed bottom-0 rounded-full w-11/12 m-auto mb-8 h-10'
+            <Button className='fixed bottom-0 rounded-full bg-blue-500 w-11/12 m-auto mb-8 h-10'
                 onPress={() => router.push({
                 pathname: '/edit/owner',
                 params: {
@@ -161,7 +161,7 @@ export default function OwnerProfile() {
                 }
                 })}
             >
-                <Text className='text-white'>Edit Profile</Text>
+                <Text className='text-white text-bold'>Edit Profile</Text>
             </Button>
         </View>
         

@@ -33,7 +33,7 @@ export default function Filter() {
   const [showDate, setShowDate] = React.useState(false)
   const [serviceType, setServiceType] = React.useState<ServiceType>('WALK')
   const [timeOfDay, setTimeOfDay] = React.useState<TimeOfDay>('ANY')
-  const [maxPrice, setMaxPrice] = React.useState(0)
+  const [maxPrice, setMaxPrice] = React.useState(100)
 
   const onConfirmDate = (date: Date) => {
     setShowDate(false)
@@ -62,6 +62,7 @@ export default function Filter() {
               onTouchStart={() => setShowDate(true)}
               placeholder="Select day"
               editable={false}
+              rounded={"full"}
               value={date.toLocaleDateString()}
             />
           </TouchableOpacity>
@@ -73,10 +74,10 @@ export default function Filter() {
               accessibilityLabel="Choose Service"
               placeholder="Choose Service"
               _selectedItem={{
-                bg: 'teal.600',
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
+              rounded={"full"}
               onValueChange={(itemValue) => setServiceType(itemValue as ServiceType)}
             >
               <Select.Item label="Walking" value="WALK" />
@@ -92,10 +93,10 @@ export default function Filter() {
               accessibilityLabel="Choose time"
               placeholder="Choose time"
               _selectedItem={{
-                bg: 'teal.600',
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
+              rounded={"full"}
               onValueChange={(itemValue) => setTimeOfDay(itemValue as TimeOfDay)}
             >
               <Select.Item label="6am-11am" value="MORNING" />
@@ -107,7 +108,7 @@ export default function Filter() {
           <Box alignItems="center" w="100%">
             <HStack>
               <Slider
-                defaultValue={0}
+                defaultValue={100}
                 minValue={0}
                 maxValue={100}
                 accessibilityLabel="Max Price"
@@ -115,14 +116,15 @@ export default function Filter() {
                 onChange={(v) => {
                   setMaxPrice(Math.floor(v))
                 }}
-                className="w-3/4 max-w-300"
+                className="w-10/12 "
+                colorScheme={'fetch'}
               >
                 <Slider.Track>
                   <Slider.FilledTrack />
                 </Slider.Track>
                 <Slider.Thumb />
               </Slider>
-              <Text className="text-center ml-1">£{maxPrice}</Text>
+              <Text className="text-center ml-4">£{maxPrice}</Text>
             </HStack>
           </Box>
         </VStack>
@@ -134,7 +136,7 @@ export default function Filter() {
           display={Platform.OS === 'ios' ? 'inline' : 'default'}
         />
         <Button
-          className="w-[300px] m-auto mt-10"
+          className="w-10/12 m-auto mt-10 rounded-full bg-blue-500"
           onPress={() =>
             handleSubmit({
               day: date
