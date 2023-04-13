@@ -7,11 +7,8 @@ import { Booking } from '@prisma/client'
 import { api } from '../utils/trpc'
 import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
-import { useSearchParams } from 'expo-router'
 import { parseBookingFrequency, capitalizeWords, parseServiceType, parseTime } from '../utils/helpers'
-import DisplayCardList from 'app/components/DisplayCardList'
 import PetDisplayCard from 'app/components/PetDisplayCard'
-import { Pet } from 'db'
 
 function serviceTypeToIcon(serviceType: string) {
   switch (serviceType) {
@@ -27,7 +24,11 @@ function serviceTypeToIcon(serviceType: string) {
 export default function BookingDetail(props: Booking) {
   const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
-  const { data: sitterData } = api.sitter.byId.useQuery(String(props.sitterId))
+
+  const { data : userData, isLoading: isLoadedUserData } = session.currentProfile === Profile.SITTER 
+  ? api.owner.byId.useQuery(props.ownerId)
+  : api.sitter.byId.useQuery(props.sitterId)
+
   const { data: serviceData } = api.service.byId.useQuery(props.serviceId)
   const [pet, setPet] = React.useState()
   const { isLoading: isLoadingPet } = api.pet.byId.useQuery(props.id, {
@@ -46,17 +47,6 @@ export default function BookingDetail(props: Booking) {
     })
     router.push({
       pathname: '/home',
-    })
-  }
-
-  const handleMessagePress = () => {
-    router.replace({
-      pathname: '/messages',
-      params: {
-        receiverId: props.ownerId,
-        senderId: props.sitterId,
-        receiverName: sitterData?.name,
-      },
     })
   }
 
@@ -86,11 +76,7 @@ export default function BookingDetail(props: Booking) {
       },
     })
 
-  if (isLoadingPet) {
-    return <Text>Loading...</Text>
-  }
-
-  if (isLoadingData) {
+  if (isLoadingPet || isLoadingData || isLoadedUserData) {
     return <Text>Loading...</Text>
   }
 
@@ -102,14 +88,14 @@ export default function BookingDetail(props: Booking) {
             className="bg-transparent justify-center"
             onPress={() =>
               router.push({
-                pathname: `/sitter/${sitterData.id}`,
+                pathname: `/${Profile.OWNER === session.currentProfile ? "sitter": "owner"}/${userData.id}`,
               })
             }
           >
-            <Avatar className="w-14 h-14" source={{ uri: sitterData?.imageUrl }} />
+            <Avatar className="w-14 h-14" source={{ uri: userData?.imageUrl }} />
           </Button>
           <Box className="justify-center ">
-            <Text className="text-xl font-bold">{sitterData?.name}</Text>
+            <Text className="text-xl font-bold">{userData?.name}</Text>
             <Text className="text-md">Booking Status: {capitalizeWords(props.status)}</Text>
           </Box>
           <View>
@@ -166,7 +152,7 @@ export default function BookingDetail(props: Booking) {
             </Button>
             <Box className="flex-end">
               <Text className="text-md">Location</Text>
-              <Text className="text-lg font-bold">{sitterData?.location}</Text>
+              <Text className="text-lg font-bold">{userData?.location}</Text>
             </Box>
           </Box>
           <Box className="flex-wrap flex-row my-1">
@@ -202,7 +188,7 @@ export default function BookingDetail(props: Booking) {
               <Button className="mx-2 bg-blue-500 rounded-full" onPress={() => router.push({
                 pathname: '/create/review',
                 params: {
-                  sitterId: sitterData.id,
+                  sitterId: userData.id,
                 }
               })}>
                 <Text className="text-white font-bold">Review</Text>
