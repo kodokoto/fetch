@@ -7,8 +7,20 @@ import { useRouter, useSearchParams } from 'expo-router'
 import { api } from 'app/utils/trpc'
 import DisplayCardList from '../components/DisplayCardList'
 import BookingDisplayCard from '../components/BookingDisplayCard'
+import { RefreshControl } from 'react-native'
+
 
 export default function SitterHomeScreen() {
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+
 
   const { user, isLoaded } = useUser();
   const router = useRouter();
@@ -24,7 +36,7 @@ export default function SitterHomeScreen() {
     cacheTime: 0,
   });
   
-  const { data: bookings, isLoading: bookingsLoading } = api.booking.bySitterId.useQuery(sitterProfile?.id, {
+  const { data: bookings, isLoading: bookingsLoading, refetch } = api.booking.bySitterId.useQuery(sitterProfile?.id, {
     enabled: !!sitterProfile?.id,
     cacheTime: 0,
     onSuccess: (data) => {
@@ -35,10 +47,17 @@ export default function SitterHomeScreen() {
     },
   })
 
+  // call the refetch function when the user pulls down to refresh
+  React.useEffect(() => {
+    refetch()
+  }, [refreshing])
+
+
   const handleAcceptPending = (booking) => {
     updateBookingStatus.mutateAsync({ id: booking.id, status: "ACCEPTED" }).then(() => {
       setPendingBookings((p) => p.filter((b) => b.id !== booking.id))
       setUpcomingBookings((prev) => [...prev, booking])
+      refetch()
     })
   } 
 
@@ -54,7 +73,10 @@ export default function SitterHomeScreen() {
   if (bookingsLoading) return <Text>Loading...</Text>
 
   return (
-    <ScrollView>
+    <ScrollView
+    refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
       <View className='m-4'>
       <Box className="flex-row justify-between my-8">
           <WelcomeMessage name={sitterProfile.name} />

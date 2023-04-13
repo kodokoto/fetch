@@ -33,11 +33,21 @@ export default function AddBooking() {
     const { data: ownerData} = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
     const ownerId = ownerData?.id
     
+    
+
     console.log("Owner Id: " + ownerId);
     
     const { data: sitterData, isLoading: sitterDataIsLoading} = api.sitter.byId.useQuery(String(sitterId))
 
-    const { data: pets, isLoading: petsIsLoading} = api.pet.byOwnerId.useQuery(ownerId, { enabled: !!ownerId, cacheTime: 0 })
+    const [filteredPets , setFilteredPets] = React.useState([])
+
+    const { data: pets, isLoading: petsIsLoading} = api.pet.byOwnerId.useQuery(ownerId, 
+        { 
+          enabled: !!ownerId, 
+          cacheTime: 0,
+          onSuccess: (data) => {setFilteredPets(data.filter((pet) => petType.includes(pet.type))) }
+        })
+
     
     const { data: availabileServices, isLoading : availabileServicesIsLoading } = api.service.bySitterIdAndAvailableTime.useQuery({
         sitterId: String(sitterId),
@@ -55,7 +65,6 @@ export default function AddBooking() {
     }
 
     const petType: string[] = String(petTypes).split(",");
-    const filteredPets = pets.filter((pet) => petType.includes(pet.type));
 
     const handleSubmit = () => {
       mutation.mutate({

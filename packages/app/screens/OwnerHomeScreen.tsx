@@ -8,8 +8,18 @@ import WelcomeMessage from 'app/components/WelcomeMessage'
 import { api } from 'app/utils/trpc'
 import { router } from 'api/src/trpc'
 import BookingDisplayCard from '../components/BookingDisplayCard'
+import { RefreshControl } from 'react-native'
 
 export default function OwnerHomeScreen() {
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   const { user, isLoaded } = useUser();
   const userId = user?.id
@@ -18,17 +28,24 @@ export default function OwnerHomeScreen() {
     enabled: !!userId,
     cacheTime: 0,
   })
-  const { data: bookings, isLoading: bookingsLoading } = api.booking.byOwnerId.useQuery(ownerProfile?.id, {
+  const { data: bookings, isLoading: bookingsLoading, refetch } = api.booking.byOwnerId.useQuery(ownerProfile?.id, {
     enabled: !!ownerProfile?.id,
     cacheTime: 0,
   })
+
+    React.useEffect(() => {
+    refetch()
+  }, [refreshing])
 
   if (!isLoaded) return null
   if (bookingsLoading) return <Text>Loading...</Text>
 
 
   return (
-    <ScrollView>
+    <ScrollView
+     refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
       <View className='m-4'>
         <Box className="flex-row justify-between my-8">
           <WelcomeMessage name={ownerProfile.name} />
