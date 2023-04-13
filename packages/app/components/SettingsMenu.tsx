@@ -18,35 +18,35 @@ export default function SettingsMenu() {
 
 
   return (
-    <View>
+    <View className='m-6'>
       <Box bg="#fff" p={4} rounded="lg" shadow={1} className="w-11/12 mx-auto">
         <View >
-          <Button style={{marginBottom: 30}} onPress={() => router.push('about')}>
+          <Button className='bg-blue-500 mb-8 rounded-full w-10/12 mx-auto'  onPress={() => router.push('about')}>
             About Us
           </Button>
         </View>
-        <View style={{ marginBottom: 30 }}>
-          <Button title="Terms and Conditions" onPress={() => router.push('terms-and-conditions')} >
+        <View>
+          <Button className='bg-blue-500 mb-8 rounded-full w-10/12 mx-auto' onPress={() => router.push('terms-and-conditions')} >
             Terms and Conditions
           </Button>
         </View>
-        <View style={{ marginBottom: 30 }}>
-          <Button title="Privacy Policy" onPress={() => router.push('privacy-policy')} >
+        <View>
+          <Button className='bg-blue-500 mb-8 rounded-full w-10/12 mx-auto'  onPress={() => router.push('privacy-policy')} >
             Privacy Policy
           </Button>
         </View>
-        <View style={{ marginBottom: 30 }}>
-          <Button title="Call Us" onPress={handleCallUsPress} >
+        <View>
+          <Button className='bg-blue-500 mb-8 rounded-full w-10/12 mx-auto' onPress={handleCallUsPress} >
             Call Us
           </Button>
         </View>
-        <View style={{ marginBottom: 30 }}>
-          <Button title="Email Us" onPress={handleEmailUsPress} >
+        <View>
+          <Button className='bg-blue-500 mb-8 rounded-full w-10/12 mx-auto'  onPress={handleEmailUsPress} >
             Email Us
           </Button>
         </View>
-        <View style={{ marginBottom: 30 }}>
-          <Button title="FAQ" onPress={() => router.push('faq')} >
+        <View>
+          <Button className='bg-blue-500 mb-8 rounded-full w-10/12 mx-auto' onPress={() => router.push('faq')} >
             FAQ 
           </Button>
         </View>

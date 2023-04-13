@@ -17,30 +17,28 @@ export default function petCreateForm() {
     const [images,setImages] = useState([]);
     const [submitPressed, setSubmitPressed] = useState(false);
     const router = useRouter();
+    
+    function handleSubmit() {
+      console.log("CURRENT SESSION", session)
+      console.log("Images: " + images);
+      
+      mutation.mutateAsync({
+        name: name,
+        type: getPetByBoolean(),
+        ownerId: session.ownerId,
+        description: description,
+        imageUrl: images ? String(images) : 'https://i.pinimg.com/736x/ba/92/7f/ba927ff34cd961ce2c184d47e8ead9f6.jpg' // delete later
+      }).then(
+        () => {
+          redirectUrl 
+          ? router.replace(String(redirectUrl))
+          : router.replace('/pets')
+        }
+      )
+    }
+
     useEffect(() => {
-      function handleSubmit() {
-        console.log("CURRENT SESSION", session)
-        console.log("Images: " + images);
-
-        // if(images.length <= 0){
-        //   return
-        // }
-        
-        mutation.mutateAsync({
-          name: name,
-          type: getPetByBoolean(),
-          ownerId: session.ownerId,
-          description: description,
-          imageUrl: images ? String(images) : 'https://i.pinimg.com/736x/ba/92/7f/ba927ff34cd961ce2c184d47e8ead9f6.jpg' // delete later
-        }).then(
-          () => {
-            redirectUrl 
-            ? router.replace(String(redirectUrl))
-            : router.replace('/pets')
-          }
-        )
-      }
-
+      
       if(submitPressed && images.length > 0){
         handleSubmit();
       }

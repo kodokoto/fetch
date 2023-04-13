@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from "expo-router";
 import AddImageButton from "app/components/AddPictureButton";
 import { log } from "react-native-reanimated";
 import PetTypeSelect from "app/components/PetTypeSelect";
+import { Stack } from "expo-router";
 
 
 export default function petCreateForm() {
@@ -66,6 +67,7 @@ export default function petCreateForm() {
     }
       return (
         <>
+          <Stack.Screen options={{ headerTitle: 'Edit Pet' }} />
           <View className="mx-4">
             <Text className="font-bold text-2xl ml-2 mt-5">Name:</Text>
             <Input value={name} onChangeText={text => setName(text)} variant={'rounded'} ></Input>

@@ -37,9 +37,24 @@ export default function BookingDetail(props: Booking) {
     id: props.id,
     include: 'scheduledTime',
   })
+ 
+  const mutationDelete = api.booking.delete.useMutation()
 
-  if (isLoading) {
-    return <Text>Loading...</Text>
+  const handleCancelBooking = () => {
+    mutationDelete.mutate(props.id)
+    router.push({
+      pathname: '/home',
+  })}
+
+  const handleMessagePress = () => {
+    router.replace({
+      pathname: '/messages',
+      params: {
+        receiverId: props.ownerId,
+        senderId: props.sitterId,
+        receiverName: sitterData?.name,
+      },
+    })
   }
 
   return (
@@ -115,25 +130,56 @@ export default function BookingDetail(props: Booking) {
                 />
             </Box>
           </Box>
-          <Box className="">
-            <Button className="rounded-full bg-[#3b82f6] mx-auto my-2 w-10/12"
+          <Box className="flex-wrap flex-row mt-2 mb-10">
+            <Button className="mx-2 rounded-2xl"
             onPress={() =>
             router.push({
-              pathname: '/reschedule',
+              pathname: '/edit/booking',
               params: {
-                bookingId: props.id
-              }
-            })
-          }
-            >Reschedule</Button>
-            <Button className="mr-auto rounded-2xl" onPress={() => router.push({
-              pathname: '/create/review',
-              params: {
+                bookingId: props.id,
+                ownerId: props.ownerId,
                 sitterId: props.sitterId,
-              }})}>Review</Button>
-
-            <Button className="mr-auto ml-2 rounded-2xl">Cancel</Button>
-          </Box>
+                scheduledTimeId: data.scheduledTime.id,
+                day: data.scheduledTime.day,
+                timeOfDay: data.scheduledTime.time,
+              }
+            })}
+            >
+              Edit details
+            </Button>
+            <Button
+              className="mx-2 rounded-2xl"
+              onPress={() => router.push({
+                pathname: '/edit/scheduledTime',
+                params: {
+                  bookingId: props.id,
+                //   ownerId: props.ownerId,
+                //   sitterId: props.sitterId,
+                //   scheduledTimeId: data.scheduledTime.id,
+                //   day: data.scheduledTime.day,
+                //   timeOfDay: data.scheduledTime.time,
+                }
+              })}
+            >
+              Reschedule
+            </Button>
+            {
+              session.currentProfile === Profile.OWNER
+              ?  <Button 
+                  className="mx-2 rounded-2xl" 
+                  onPress={() => router.push('/review')}
+                >
+                  Review
+                </Button>
+              : console.log("not owner")
+            }
+            <Button className="mx-2 rounded-2xl"
+              onPress = {handleCancelBooking}
+            >
+              Cancel Booking
+            </Button>
+            
+            </Box>
         </Box>
       </Box>
       

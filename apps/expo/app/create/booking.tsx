@@ -49,7 +49,7 @@ export default function AddBooking() {
         })
 
     
-    const { data: availabileServices, isLoading : availabileServicesIsLoading } = api.service.bySitterIdAndAvailableTime.useQuery({
+    const { data: availableServices, isLoading : availabileServicesIsLoading } = api.service.bySitterIdAndAvailableTime.useQuery({
         sitterId: String(sitterId),
         day: String(day) as Day,
         time: String(timeOfDay) as TimeOfDay
@@ -61,7 +61,7 @@ export default function AddBooking() {
     }
 
     function getServiceByType(name: string): Service {
-        return availabileServices.find((service) => service.type === name)
+        return availableServices.find((service) => service.type === name)
     }
 
     const petType: string[] = String(petTypes).split(",");
@@ -100,7 +100,7 @@ export default function AddBooking() {
                     onValueChange={(itemValue) => setSelectedServiceType(itemValue)}
                 >
                     {
-                        availabileServices && availabileServices.map((service) => {
+                        availableServices && availableServices.map((service) => {
                             return (
                                 <Select.Item key={service.id} label={titleCase(service.type)} value={service.type} />
                             )
