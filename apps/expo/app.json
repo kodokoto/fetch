@@ -8,6 +8,7 @@
     "slug": "expo-app",
     "userInterfaceStyle": "automatic",
     "sourceExts": ["js", "json", "ts", "tsx", "jsx", "vue"],
+    "productionApiUrl": "",
     "plugins": [
       [
         "expo-location",
