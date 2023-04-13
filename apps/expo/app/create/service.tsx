@@ -63,13 +63,18 @@ export default function services() {
             }
         }
 
+        function onlyUnique(value, index, array) {
+            return array.indexOf(value) === index;
+          }
+          
+
         console.log(petTypes)
 
         mutation.mutateAsync({
             sitterId: session.sitterId,
             serviceType: serviceType,
             price: Number(price),
-            petTypes: pts,
+            petTypes: pts.filter(onlyUnique),
             description: description,
             duration: Number(duration),
             availableTimes,

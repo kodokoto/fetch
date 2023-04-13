@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Select, FormControl, Text, Button, Input, HStack, CheckIcon, Slider, VStack, Center } from 'native-base'
+import { Box, Select, FormControl, Text, Button, Input, HStack, CheckIcon, Slider, VStack, View } from 'native-base'
 import { TouchableOpacity, Platform } from 'react-native'
 import { useRouter } from 'expo-router'
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
@@ -125,10 +125,9 @@ export default function Filter() {
             </Select>
           </Box>
           <FormControl.Label _text={{ bold: true }}>Pets:</FormControl.Label>
-          <Box alignItems="center" w="100%">
-            <Center></Center>
+          <View className='mx-auto w-11/12'>
             <PetTypeSelect value={petTypes} onChange={setPetTypes} />
-          </Box>
+          </View>
           <FormControl.Label _text={{ bold: true }}>Maximum Price:</FormControl.Label>
           <Box alignItems="center" w="100%">
             <HStack>
@@ -161,7 +160,7 @@ export default function Filter() {
           display={Platform.OS === 'ios' ? 'inline' : 'default'}
         />
         <Button
-          className="w-10/12 rounded-full bg-blue-500 m-auto mt-10"
+          className="w-10/12 rounded-full bg-blue-500 m-auto mt-10 font-extrabold"
           onPress={handleSubmit}
         >
           Submit

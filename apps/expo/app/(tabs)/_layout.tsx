@@ -24,7 +24,7 @@ export default function () {
           <Tabs.Screen
             name="pets"
             options={{
-              title: 'pets',
+              title: 'Pets',
               tabBarIcon: ({ focused, color, size }) => {
                 return <Ionicons name={focused ? 'ios-paw' : 'ios-paw-outline'} size={size} color={color} />
               },
