@@ -33,7 +33,7 @@ function TimeSelectButton({ time, value, onChange }: { time: string, value: bool
             className={`flex-row w-24 h-12 mx-3 justify-center items-center text-center bg-transparent border-2 rounded-[10px]`}
             onPress={() => onChange(time, !value)}
             style={{ 
-                borderColor: value ? '#808080' : '#C5C5C5',
+                borderColor: value ? '#3b82f6' : '#C5C5C5',
             }}
         >   
             <Text>{titleCase(time)}</Text>

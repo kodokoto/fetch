@@ -15,9 +15,8 @@ import { useUser } from '@clerk/clerk-expo'
 import { useAtom } from 'jotai'
 import { sessionAtom } from 'app/utils/storage'
 
-export default function ReportForm() {
+export default function ReportForm({sitterId}: {sitterId: number}) {
   const router = useRouter()
-  const { sitterId } = useSearchParams()
   const [session, _] = useAtom(sessionAtom)
   const ownerid = session.ownerId
   const mutation = api.report.create.useMutation()
@@ -35,7 +34,7 @@ export default function ReportForm() {
       toId: String(sitterId)
     })
 
-    router.push(`/sitter/${sitterId}`);
+    router.replace('/');
   }
 
   const [type, setType] = React.useState('')
@@ -48,12 +47,13 @@ export default function ReportForm() {
           <FormControl.Label _text={{ bold: true }}>Type:</FormControl.Label>
           <Box maxW="full">
             <Select
+               
               selectedValue={String(type)}
               minWidth="full"
               accessibilityLabel="Choose report type"
               placeholder="Choose report type"
+              rounded={'full'}
               _selectedItem={{
-                bg: 'teal.600',
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
@@ -72,12 +72,13 @@ export default function ReportForm() {
             <TextArea h={20} value={textAreaValue}
             onChangeText={text => setTextAreaValue(text)}
             placeholder="Please enter incident details"
+            rounded={'2xl'}
             w="100%" maxW="full" autoCompleteType={undefined} />
           </Box>
         </VStack>
         
         <Button
-          className="w-[300px] m-auto mt-10"
+          className="w-10/12 rounded-full bg-blue-500 m-auto mt-10"
           onPress={() => handleSubmit()}
         >
           Submit Report

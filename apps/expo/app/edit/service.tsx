@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ScrollView } from 'native-base'
 import ServiceForm from 'app/screens/ServiceForm'
-import { useRouter, useSearchParams } from 'expo-router'
+import { Stack, useRouter, useSearchParams } from 'expo-router'
 import { api } from 'app/utils/trpc'
 
 export default function EditService() {
@@ -50,7 +50,7 @@ export default function EditService() {
             setPrice(String(data.price))
             setDescription(data.description)
             setDuration(String(data.duration))
-
+            
             for (const availableTime of data.availableTimes) {
                 setDays({
                     ...days,
@@ -88,10 +88,10 @@ export default function EditService() {
             }
         }
 
-        const petTypes = [];
+        const pts = [];
         for (const pet in petTypes) {
             if (petTypes[pet]) {
-                petTypes.push(pet)
+                pts.push(pet)
             }
         }
 
@@ -99,7 +99,7 @@ export default function EditService() {
             serviceId: Number(serviceId),
             serviceType: serviceType,
             price: Number(price),
-            petTypes: petTypes,
+            petTypes: pts,
             description: description,
             duration: Number(duration),
             availableTimes,
@@ -114,7 +114,13 @@ export default function EditService() {
 
 
   return (
-    <ScrollView>
+    <>
+        <Stack.Screen
+            options={{
+                headerTitle: 'Edit Service',
+            }}
+        />
+        <ScrollView>
         <ServiceForm {
             ...{
                 serviceType,
@@ -135,5 +141,7 @@ export default function EditService() {
             }
         } />
     </ScrollView>
+
+    </>
   )
 }

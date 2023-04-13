@@ -19,7 +19,7 @@ import { Service, ScheduledTime, TimeOfDay, Day, BookingFrequency } from '@prism
 export default function AddBooking() {
     const router = useRouter()
 
-    const { sitterId, serviceType, day, timeOfDay } = useSearchParams()
+    const { sitterId, serviceType, day, timeOfDay, petTypes } = useSearchParams()
 
     console.log("Sitter Id: " + sitterId);
     console.log("Service Type: " + serviceType);
@@ -33,11 +33,21 @@ export default function AddBooking() {
     const { data: ownerData} = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
     const ownerId = ownerData?.id
     
+    
+
     console.log("Owner Id: " + ownerId);
     
     const { data: sitterData, isLoading: sitterDataIsLoading} = api.sitter.byId.useQuery(String(sitterId))
 
-    const { data: pets, isLoading: petsIsLoading} = api.pet.byOwnerId.useQuery(String(ownerId), { enabled: !!ownerId, cacheTime: 0 })
+    const [filteredPets , setFilteredPets] = React.useState([])
+
+    const { data: pets, isLoading: petsIsLoading} = api.pet.byOwnerId.useQuery(ownerId, 
+        { 
+          enabled: !!ownerId, 
+          cacheTime: 0,
+          onSuccess: (data) => {setFilteredPets(data.filter((pet) => petType.includes(pet.type))) }
+        })
+
     
     const { data: availableServices, isLoading : availabileServicesIsLoading } = api.service.bySitterIdAndAvailableTime.useQuery({
         sitterId: String(sitterId),
@@ -54,6 +64,7 @@ export default function AddBooking() {
         return availableServices.find((service) => service.type === name)
     }
 
+    const petType: string[] = String(petTypes).split(",");
 
     const handleSubmit = () => {
       mutation.mutate({
@@ -79,22 +90,25 @@ export default function AddBooking() {
     if(!isLoaded || availabileServicesIsLoading || sitterDataIsLoading || petsIsLoading) return null;
   
     return (
-      <View className="flex flex-col justify-center items-center">
+      <View className="flex flex-col justify-center items-center m-8">
         <FormControl>
             <Text fontSize="2xl" fontWeight="bold" mb={4}>Send a booking request to {sitterData.name}</Text>
-            <FormControl.Label>Service:</FormControl.Label>
-            <Select 
-                selectedValue={selectedServiceType}
-                onValueChange={(itemValue) => setSelectedServiceType(itemValue)}
-            >
-                {
-                    availableServices && availableServices.map((service) => {
-                        return (
-                            <Select.Item key={service.id} label={titleCase(service.type)} value={service.type} />
-                        )
-                    })
-                }
-            </Select>
+            <View className='my-4'>
+                <FormControl.Label>Service:</FormControl.Label>
+                <Select 
+                    selectedValue={selectedServiceType}
+                    onValueChange={(itemValue) => setSelectedServiceType(itemValue)}
+                >
+                    {
+                        availableServices && availableServices.map((service) => {
+                            return (
+                                <Select.Item key={service.id} label={titleCase(service.type)} value={service.type} />
+                            )
+                        })
+                    }
+                </Select>
+            </View>
+            <View className='my-4'>
             <FormControl.Label>Pet:</FormControl.Label>
             <Select 
                 selectedValue={selectedPet}
@@ -102,8 +116,8 @@ export default function AddBooking() {
                 placeholder='Select a Pet'
             >
                 {
-                    pets && pets.length > 0
-                    ? pets.map((pet) => {
+                    filteredPets && filteredPets.length > 0 
+                    ? filteredPets.map((pet) => {
                         return (
                             <Select.Item key={pet.id} label={pet.name} value={pet.name} />
                         )
@@ -115,6 +129,8 @@ export default function AddBooking() {
                     }/>
                 }
             </Select>
+            </View>
+            <View className='my-4'>
             <FormControl.Label>Frequency:</FormControl.Label>
             <Select 
                 selectedValue={scheduledTime.frequency}
@@ -125,8 +141,9 @@ export default function AddBooking() {
                 <Select.Item label="Every two weeks" value="BI_WEEKLY" />
                 <Select.Item label="Every month" value="MONTHLY" />
             </Select>
-            <Button onPress={handleSubmit}>
-                <Text>Send Booking Request</Text>
+            </View>
+            <Button className='w-11/12 mx-auto my-8 bg-blue-500 rounded-full' onPress={handleSubmit}>
+                <Text className='text-white'>Send Booking Request</Text>
             </Button>
         </FormControl>
       </View>

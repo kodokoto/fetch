@@ -5,12 +5,22 @@ import { Box, ScrollView, Button } from 'native-base'
 import { useRouter } from 'expo-router'
 import ProfileIcon from 'app/components/ProfileIcon'
 import WelcomeMessage from 'app/components/WelcomeMessage'
-import BookingPreview from 'app/components/BookingPreview'
 import { api } from 'app/utils/trpc'
 import { router } from 'api/src/trpc'
+import BookingDisplayCard from '../components/BookingDisplayCard'
+import { RefreshControl } from 'react-native'
 
 export default function OwnerHomeScreen() {
-  const router = useRouter()
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   const { user, isLoaded } = useUser();
   const userId = user?.id
 
@@ -18,17 +28,24 @@ export default function OwnerHomeScreen() {
     enabled: !!userId,
     cacheTime: 0,
   })
-  const { data: bookings, isLoading: bookingsLoading } = api.booking.byOwnerId.useQuery(ownerProfile?.id, {
+  const { data: bookings, isLoading: bookingsLoading, refetch } = api.booking.byOwnerId.useQuery(ownerProfile?.id, {
     enabled: !!ownerProfile?.id,
     cacheTime: 0,
   })
+
+    React.useEffect(() => {
+    refetch()
+  }, [refreshing])
 
   if (!isLoaded) return null
   if (bookingsLoading) return <Text>Loading...</Text>
 
 
   return (
-    <ScrollView>
+    <ScrollView
+     refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
       <View className='m-4'>
         <Box className="flex-row justify-between my-8">
           <WelcomeMessage name={ownerProfile.name} />
@@ -40,14 +57,14 @@ export default function OwnerHomeScreen() {
         {
           bookings && bookings.length > 0 
           ? bookings.filter((booking) => booking.status === "ACCEPTED")
-                    .map((booking, index) => <BookingPreview key={index} {...booking} />)
+                    .map((booking, index) => <BookingDisplayCard key={index} value={booking} />)
           : <Text className='ml-8'>You have no upcoming bookings</Text>
         }
         <Text className="font-bold text-xl ml-8 my-8">Pending Bookings</Text>
         {
           bookings && bookings.length > 0 
           ? bookings.filter((booking) => booking.status === "PENDING")
-                    .map((booking, index) => <BookingPreview key={index} {...booking} />)
+                    .map((booking, index) => <BookingDisplayCard key={index} value={booking} />)
           : <Text className='ml-8'>You have no pending bookings</Text>
         }
       </View>

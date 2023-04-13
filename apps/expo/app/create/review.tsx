@@ -36,7 +36,7 @@ export default function ReviewSystem(props) {
       toId: String(sitterId)
     })
 
-    router.push(`/sitter/${sitterId}`);
+    router.replace(`/sitter/${sitterId}`);
   }
 
   let ratingCompleted = (rating) => {
@@ -75,33 +75,6 @@ export default function ReviewSystem(props) {
           Submit Review
         </Button>
       </FormControl>
-      {/* <Text>Rate your experience:</Text> */}
-      {/* <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-        <Button onPress={() => setScore('1')}>1</Button>
-        <Button onPress={() => setScore('2')}>2</Button>
-        <Button onPress={() => setScore('3')}>3</Button>
-        <Button onPress={() => setScore('4')}>4</Button>
-        <Button onPress={() => setScore('5')}>5</Button>
-      </View> */}
-      {/* <Rating
-        showRating
-        onFinishRating={(e) => ratingCompleted(e)}
-        style={{ paddingVertical: 10 }}
-        type="custom"
-        ratingBackgroundColor='white'
-        tintColor='rgb(229 231 235)'
-      />
-      <Input
-        placeholder="Type a message..."
-        value={message}
-        onChangeText={setMessage}
-        multiline={true}
-        style={{ 
-          height: 100,
-          backgroundColor: 'white'
-         }}
-      />
-      <Button onPress={handleSubmit}>Submit</Button> */}
     </Box>
   )
 }

@@ -4,6 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 type AddImageButtonProps = {
     setImages: (images: string[] | ((images: string[]) => void)) => void
+    aspect?: number[]
 }
 
 export default function AddImageButton(props: AddImageButtonProps) {
@@ -20,7 +21,7 @@ export default function AddImageButton(props: AddImageButtonProps) {
           cloudinaryUpload(result.assets[0].uri, result.assets[0].base64);
       }
 
-      const cloudinaryUpload = (photo, base64Data) => {
+      const cloudinaryUpload = async (photo, base64Data) => {
         const data = new FormData()
         const uriArr = photo.split(".");
         const fileType = uriArr[uriArr.length - 1];
@@ -28,7 +29,7 @@ export default function AddImageButton(props: AddImageButtonProps) {
         data.append('file', file)
         data.append('upload_preset', 'ml_default')
         data.append("cloud_name", "dfuiyl9sr")
-        fetch("https://api.cloudinary.com/v1_1/dfuiyl9sr/upload", {
+        await fetch("https://api.cloudinary.com/v1_1/dfuiyl9sr/upload", {
           method: "post",
           body: data
         }).then(res => res.json()).
@@ -41,7 +42,7 @@ export default function AddImageButton(props: AddImageButtonProps) {
       }
     return (
         <>
-            <Button onPress={() => selectPhotoTapped()} className="bg-white rounded-md">
+            <Button onPress={() => selectPhotoTapped()} className="bg-white rounded-full">
               <View className='flex-row'>
                 <Ionicons name='camera-outline' size={20} color="black" />
                 <Text className='ml-3'>Add an image</Text>
