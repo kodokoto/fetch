@@ -13,9 +13,8 @@ const SignInWithOAuth = () => {
   useWarmUpBrowser()
 
   const redirectUrl = AuthSession.makeRedirectUri({
-    path: '/'
+    path: '/',
   })
-
 
   const { startOAuthFlow } = useOAuth({ strategy: 'oauth_google', redirectUrl: redirectUrl })
 
@@ -29,7 +28,6 @@ const SignInWithOAuth = () => {
         // if (!signUp || signIn.firstFactorVerification.status !== 'transferable') {
         //   throw 'Something went wrong during the Sign up OAuth flow. Please ensure that all sign up requirements are met.'
         // }
-
         // console.log("Didn't have an account transferring, following through with new account sign up")
         // // Create user
         // await signUp.create({ transfer: true })

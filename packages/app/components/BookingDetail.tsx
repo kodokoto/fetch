@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router'
 import { Text } from 'react-native'
-import { Button, Box, Divider, Avatar, ScrollView } from 'native-base'
+import { Button, Box, Divider, Avatar, ScrollView, Menu, View } from 'native-base'
 import { Ionicons, Entypo, Foundation } from '@expo/vector-icons'
 import React from 'react'
 import { Booking } from '@prisma/client'
@@ -14,37 +14,40 @@ import PetDisplayCard from 'app/components/PetDisplayCard'
 import { Pet } from 'db'
 
 function serviceTypeToIcon(serviceType: string) {
-  switch(serviceType) {
-    case "WALK":
+  switch (serviceType) {
+    case 'WALK':
       return <Foundation name="guide-dog" size={36} color="#3b82f6" />
-    case "PET_CARE":
+    case 'PET_CARE':
       return <Ionicons name="logo-octocat" size={36} color="#3b82f6" />
-    case "HOUSE_SITTING":
-      return <Entypo name="home" size={36} color="#3b82f6" /> 
+    case 'HOUSE_SITTING':
+      return <Entypo name="home" size={36} color="#3b82f6" />
   }
 }
-
 
 export default function BookingDetail(props: Booking) {
   const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
-  const { data: sitterData} = api.sitter.byId.useQuery(String(props.sitterId))
-  const {data: serviceData} = api.service.byId.useQuery(props.serviceId)
-  const {data: petData} = api.pet.byBookingId.useQuery(props.id)
-  const [pets, setPets] = React.useState([] as Pet[])
-  const { isLoading } = api.pet.byBookingId.useQuery(props.id, { cacheTime: 0, onSuccess: setPets})
+  const { data: sitterData } = api.sitter.byId.useQuery(String(props.sitterId))
+  const { data: serviceData } = api.service.byId.useQuery(props.serviceId)
+  const [pet, setPet] = React.useState()
+  const { isLoading: isLoadingPet } = api.pet.byId.useQuery(props.id, {
+    onSuccess: setPet,
+  })
   const { data } = api.booking.byIdWithScheduledTime.useQuery({
     id: props.id,
     include: 'scheduledTime',
   })
- 
+
   const mutationDelete = api.booking.delete.useMutation()
 
   const handleCancelBooking = () => {
-    mutationDelete.mutate(props.id)
+    mutationDelete.mutate({
+      id: props.id,
+    })
     router.push({
       pathname: '/home',
-  })}
+    })
+  }
 
   const handleMessagePress = () => {
     router.replace({
@@ -57,23 +60,81 @@ export default function BookingDetail(props: Booking) {
     })
   }
 
+  const handleRescheduleBooking = () =>
+    router.push({
+      pathname: '/edit/scheduledTime',
+      params: {
+        bookingId: props.id,
+        ownerId: props.ownerId,
+        sitterId: props.sitterId,
+        scheduledTimeId: data.scheduledTime.id,
+        day: data.scheduledTime.day,
+        timeOfDay: data.scheduledTime.time,
+      },
+    })
+
+  const handleManageBooking = () =>
+    router.push({
+      pathname: '/edit/booking',
+      params: {
+        bookingId: props.id,
+        ownerId: props.ownerId,
+        sitterId: props.sitterId,
+        scheduledTimeId: data.scheduledTime.id,
+        day: data.scheduledTime.day,
+        timeOfDay: data.scheduledTime.time,
+      },
+    })
+
+  if (isLoadingPet) {
+    return <Text>Loading...</Text>
+  }
+
   return (
-    <ScrollView className='bg-white'>
+    <ScrollView className="bg-white">
       <Box className="m-6">
-        <Box className="flex-wrap flex-row my-4 justify-between">
-          <Button className='bg-transparent flex-start' onPress={() =>
-            router.push({
-              pathname: `/sitter/${sitterData.id}`,
-            })
-          }>
-            <Avatar className="w-16 h-16" source={{ uri: sitterData?.imageUrl }}/>
+        <Box className="flex-row my-4">
+          <Button
+            className="bg-transparent justify-center"
+            onPress={() =>
+              router.push({
+                pathname: `/sitter/${sitterData.id}`,
+              })
+            }
+          >
+            <Avatar className="w-14 h-14" source={{ uri: sitterData?.imageUrl }} />
           </Button>
-          <Box className="mr-10 mt-3">
-            <Text className="text-2xl font-bold">{sitterData?.name}</Text>
-            <Text className="text-lg">Booking Status: {capitalizeWords(props.status)}</Text>
+          <Box className="justify-center ">
+            <Text className="text-xl font-bold">{sitterData?.name}</Text>
+            <Text className="text-md">Booking Status: {capitalizeWords(props.status)}</Text>
           </Box>
+          <View>
+            <Menu
+              className="mr-4"
+              trigger={(triggerProps) => (
+                <Button {...triggerProps} className="bg-transparent ml-12">
+                  <Entypo name="dots-three-vertical" size={24} color="gray" />
+                </Button>
+              )}
+            >
+              <Menu.Item
+                onPress={() => {
+                  handleManageBooking()
+                }}
+              >
+                Manage
+              </Menu.Item>
+              <Menu.Item
+                onPress={() => {
+                  handleRescheduleBooking()
+                }}
+              >
+                Reschedule
+              </Menu.Item>
+            </Menu>
+          </View>
         </Box>
-        <Box >
+        <Box>
           <Box className="flex-wrap flex-row my-1">
             <Button className="rounded-3xl bg-white w-14 h-14 flex-start">
               <Ionicons size={30} color="#3b82f6" className="ml-2" name="card-outline"></Ionicons>
@@ -89,7 +150,10 @@ export default function BookingDetail(props: Booking) {
             </Button>
             <Box className="flex-end">
               <Text className="text-md">Date & Time</Text>
-              <Text className="text-lg font-bold">{data.scheduledTime ? capitalizeWords(data.scheduledTime.day) : null}, {data.scheduledTime ? parseTime(data.scheduledTime.time) : null}</Text>
+              <Text className="text-lg font-bold">
+                {data.scheduledTime ? capitalizeWords(data.scheduledTime.day) : null},{' '}
+                {data.scheduledTime ? parseTime(data.scheduledTime.time) : null}
+              </Text>
             </Box>
           </Box>
           <Box className="flex-wrap flex-row my-1">
@@ -103,7 +167,7 @@ export default function BookingDetail(props: Booking) {
           </Box>
           <Box className="flex-wrap flex-row my-1">
             <Button className="rounded-3xl bg-white w-14 h-14 flex-start">
-              {serviceTypeToIcon(serviceData? serviceData.type : null)}
+              {serviceTypeToIcon(serviceData ? serviceData.type : null)}
             </Button>
             <Box className="flex-end">
               <Text className="text-md">Service</Text>
@@ -116,7 +180,9 @@ export default function BookingDetail(props: Booking) {
             </Button>
             <Box className="flex-end">
               <Text className="text-md">Frequency</Text>
-              <Text className="text-lg font-bold">{data.scheduledTime ? parseBookingFrequency(data.scheduledTime.frequency) : null}</Text>
+              <Text className="text-lg font-bold">
+                {data.scheduledTime ? parseBookingFrequency(data.scheduledTime.frequency) : null}
+              </Text>
             </Box>
           </Box>
           <Box className="flex-wrap flex-row">
@@ -124,65 +190,23 @@ export default function BookingDetail(props: Booking) {
               <Ionicons className="mx-auto ml-2" size={30} color="#3b82f6" name="paw"></Ionicons>
             </Button>
             <Box className="flex-end">
-                <DisplayCardList 
-                  Card={PetDisplayCard} 
-                  value={pets} 
-                />
+              <PetDisplayCard value={pet} />
             </Box>
           </Box>
-          <Box className="flex-wrap flex-row mt-2 mb-10">
-            <Button className="mx-2 rounded-2xl"
-            onPress={() =>
-            router.push({
-              pathname: '/edit/booking',
-              params: {
-                bookingId: props.id,
-                ownerId: props.ownerId,
-                sitterId: props.sitterId,
-                scheduledTimeId: data.scheduledTime.id,
-                day: data.scheduledTime.day,
-                timeOfDay: data.scheduledTime.time,
-              }
-            })}
-            >
-              Edit details
+          <Box className="flex-col gap-y-4 mt-4 mb-10">
+            {session.currentProfile === Profile.OWNER ? (
+              <Button className="mx-2 bg-blue-500 rounded-full" onPress={() => router.push('/review')}>
+                <Text className="text-white font-bold">Review</Text>
+              </Button>
+            ) : (
+              console.log('not owner')
+            )}
+            <Button className="mx-2 bg-[#fc511c] rounded-full" onPress={handleCancelBooking}>
+              <Text className="text-white font-bold">Cancel Booking</Text>
             </Button>
-            <Button
-              className="mx-2 rounded-2xl"
-              onPress={() => router.push({
-                pathname: '/edit/scheduledTime',
-                params: {
-                  bookingId: props.id,
-                //   ownerId: props.ownerId,
-                //   sitterId: props.sitterId,
-                //   scheduledTimeId: data.scheduledTime.id,
-                //   day: data.scheduledTime.day,
-                //   timeOfDay: data.scheduledTime.time,
-                }
-              })}
-            >
-              Reschedule
-            </Button>
-            {
-              session.currentProfile === Profile.OWNER
-              ?  <Button 
-                  className="mx-2 rounded-2xl" 
-                  onPress={() => router.push('/review')}
-                >
-                  Review
-                </Button>
-              : console.log("not owner")
-            }
-            <Button className="mx-2 rounded-2xl"
-              onPress = {handleCancelBooking}
-            >
-              Cancel Booking
-            </Button>
-            
-            </Box>
+          </Box>
         </Box>
       </Box>
-      
     </ScrollView>
   )
 }

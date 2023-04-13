@@ -10,16 +10,14 @@ type SitterDescriptionCardProps = {
   searchParams: {
     serviceType: string
     day: string
-    timeOfDay: string,
-    petTypes: string[],
+    timeOfDay: string
+    petTypes: string[]
   }
 }
 
-
-
-export default function SitterDescriptionCard({sitter, searchParams}: SitterDescriptionCardProps) {
+export default function SitterDescriptionCard({ sitter, searchParams }: SitterDescriptionCardProps) {
   const router = useRouter()
-  const {data: service} = api.service.byServiceType.useQuery(searchParams.serviceType)
+  const { data: service } = api.service.byServiceType.useQuery(searchParams.serviceType)
 
   return (
     <View
@@ -29,37 +27,25 @@ export default function SitterDescriptionCard({sitter, searchParams}: SitterDesc
       }}
     >
       <TouchableOpacity
-        className='rounded-2xl p-4 w-80 m-auto flex-row justify-between my-4'
+        className="rounded-2xl p-4 w-80 m-auto flex-row justify-between my-4"
         onPress={() =>
           router.push({
             pathname: `/sitter/${sitter.id}`,
-            params: searchParams
+            params: searchParams,
           })
         }
       >
         <Box className="flex-row">
-          {sitter ? (
-            <Avatar
-              className="w-12 h-12 "
-              source={{ uri: sitter.imageUrl }}
-            />
-          ) : null}
+          {sitter ? <Avatar className="w-12 h-12 " source={{ uri: sitter.imageUrl }} /> : null}
           <Box className="ml-4">
-            <Text className='text-lg'>
-              {sitter ? sitter.name : null}
-            </Text>
-            <Text className='text-xs'>{sitter.bio}</Text>
-            <Text>
-            </Text>
+            <Text className="text-lg">{sitter ? sitter.name : null}</Text>
+            <Text className="text-xs">{sitter.bio}</Text>
+            <Text></Text>
           </Box>
         </Box>
         <View>
-          <Text className=''>
-            £{service? service.price : null}
-          </Text>
-          <Text className='text-xs'>
-            per visit
-          </Text>
+          <Text className="">£{service ? service.price : null}</Text>
+          <Text className="text-xs">per visit</Text>
         </View>
       </TouchableOpacity>
     </View>

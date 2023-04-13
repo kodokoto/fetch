@@ -16,30 +16,34 @@ export default function Results() {
     day: String(day),
     timeOfDay: String(timeOfDay),
     maxPrice: Number(maxPrice),
-    petTypes: String(petTypes).split(","),
+    petTypes: String(petTypes).split(','),
   }
 
-  console.log("Search Params: " + JSON.stringify(searchParamsObject));
-  
+  console.log('Search Params: ' + JSON.stringify(searchParamsObject))
 
   const { data: sitters, isLoading } = api.sitter.bySearchParams.useQuery(searchParamsObject)
 
-  console.log("Sitters in results: " + JSON.stringify(sitters));
-  
+  console.log('Sitters in results: ' + JSON.stringify(sitters))
+
   if (isLoading) return <Text>Loading...</Text>
 
   return (
     <View className="m-8">
       <Text className="font-bold text-xl ml-2 mb-4">Search Results</Text>
-      {
-      sitters ? (
+      {sitters ? (
         sitters.map((sitter) => {
-          return <SitterDescriptionCard sitter={sitter} searchParams={{
-            serviceType: String(serviceType),
-            day: String(day),
-            timeOfDay: String(timeOfDay),
-            petTypes: String(petTypes).split(","),
-          }} key={sitter.id} />
+          return (
+            <SitterDescriptionCard
+              sitter={sitter}
+              searchParams={{
+                serviceType: String(serviceType),
+                day: String(day),
+                timeOfDay: String(timeOfDay),
+                petTypes: String(petTypes).split(','),
+              }}
+              key={sitter.id}
+            />
+          )
         })
       ) : (
         <Text>No Results</Text>

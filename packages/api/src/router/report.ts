@@ -2,12 +2,12 @@ import { router, publicProcedure } from '../trpc'
 import { ReportType, prisma } from 'db'
 import { z } from 'zod'
 
-export const reportRouter = router ({
-    all: publicProcedure.query(() => {
-        return prisma.report.findMany()
-      }),
+export const reportRouter = router({
+  all: publicProcedure.query(() => {
+    return prisma.report.findMany()
+  }),
 
-    create: publicProcedure
+  create: publicProcedure
     .input(
       z.object({
         reportType: z.string(),
@@ -22,8 +22,8 @@ export const reportRouter = router ({
           reportType: input.reportType as ReportType,
           content: input.reportContent,
           fromId: input.fromId,
-          toId: input.toId
+          toId: input.toId,
         },
       })
-    }), 
+    }),
 })

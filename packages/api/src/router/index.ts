@@ -14,7 +14,6 @@ import { locationRouter } from './location'
 import { imageRouter } from './image'
 import { reviewRouter } from './review'
 
-
 export const appRouter = router({
   booking: bookingRouter,
   owner: ownerRouter,
@@ -29,7 +28,7 @@ export const appRouter = router({
   animal: animalRouter,
   location: locationRouter,
   image: imageRouter,
-  review: reviewRouter
+  review: reviewRouter,
 })
 
 export type AppRouter = typeof appRouter

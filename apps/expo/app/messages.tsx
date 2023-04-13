@@ -17,8 +17,8 @@ export default function Messages() {
   // router.setParams({ headerTitle: String(receiverName)});
   const [filteredMessages, setfilteredMessages] = useState<FilteredMessages[]>([])
 
-  console.log("Owner Id 2: " + receiverId);
-  console.log("Sitter Id 2: " + senderId);
+  console.log('Owner Id 2: ' + receiverId)
+  console.log('Sitter Id 2: ' + senderId)
 
   const { data, error, isLoading } = api.message.betweenUsers.useQuery(
     { ownerId: String(receiverId), sitterId: String(senderId) },
@@ -26,17 +26,17 @@ export default function Messages() {
       onSuccess: (data: Message[]) => {
         // filter out id from each message
         const filteredData = data.map((message) => {
-          console.log("Message: " + JSON.stringify(message));
+          console.log('Message: ' + JSON.stringify(message))
           return {
             content: message.content,
             createdAt: message.createdAt,
             ownerId: message.ownerId,
             sitterId: message.sitterId,
-            sender: message.sender
+            sender: message.sender,
           }
         })
 
-        console.log("Filtered Data: " + JSON.stringify(filteredData));
+        console.log('Filtered Data: ' + JSON.stringify(filteredData))
 
         setfilteredMessages(filteredData)
       },
@@ -72,9 +72,14 @@ export default function Messages() {
   }, [currentMessageContent])
 
   const onSend = () => {
-    console.log("Owner Id 3: " + receiverId);
-    console.log("Sitter Id 3: " + senderId);
-    mutation.mutate({ content: currentMessageContent, ownerId: String(senderId), sitterId: String(receiverId), sender: String(session.currentProfile.toUpperCase()) })
+    console.log('Owner Id 3: ' + receiverId)
+    console.log('Sitter Id 3: ' + senderId)
+    mutation.mutate({
+      content: currentMessageContent,
+      ownerId: String(senderId),
+      sitterId: String(receiverId),
+      sender: String(session.currentProfile.toUpperCase()),
+    })
     setfilteredMessages([
       ...filteredMessages,
       {
@@ -82,7 +87,7 @@ export default function Messages() {
         createdAt: new Date(),
         ownerId: String(receiverId),
         sitterId: String(senderId),
-        sender: session.currentProfile.toUpperCase()
+        sender: session.currentProfile.toUpperCase(),
       },
     ])
     setCurrentMessageContent('')

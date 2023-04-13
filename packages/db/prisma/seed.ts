@@ -10,7 +10,8 @@ async function main() {
     data: {
       userId: 'user_1',
       name: 'Sitter 1',
-      imageUrl: 'https://images.unsplash.com/photo-1610000000000-000000000000?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
+      imageUrl:
+        'https://images.unsplash.com/photo-1610000000000-000000000000?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80',
     },
   })
 
@@ -19,7 +20,7 @@ async function main() {
       Sitter: {
         connect: {
           userId: 'user_1',
-        }
+        },
       },
       duration: 60,
       description: 'I will walk your dog for 60 minutes',
@@ -29,14 +30,14 @@ async function main() {
       availableTimes: {
         create: [
           {
-            day: 'MONDAY',  
+            day: 'MONDAY',
             time: 'MORNING',
           },
           {
             day: 'MONDAY',
             time: 'AFTERNOON',
           },
-        ],        
+        ],
       },
     },
   })
@@ -47,7 +48,7 @@ async function main() {
 main()
   .catch((e) => {
     console.error(e)
-    console.log("Error: " + e);
+    console.log('Error: ' + e)
     process.exit(1)
   })
   .finally(async () => {

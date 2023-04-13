@@ -7,7 +7,7 @@ export default function Search() {
   const { sitterId } = useSearchParams()
   return (
     <View className="h-96">
-      <ReportForm sitterId={Number(sitterId)}/>
+      <ReportForm sitterId={Number(sitterId)} />
     </View>
   )
 }

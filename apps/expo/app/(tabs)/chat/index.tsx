@@ -7,22 +7,22 @@ import { useUser, useClerk } from '@clerk/clerk-expo'
 import { Skeleton } from 'native-base'
 import { useAtom } from 'jotai'
 import { sessionAtom } from 'app/utils/storage'
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused } from '@react-navigation/native'
 import { useNavigation } from 'expo-router'
 
 export default function Chat() {
   const [searchWord, setSearchWord] = useState('')
-  const [filteredContacts, setFilteredContacts] = useState([]);
-  const isFocused = useIsFocused();
+  const [filteredContacts, setFilteredContacts] = useState([])
+  const isFocused = useIsFocused()
 
   const [session, setSession] = useAtom(sessionAtom)
-  let isOwner = false;
-  let isSitter = false;
+  let isOwner = false
+  let isSitter = false
 
   const { user, isLoaded } = useUser()
   const userId = user?.id
 
-  console.log("User Idddd: " + userId);
+  console.log('User Idddd: ' + userId)
 
   const { data: owner } = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
   const ownerId = owner?.id
@@ -30,18 +30,20 @@ export default function Chat() {
   const { data: sitter } = api.sitter.byUserId.useQuery(userId, { enabled: !!userId })
   const sitterId = sitter?.id
 
-  const { data: contacts } = session.currentProfile.toString() == "Owner" ? api.owner.contacts.useQuery(ownerId, { enabled: !!ownerId }) :
-  api.sitter.contacts.useQuery(sitterId, { enabled: !!sitterId });
+  const { data: contacts } =
+    session.currentProfile.toString() == 'Owner'
+      ? api.owner.contacts.useQuery(ownerId, { enabled: !!ownerId })
+      : api.sitter.contacts.useQuery(sitterId, { enabled: !!sitterId })
 
-  console.log("Contacts: " + JSON.stringify(contacts));
+  console.log('Contacts: ' + JSON.stringify(contacts))
 
-  if(session.currentProfile.toString() == "Owner"){
-    isOwner = true;
+  if (session.currentProfile.toString() == 'Owner') {
+    isOwner = true
   } else {
-    isSitter = true;
+    isSitter = true
   }
 
-  console.log(JSON.stringify(session));
+  console.log(JSON.stringify(session))
 
   let filtercontacts = (filterWord) => {
     const filteredcontacts = contacts.filter((sitter) => {
@@ -51,8 +53,8 @@ export default function Chat() {
   }
 
   useEffect(() => {
-    console.log("Meat");
-    
+    console.log('Meat')
+
     filtercontacts = (filterWord) => {
       const filteredcontacts = contacts.filter((sitter) => {
         return sitter.name.includes(filterWord)

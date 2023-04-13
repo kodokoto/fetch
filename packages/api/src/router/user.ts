@@ -12,9 +12,7 @@ export const userRouter = router({
   all: publicProcedure.query(() => {
     return clerk.users.getUserList()
   }),
-  getProfiles: publicProcedure
-  .input(z.string())
-  .query(async ({ input }) => {
+  getProfiles: publicProcedure.input(z.string()).query(async ({ input }) => {
     return {
       owner: await prisma.owner.findUnique({
         where: {

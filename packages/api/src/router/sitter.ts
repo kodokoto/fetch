@@ -3,7 +3,6 @@ import { z } from 'zod'
 import { prisma } from 'db'
 import { ServiceType, TimeOfDay, Day, PetType } from '@prisma/client'
 
-
 function parseServiceStringToEnum(service: string): ServiceType {
   switch (service) {
     case 'walk':
@@ -94,11 +93,10 @@ export const sitterRouter = router({
               url: image,
             })),
           },
-
         },
       })
     }),
-    
+
   update: publicProcedure
     .input(
       z.object({
@@ -126,7 +124,7 @@ export const sitterRouter = router({
         },
       })
     }),
-    bySearchParams: publicProcedure
+  bySearchParams: publicProcedure
     .input(
       z.object({
         day: z.string(),
@@ -142,12 +140,12 @@ export const sitterRouter = router({
           services: {
             some: {
               type: input.serviceType as ServiceType,
-              petTypes: { 
+              petTypes: {
                 some: {
                   type: {
                     in: input.petTypes as PetType[],
                   },
-                }
+                },
               },
               price: {
                 lte: input.maxPrice,
@@ -157,7 +155,7 @@ export const sitterRouter = router({
                   AND: [{ day: input.day as Day }, { time: input.timeOfDay as TimeOfDay }],
                 },
               },
-            }
+            },
           },
         },
       })

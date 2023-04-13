@@ -6,8 +6,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import { TimeOfDay, Day, ServiceType, PetType } from '@prisma/client'
 import PetTypeSelect from './PetTypeSelect'
 import { api } from 'app/utils/trpc'
-import { sessionAtom } from 'app/utils/storage';
-import { useAtom } from 'jotai';
+import { sessionAtom } from 'app/utils/storage'
+import { useAtom } from 'jotai'
 
 export type FilterSearchParams = {
   serviceType: string
@@ -21,21 +21,21 @@ export default function Filter() {
   const router = useRouter()
   // const [session, _] = useAtom(sessionAtom)
 
-  const handleSubmit = () => { 
-    const pt = [];
+  const handleSubmit = () => {
+    const pt = []
     for (const pet in petTypes) {
       if (petTypes[pet]) {
         pt.push(pet)
       }
-    }   
+    }
     console.log(pt)
     router.push({
       pathname: '/results',
       params: {
         day: date
-              .toLocaleDateString('en-us', { weekday: 'long' })
-              .replace(/[^a-z]/gi, '')
-              .toUpperCase() as Day,
+          .toLocaleDateString('en-us', { weekday: 'long' })
+          .replace(/[^a-z]/gi, '')
+          .toUpperCase() as Day,
         serviceType: serviceType,
         timeOfDay: timeOfDay,
         petTypes: pt,
@@ -50,10 +50,10 @@ export default function Filter() {
   const [timeOfDay, setTimeOfDay] = React.useState<TimeOfDay>('ANY')
   const [maxPrice, setMaxPrice] = React.useState(100)
   const [petTypes, setPetTypes] = React.useState({
-    "DOG": false,
-    "CAT": false,
-    "OTHER": false,
-  });
+    DOG: false,
+    CAT: false,
+    OTHER: false,
+  })
 
   const onConfirmDate = (date: Date) => {
     setShowDate(false)
@@ -69,7 +69,7 @@ export default function Filter() {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              console.log(123);
+              console.log(123)
               setShowDate(true)
             }}
           >
@@ -82,7 +82,7 @@ export default function Filter() {
               onTouchStart={() => setShowDate(true)}
               placeholder="Select day"
               editable={false}
-              rounded={"full"}
+              rounded={'full'}
               value={date.toLocaleDateString()}
             />
           </TouchableOpacity>
@@ -97,7 +97,7 @@ export default function Filter() {
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
-              rounded={"full"}
+              rounded={'full'}
               onValueChange={(itemValue) => setServiceType(itemValue as ServiceType)}
             >
               <Select.Item label="Walking" value="WALK" />
@@ -116,7 +116,7 @@ export default function Filter() {
                 endIcon: <CheckIcon size="5" />,
               }}
               mt={1}
-              rounded={"full"}
+              rounded={'full'}
               onValueChange={(itemValue) => setTimeOfDay(itemValue as TimeOfDay)}
             >
               <Select.Item label="6am-11am" value="MORNING" />
@@ -125,7 +125,7 @@ export default function Filter() {
             </Select>
           </Box>
           <FormControl.Label _text={{ bold: true }}>Pets:</FormControl.Label>
-          <View className='mx-auto w-11/12'>
+          <View className="mx-auto w-11/12">
             <PetTypeSelect value={petTypes} onChange={setPetTypes} />
           </View>
           <FormControl.Label _text={{ bold: true }}>Maximum Price:</FormControl.Label>
@@ -159,11 +159,8 @@ export default function Filter() {
           onCancel={() => setShowDate(false)}
           display={Platform.OS === 'ios' ? 'inline' : 'default'}
         />
-        <Button
-          className="w-10/12 rounded-full bg-blue-500 m-auto mt-10 font-extrabold"
-          onPress={handleSubmit}
-        >
-          Submit
+        <Button className="w-10/12 rounded-full bg-blue-500 m-auto mt-10 " onPress={handleSubmit}>
+          <Text className="text-white font-bold">Submit</Text>
         </Button>
       </FormControl>
     </Box>

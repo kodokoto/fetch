@@ -1,113 +1,112 @@
-import React, { useState } from 'react';
-import { ScrollView } from 'native-base';
-import { useRouter } from 'expo-router';
+import React, { useState } from 'react'
+import { ScrollView } from 'native-base'
+import { useRouter } from 'expo-router'
 import { api } from 'app/utils/trpc'
-import { sessionAtom } from 'app/utils/storage';
-import { useAtom } from 'jotai';
-import ServiceForm from 'app/screens/ServiceForm';
+import { sessionAtom } from 'app/utils/storage'
+import { useAtom } from 'jotai'
+import ServiceForm from 'app/screens/ServiceForm'
 
 export default function services() {
-    const router = useRouter()
+  const router = useRouter()
 
-    const [serviceType, setServiceType] = useState("");
-    const [price, setPrice] = useState('');
-    const [description, setDescription] = useState('');
-    const [duration, setDuration] = useState('');
+  const [serviceType, setServiceType] = useState('')
+  const [price, setPrice] = useState('')
+  const [description, setDescription] = useState('')
+  const [duration, setDuration] = useState('')
 
-    const [days, setDays] = useState({
-        "MONDAY": false,
-        "TUESDAY": false,
-        "WEDNESDAY": false,
-        "THURSDAY": false,
-        "FRIDAY": false,
-        "SATURDAY": false,
-        "SUNDAY": false,
-    });
+  const [days, setDays] = useState({
+    MONDAY: false,
+    TUESDAY: false,
+    WEDNESDAY: false,
+    THURSDAY: false,
+    FRIDAY: false,
+    SATURDAY: false,
+    SUNDAY: false,
+  })
 
-    const [times, setTimes] = useState({
-        "MORNING": false,
-        "AFTERNOON": false,
-        "EVENING": false,
-    });
+  const [times, setTimes] = useState({
+    MORNING: false,
+    AFTERNOON: false,
+    EVENING: false,
+  })
 
-    const [petTypes, setPetTypes] = useState({
-        "DOG": false,
-        "CAT": false,
-        "OTHER": false,
-    });
+  const [petTypes, setPetTypes] = useState({
+    DOG: false,
+    CAT: false,
+    OTHER: false,
+  })
 
-    const [session, _] = useAtom(sessionAtom)
-    const mutation = api.service.create.useMutation()
+  const [session, _] = useAtom(sessionAtom)
+  const mutation = api.service.create.useMutation()
+
+  console.log(petTypes)
+
+  const handleSubmit = () => {
+    const availableTimes = []
+    for (const day in days) {
+      if (days[day]) {
+        for (const time in times) {
+          if (times[time]) {
+            availableTimes.push({
+              day,
+              time,
+            })
+          }
+        }
+      }
+    }
+
+    const pts = []
+    for (const pet in petTypes) {
+      if (petTypes[pet]) {
+        pts.push(pet)
+      }
+    }
+
+    function onlyUnique(value, index, array) {
+      return array.indexOf(value) === index
+    }
 
     console.log(petTypes)
 
-    const handleSubmit = () => {
-        const availableTimes = [];
-        for (const day in days) {
-            if (days[day]) {
-                for (const time in times) {
-                    if (times[time]) {
-                        availableTimes.push({
-                            day,
-                            time,
-                        })
-                    }
-                }
-            }
-        }
+    mutation
+      .mutateAsync({
+        sitterId: session.sitterId,
+        serviceType: serviceType,
+        price: Number(price),
+        petTypes: pts.filter(onlyUnique),
+        description: description,
+        duration: Number(duration),
+        availableTimes,
+      })
+      .then(() => {
+        router.replace('/services')
+      })
+  }
 
-        const pts = [];
-        for (const pet in petTypes) {
-            if (petTypes[pet]) {
-                pts.push(pet)
-            }
-        }
-
-        function onlyUnique(value, index, array) {
-            return array.indexOf(value) === index;
-          }
-          
-
-        console.log(petTypes)
-
-        mutation.mutateAsync({
-            sitterId: session.sitterId,
-            serviceType: serviceType,
-            price: Number(price),
-            petTypes: pts.filter(onlyUnique),
-            description: description,
-            duration: Number(duration),
-            availableTimes,
-        }).then(
-          () => {
-            router.replace('/services')
-          }
-        )
-    }
-
-    return (
-        <>
-          <ScrollView>
-            <ServiceForm {
-                ...{
-                    serviceType,
-                    price,
-                    duration,
-                    description,
-                    petTypes,
-                    days,
-                    times,
-                    setServiceType,
-                    setPrice,
-                    setDuration,
-                    setDescription,
-                    setPetTypes,
-                    setDays,
-                    setTimes,
-                    handleSubmit,
-                }
-            }/>
-          </ScrollView>
-        </>
-    );
+  return (
+    <>
+      <ScrollView>
+        <ServiceForm
+          {...{
+            serviceType,
+            price,
+            duration,
+            description,
+            petTypes,
+            days,
+            times,
+            setServiceType,
+            setPrice,
+            setDuration,
+            setDescription,
+            setPetTypes,
+            setDays,
+            setTimes,
+            handleSubmit,
+          }}
+        />
+      </ScrollView>
+    </>
+  )
 }
