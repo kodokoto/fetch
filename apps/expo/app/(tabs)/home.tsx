@@ -12,13 +12,19 @@ export default function Home() {
   const userId = user?.id
 
   const { data, isLoading } = api.user.getProfiles.useQuery(userId, { enabled: !!userId, cacheTime: 0 })
-  const [session, setSession] = useAtom(sessionAtom)
+  const [session, setSession] = useAtom(sessionAtom);
+
 
   if (!isLoaded || isLoading) return null
 
+  console.log('rendering home')
+  console.log('FROM SERVER:', data)
+
+  console.log('FROM SESSION:', session)
 
   // if the user is different from the previous user, update the session
   if (session.currentUser != userId) {
+    console.log('user is different from previous user, updating session')
     setSession({
       currentUser: userId,
       currentProfile: data.owner ? Profile.OWNER : data.sitter ? Profile.SITTER : Profile.NONE,
@@ -29,6 +35,7 @@ export default function Home() {
 
   // if both data.owner and data.sitter are null, redirect to create profile
   if (data == undefined || (!data.owner && !data.sitter)) {
+    console.log('no users exist redirecting to create profile')
     return <Redirect href="/create" />
   }
 
@@ -45,25 +52,34 @@ export default function Home() {
   // }
 
   // if a owner id or a sitter id exists, but the session does not have a current profile, update the session
-  // to owner id (if it exists) or sitter id
+  // to owner id (if it exists) or sitter id 
   if ((data.owner || data.sitter) && session.currentProfile == Profile.NONE) {
-    data.owner
-      ? setSession({ ...session, currentProfile: Profile.OWNER, ownerId: data.owner.id })
-      : setSession({ ...session, currentProfile: Profile.SITTER, sitterId: data.sitter.id })
+    console.log("MISSMATCH: between db and session")
+    console.log("db:", data)
+    console.log("session:", session)
+    data.owner 
+    ? setSession({...session, currentProfile: Profile.OWNER, ownerId: data.owner.id})
+    : setSession({...session, currentProfile: Profile.SITTER, sitterId: data.sitter.id})
   }
 
   if (data.owner && data.owner.id != session.ownerId) {
-    setSession({ ...session, ownerId: data.owner.id })
+    console.log("OWNER MISSMATCH: between db and session")
+    console.log("db:", data.owner.id)
+    console.log("session:", session.ownerId)
+    setSession({...session, ownerId: data.owner.id})
   }
-  if (data.sitter && data.sitter.id != session.sitterId) {
-    setSession({ ...session, sitterId: data.sitter.id })
+  if  (data.sitter && data.sitter.id != session.sitterId) {
+    console.log("SITTER MISSMATCH: between db and session")
+    console.log("db:", data.sitter.id)
+    console.log("session:", session.sitterId)
+    setSession({...session, sitterId: data.sitter.id})
   }
 
   if (session.currentProfile === Profile.OWNER) {
     return <OwnerHomeScreen />
-  }
+  } 
   if (session.currentProfile === Profile.SITTER) {
     return <SitterHomeScreen />
-  }
+  } 
   return <Redirect href="/create" />
 }

@@ -14,49 +14,43 @@ export const imageRouter = router({
       },
     })
   }),
-  create: publicProcedure
-    .input(
-      z.object({
-        url: z.string(),
-        sitterId: z.string(),
-      })
-    )
+  create : publicProcedure
+    .input(z.object({
+      url: z.string(),
+      sitterId: z.string(),
+    }))
     .mutation(async ({ input }) => {
       return await prisma.image.create({
         data: {
           sitterId: input.sitterId,
-          url: input.url,
+          url: input.url
         },
       })
     }),
-  updateStatusById: publicProcedure
-    .input(
-      z.object({
-        bookingId: z.number(),
-        status: z.string(),
-      })
-    )
+    updateStatusById: publicProcedure
+    .input(z.object({
+      bookingId: z.number(),
+      status: z.string()
+    }))
     .mutation(async ({ input }) => {
       return await prisma.booking.update({
         where: {
-          id: input.bookingId,
+          id:  input.bookingId
         },
         data: {
-          status: input.status as BookingStatus,
-        },
+          status: input.status as BookingStatus
+        }
       })
     }),
-  udateScheduledTime: publicProcedure
-    .input(
-      z.object({
-        bookingId: z.number(),
-        scheduledTime: z.object({
-          time: z.string(),
-          day: z.string(),
-          frequency: z.string(),
-        }),
-      })
-    )
+    udateScheduledTime: publicProcedure
+    .input(z.object({
+      bookingId: z.number(),
+      scheduledTime: z.object({
+        time: z.string(),
+        day: z.string(),
+        frequency: z.string(),
+      }),
+    }))
     .mutation(async ({ input }) => {
       return await prisma.booking.update({
         where: {
@@ -72,5 +66,5 @@ export const imageRouter = router({
           },
         },
       })
-    }),
+    })
 })

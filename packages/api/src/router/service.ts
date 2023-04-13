@@ -29,7 +29,7 @@ export const serviceRouter = router({
         include: {
           petTypes: input.include.includes('petTypes'),
           availableTimes: input.include.includes('availableTimes'),
-        },
+        }
       })
     }),
   byBookingId: publicProcedure.input(z.number()).query(({ input }) => {
@@ -37,9 +37,9 @@ export const serviceRouter = router({
       where: {
         bookings: {
           some: {
-            id: input,
-          },
-        },
+            id: input
+          }
+        }
       },
     })
   }),
@@ -50,7 +50,7 @@ export const serviceRouter = router({
       },
       include: {
         petTypes: true,
-      },
+      }
     })
   }),
   bySitterIdAndAvailableTime: publicProcedure
@@ -104,7 +104,7 @@ export const serviceRouter = router({
         },
       })
     }),
-  create: publicProcedure
+    create: publicProcedure
     .input(
       z.object({
         sitterId: z.string(),
@@ -127,7 +127,7 @@ export const serviceRouter = router({
           Sitter: {
             connect: {
               id: input.sitterId,
-            },
+            }
           },
           duration: input.duration,
           description: input.description,
@@ -188,17 +188,16 @@ export const serviceRouter = router({
         },
       })
     }),
-  delete: publicProcedure
+    delete: publicProcedure
     .input(
       z.object({
         serviceId: z.number(),
-      })
-    )
+      }))
     .mutation(async ({ input }) => {
       return await prisma.service.delete({
         where: {
           id: input.serviceId,
         },
       })
-    }),
+    })
 })

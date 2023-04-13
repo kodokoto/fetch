@@ -3,42 +3,45 @@ import React, { useEffect, useState, useRef } from 'react'
 import ChatPreview from 'app/components/ChatPreview'
 import { Ionicons } from '@expo/vector-icons'
 import { api } from 'app/utils/trpc'
-import { useUser } from '@clerk/clerk-expo'
+import { useUser, useClerk } from '@clerk/clerk-expo'
 import { Skeleton } from 'native-base'
 import { useAtom } from 'jotai'
 import { sessionAtom } from 'app/utils/storage'
-import { useIsFocused } from '@react-navigation/native'
+import { useIsFocused } from "@react-navigation/native";
+import { useNavigation } from 'expo-router'
 
 export default function Chat() {
   const [searchWord, setSearchWord] = useState('')
-  const isFocused = useIsFocused()
+  const [filteredContacts, setFilteredContacts] = useState([]);
+  const isFocused = useIsFocused();
 
-  const [session, _] = useAtom(sessionAtom)
-  let isOwner = false
-  let isSitter = false
+  const [session, setSession] = useAtom(sessionAtom)
+  let isOwner = false;
+  let isSitter = false;
 
   const { user, isLoaded } = useUser()
   const userId = user?.id
 
+  console.log("User Idddd: " + userId);
 
-  const { data: owner, isLoading: ownerIsloading } = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
+  const { data: owner } = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
   const ownerId = owner?.id
 
-  const { data: sitter, isLoading: sitterIsLoading } = api.sitter.byUserId.useQuery(userId, { enabled: !!userId })
+  const { data: sitter } = api.sitter.byUserId.useQuery(userId, { enabled: !!userId })
   const sitterId = sitter?.id
 
-  const { data: contacts } =
-    session.currentProfile.toString() == 'Owner'
-      ? api.owner.contacts.useQuery(ownerId, { enabled: !!ownerId })
-      : api.sitter.contacts.useQuery(sitterId, { enabled: !!sitterId })
+  const { data: contacts } = session.currentProfile.toString() == "Owner" ? api.owner.contacts.useQuery(ownerId, { enabled: !!ownerId }) :
+  api.sitter.contacts.useQuery(sitterId, { enabled: !!sitterId });
 
+  console.log("Contacts: " + JSON.stringify(contacts));
 
-  if (session.currentProfile.toString() == 'Owner') {
-    isOwner = true
+  if(session.currentProfile.toString() == "Owner"){
+    isOwner = true;
   } else {
-    isSitter = true
+    isSitter = true;
   }
 
+  console.log(JSON.stringify(session));
 
   let filtercontacts = (filterWord) => {
     const filteredcontacts = contacts.filter((sitter) => {
@@ -48,7 +51,8 @@ export default function Chat() {
   }
 
   useEffect(() => {
-
+    console.log("Meat");
+    
     filtercontacts = (filterWord) => {
       const filteredcontacts = contacts.filter((sitter) => {
         return sitter.name.includes(filterWord)
@@ -57,7 +61,8 @@ export default function Chat() {
     }
   }, [isFocused])
   if (!isLoaded) return null
-  if (ownerIsloading || sitterIsLoading) return <Skeleton height={100} />
+  // if (!isLoaded || isLoading || contactIsLoading) return <Text>Loading...</Text>;
+  // if (error || contactError) return <Text>{error.message}</Text>;
 
   return (
     <View>
