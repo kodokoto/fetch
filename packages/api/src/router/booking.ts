@@ -106,6 +106,14 @@ export const bookingRouter = router({
       })
     }),
   update: publicProcedure
+
+    .input(
+      z.object({
+        id: z.number(),
+        serviceId: z.number(),
+        petId: z.number(),
+      })
+    )
     .input(
       z.object({
         id: z.number(),
@@ -126,26 +134,9 @@ export const bookingRouter = router({
           id: input.id,
         },
         data: {
-          owner: {
-            connect: {
-              id: input.ownerId,
-            },
-          },
-          sitter: {
-            connect: {
-              id: input.sitterId,
-            },
-          },
           service: {
             connect: {
               id: input.serviceId,
-            },
-          },
-          scheduledTime: {
-            create: {
-              time: input.scheduledTime.time as TimeOfDay,
-              day: input.scheduledTime.day as Day,
-              frequency: input.scheduledTime.frequency as BookingFrequency,
             },
           },
           pet: {

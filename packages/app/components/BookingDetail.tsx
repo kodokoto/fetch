@@ -9,6 +9,8 @@ import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
 import { parseBookingFrequency, capitalizeWords, parseServiceType, parseTime } from '../utils/helpers'
 import PetDisplayCard from 'app/components/PetDisplayCard'
+import { Pet } from 'db'
+import DisplayCardList from './DisplayCardList'
 
 function serviceTypeToIcon(serviceType: string) {
   switch (serviceType) {
@@ -24,12 +26,25 @@ function serviceTypeToIcon(serviceType: string) {
 export default function BookingDetail(props: Booking) {
   const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
+  const { data: sitterData} = api.sitter.byId.useQuery(String(props.sitterId))
+  const {data: serviceData} = api.service.byId.useQuery(props.serviceId)
+  const {data: petData} = api.pet.byBookingId.useQuery(props.id)
+  const [pets, setPets] = React.useState([] as Pet[])
+  const { isLoading } = api.pet.byBookingId.useQuery(props.id, { cacheTime: 0, onSuccess: setPets})
+  const { data } = api.booking.byIdWithScheduledTime.useQuery({
+
 
   const { data : userData, isLoading: isLoadedUserData } = session.currentProfile === Profile.SITTER 
   ? api.owner.byId.useQuery(props.ownerId)
   : api.sitter.byId.useQuery(props.sitterId)
 
   const { data: serviceData } = api.service.byId.useQuery(props.serviceId)
+
+  const [ pets, setPets] = React.useState([])
+  const { data: petsData, isLoading: isLoadingPet } = api.pet.byBookingId.useQuery(props.id, {
+    onSuccess: (data) => {setPets(data)},
+  })
+  const { data, isLoading: isLoadingData } = api.booking.byIdWithScheduledTime.useQuery({
   const [pet, setPet] = React.useState()
   const { isLoading: isLoadingPet } = api.pet.byId.useQuery(props.id, {
     onSuccess: setPet,
@@ -180,6 +195,10 @@ export default function BookingDetail(props: Booking) {
               <Ionicons className="mx-auto ml-2" size={30} color="#3b82f6" name="paw"></Ionicons>
             </Button>
             <Box className="flex-end">
+                <DisplayCardList 
+                  Card={PetDisplayCard} 
+                  value={pets} 
+                />
               <PetDisplayCard value={pet} />
             </Box>
           </Box>
