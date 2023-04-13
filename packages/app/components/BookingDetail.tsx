@@ -11,7 +11,11 @@ import { useSearchParams } from 'expo-router'
 import { parseBookingFrequency, capitalizeWords, parseServiceType, parseTime } from '../utils/helpers'
 import DisplayCardList from 'app/components/DisplayCardList'
 import PetDisplayCard from 'app/components/PetDisplayCard'
+<<<<<<< Updated upstream
 import { Pet } from 'db'
+=======
+import DisplayCardList from './DisplayCardList'
+>>>>>>> Stashed changes
 
 function serviceTypeToIcon(serviceType: string) {
   switch(serviceType) {
@@ -28,12 +32,26 @@ function serviceTypeToIcon(serviceType: string) {
 export default function BookingDetail(props: Booking) {
   const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
+<<<<<<< Updated upstream
   const { data: sitterData} = api.sitter.byId.useQuery(String(props.sitterId))
   const {data: serviceData} = api.service.byId.useQuery(props.serviceId)
   const {data: petData} = api.pet.byBookingId.useQuery(props.id)
   const [pets, setPets] = React.useState([] as Pet[])
   const { isLoading } = api.pet.byBookingId.useQuery(props.id, { cacheTime: 0, onSuccess: setPets})
   const { data } = api.booking.byIdWithScheduledTime.useQuery({
+=======
+
+  const { data : userData, isLoading: isLoadedUserData } = session.currentProfile === Profile.SITTER 
+  ? api.owner.byId.useQuery(props.ownerId)
+  : api.sitter.byId.useQuery(props.sitterId)
+
+  const { data: serviceData } = api.service.byId.useQuery(props.serviceId)
+  const [ pets, setPets] = React.useState([])
+  const { data: petsData, isLoading: isLoadingPet } = api.pet.byBookingId.useQuery(props.id, {
+    onSuccess: (data) => {setPets(data)},
+  })
+  const { data, isLoading: isLoadingData } = api.booking.byIdWithScheduledTime.useQuery({
+>>>>>>> Stashed changes
     id: props.id,
     include: 'scheduledTime',
   })
@@ -124,10 +142,14 @@ export default function BookingDetail(props: Booking) {
               <Ionicons className="mx-auto ml-2" size={30} color="#3b82f6" name="paw"></Ionicons>
             </Button>
             <Box className="flex-end">
+<<<<<<< Updated upstream
                 <DisplayCardList 
                   Card={PetDisplayCard} 
                   value={pets} 
                 />
+=======
+              <DisplayCardList value={pets} Card={PetDisplayCard} emptyMessage="You have no pets" />
+>>>>>>> Stashed changes
             </Box>
           </Box>
           <Box className="flex-wrap flex-row mt-2 mb-10">
