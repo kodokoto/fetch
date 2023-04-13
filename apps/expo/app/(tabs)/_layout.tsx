@@ -4,8 +4,8 @@ import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
 
 export default function () {
-  const [session, setSession] = useAtom(sessionAtom);
-  if(session.currentProfile == Profile.OWNER){
+  const [session, _] = useAtom(sessionAtom)
+  if (session.currentProfile == Profile.OWNER) {
     return (
       <Tabs
         screenOptions={{
@@ -21,16 +21,16 @@ export default function () {
             },
           }}
         />
-          <Tabs.Screen
-            name="pets"
-            options={{
-              title: 'Pets',
-              tabBarIcon: ({ focused, color, size }) => {
-                return <Ionicons name={focused ? 'ios-paw' : 'ios-paw-outline'} size={size} color={color} />
-              },
-            }}
-          />
-          <Tabs.Screen
+        <Tabs.Screen
+          name="pets"
+          options={{
+            title: 'Pets',
+            tabBarIcon: ({ focused, color, size }) => {
+              return <Ionicons name={focused ? 'ios-paw' : 'ios-paw-outline'} size={size} color={color} />
+            },
+          }}
+        />
+        <Tabs.Screen
           name="search"
           options={{
             title: 'Search',
@@ -40,15 +40,15 @@ export default function () {
           }}
         />
         <Tabs.Screen
-        name="services"
-        options={{
-          title: 'Services',
-          tabBarIcon: ({ focused, color, size }) => {
-            return <Ionicons name={focused ? 'ios-add-circle' : 'ios-add-circle-outline'} size={size} color={color} />
-          },
-          href: null,
-        }}
-      />
+          name="services"
+          options={{
+            title: 'Services',
+            tabBarIcon: ({ focused, color, size }) => {
+              return <Ionicons name={focused ? 'ios-add-circle' : 'ios-add-circle-outline'} size={size} color={color} />
+            },
+            href: null,
+          }}
+        />
         <Tabs.Screen
           name="chat"
           options={{
@@ -90,18 +90,18 @@ export default function () {
             tabBarIcon: ({ focused, color, size }) => {
               return <Ionicons name={focused ? 'ios-search' : 'ios-search-outline'} size={size} color={color} />
             },
-            href: null
+            href: null,
           }}
         />
-          <Tabs.Screen
-        name="services"
-        options={{
-          title: 'Services',
-          tabBarIcon: ({ focused, color, size }) => {
-            return <Ionicons name={focused ? 'ios-add-circle' : 'ios-add-circle-outline'} size={size} color={color} />
-          },
-        }}
-      />
+        <Tabs.Screen
+          name="services"
+          options={{
+            title: 'Services',
+            tabBarIcon: ({ focused, color, size }) => {
+              return <Ionicons name={focused ? 'ios-add-circle' : 'ios-add-circle-outline'} size={size} color={color} />
+            },
+          }}
+        />
         <Tabs.Screen
           name="chat"
           options={{
@@ -114,5 +114,4 @@ export default function () {
       </Tabs>
     )
   }
- 
 }
