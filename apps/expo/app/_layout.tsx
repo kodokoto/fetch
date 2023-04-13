@@ -1,4 +1,4 @@
-import { Slot, Stack } from 'expo-router'
+import { Stack } from 'expo-router'
 import Provider from 'app/provider'
 import { SignedIn, SignedOut } from '@clerk/clerk-expo'
 import SignInWithOAuth from 'app/components/SignInWithOAuth'

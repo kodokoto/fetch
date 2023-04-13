@@ -198,9 +198,7 @@ export default function BookingDetail(props: Booking) {
               <Button className="mx-2 bg-blue-500 rounded-full" onPress={() => router.push('/review')}>
                 <Text className="text-white font-bold">Review</Text>
               </Button>
-            ) : (
-              console.log('not owner')
-            )}
+            ) : null}
             <Button className="mx-2 bg-[#fc511c] rounded-full" onPress={handleCancelBooking}>
               <Text className="text-white font-bold">Cancel Booking</Text>
             </Button>

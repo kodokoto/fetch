@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { ScrollView } from 'native-base'
 import { api } from 'app/utils/trpc'
 import { Stack, useRouter, useSearchParams } from 'expo-router'
-
 import * as Location from 'expo-location'
 import ProfileForm from 'app/screens/ProfileForm'
 
@@ -30,7 +29,6 @@ export default function OwnerProfileEdit() {
 
   const handleLocationSearch = () => {
     Location.getCurrentPositionAsync({}).then((location) => {
-      console.log(location)
       location
         ? fetch(
             `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coords.latitude},${location.coords.longitude}&key=AIzaSyDZhIqcrDLSsyQQYeMFSYDqQN6doi3bW34`

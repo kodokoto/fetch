@@ -39,8 +39,6 @@ export default function services() {
   const [session, _] = useAtom(sessionAtom)
   const mutation = api.service.create.useMutation()
 
-  console.log(petTypes)
-
   const handleSubmit = () => {
     const availableTimes = []
     for (const day in days) {
@@ -66,8 +64,6 @@ export default function services() {
     function onlyUnique(value, index, array) {
       return array.indexOf(value) === index
     }
-
-    console.log(petTypes)
 
     mutation
       .mutateAsync({

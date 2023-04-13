@@ -1,5 +1,5 @@
-import { Image, View, Text, Dimensions } from 'react-native'
-import { Button, Menu, Pressable, ScrollView } from 'native-base'
+import { Image, View, Text } from 'react-native'
+import { Button, ScrollView } from 'native-base'
 
 import React, { useState } from 'react'
 import { useRouter, useSearchParams, Stack } from 'expo-router'
@@ -8,10 +8,10 @@ import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
 import ProfileCarousel from 'app/components/ProfileCarousel'
 import ProfileTabs from 'app/components/ProfileTabs'
-import { Entypo, Feather } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
 
 export default function OwnerProfile() {
-  const { ownerId, serviceType, day, timeOfDay } = useSearchParams()
+  const { ownerId } = useSearchParams()
   const router = useRouter()
 
   const [session, _] = useAtom(sessionAtom)

@@ -40,7 +40,6 @@ export const messageRouter = router({
       })
     )
     .mutation(({ input }) => {
-      // console.log("create message");
       return prisma.message.create({
         data: {
           ownerId: input.ownerId,

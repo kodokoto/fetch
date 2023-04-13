@@ -1,12 +1,11 @@
 import { View, Text, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Button, ScrollView } from 'native-base'
+import { ScrollView } from 'native-base'
 import { api } from 'app/utils/trpc'
 import { useUser } from '@clerk/clerk-expo'
-import { Stack, useRouter } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
-import { Ionicons } from '@expo/vector-icons'
 import * as Location from 'expo-location'
 import ProfileForm from 'app/screens/ProfileForm'
 
@@ -31,7 +30,6 @@ export default function SitterProfileCreate() {
 
   const handleLocationSearch = () => {
     Location.getCurrentPositionAsync({}).then((location) => {
-      console.log(location)
       location
         ? fetch(
             `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coords.latitude},${location.coords.longitude}&key=AIzaSyDZhIqcrDLSsyQQYeMFSYDqQN6doi3bW34`

@@ -34,7 +34,6 @@ export default function AddImageButton(props: AddImageButtonProps) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.url)
         props.setImages((images) => [...images, data.url])
       })
       .catch((err) => {

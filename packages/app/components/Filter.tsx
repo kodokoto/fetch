@@ -28,7 +28,6 @@ export default function Filter() {
         pt.push(pet)
       }
     }
-    console.log(pt)
     router.push({
       pathname: '/results',
       params: {
@@ -69,7 +68,6 @@ export default function Filter() {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              console.log(123)
               setShowDate(true)
             }}
           >

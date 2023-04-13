@@ -3,31 +3,28 @@ import React, { useEffect, useState, useRef } from 'react'
 import ChatPreview from 'app/components/ChatPreview'
 import { Ionicons } from '@expo/vector-icons'
 import { api } from 'app/utils/trpc'
-import { useUser, useClerk } from '@clerk/clerk-expo'
+import { useUser } from '@clerk/clerk-expo'
 import { Skeleton } from 'native-base'
 import { useAtom } from 'jotai'
 import { sessionAtom } from 'app/utils/storage'
 import { useIsFocused } from '@react-navigation/native'
-import { useNavigation } from 'expo-router'
 
 export default function Chat() {
   const [searchWord, setSearchWord] = useState('')
-  const [filteredContacts, setFilteredContacts] = useState([])
   const isFocused = useIsFocused()
 
-  const [session, setSession] = useAtom(sessionAtom)
+  const [session, _] = useAtom(sessionAtom)
   let isOwner = false
   let isSitter = false
 
   const { user, isLoaded } = useUser()
   const userId = user?.id
 
-  console.log('User Idddd: ' + userId)
 
-  const { data: owner } = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
+  const { data: owner, isLoading: ownerIsloading } = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
   const ownerId = owner?.id
 
-  const { data: sitter } = api.sitter.byUserId.useQuery(userId, { enabled: !!userId })
+  const { data: sitter, isLoading: sitterIsLoading } = api.sitter.byUserId.useQuery(userId, { enabled: !!userId })
   const sitterId = sitter?.id
 
   const { data: contacts } =
@@ -35,7 +32,6 @@ export default function Chat() {
       ? api.owner.contacts.useQuery(ownerId, { enabled: !!ownerId })
       : api.sitter.contacts.useQuery(sitterId, { enabled: !!sitterId })
 
-  console.log('Contacts: ' + JSON.stringify(contacts))
 
   if (session.currentProfile.toString() == 'Owner') {
     isOwner = true
@@ -43,7 +39,6 @@ export default function Chat() {
     isSitter = true
   }
 
-  console.log(JSON.stringify(session))
 
   let filtercontacts = (filterWord) => {
     const filteredcontacts = contacts.filter((sitter) => {
@@ -53,7 +48,6 @@ export default function Chat() {
   }
 
   useEffect(() => {
-    console.log('Meat')
 
     filtercontacts = (filterWord) => {
       const filteredcontacts = contacts.filter((sitter) => {
@@ -63,8 +57,7 @@ export default function Chat() {
     }
   }, [isFocused])
   if (!isLoaded) return null
-  // if (!isLoaded || isLoading || contactIsLoading) return <Text>Loading...</Text>;
-  // if (error || contactError) return <Text>{error.message}</Text>;
+  if (ownerIsloading || sitterIsLoading) return <Skeleton height={100} />
 
   return (
     <View>

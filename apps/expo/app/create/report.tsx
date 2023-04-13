@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
 import ReportForm from 'app/components/ReportForm'
 import { useSearchParams } from 'expo-router'

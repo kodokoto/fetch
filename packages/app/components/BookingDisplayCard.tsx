@@ -1,7 +1,7 @@
 //Import @React-navigation/native
 import { useRouter } from 'expo-router'
-import { Image, Text, View } from 'react-native'
-import { Button, Box, FormControl, Avatar } from 'native-base'
+import { Text, View } from 'react-native'
+import { Button, Box, Avatar } from 'native-base'
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { Booking } from '@prisma/client'
@@ -13,7 +13,6 @@ import { EditableDisplayCard } from './DisplayCardList'
 
 export default function BookingDisplayCard(props: EditableDisplayCard<Booking>) {
   const router = useRouter()
-  console.log(props)
   const [session, _] = useAtom(sessionAtom)
 
   const { data: userData, isLoading: userDataIsLoading } =

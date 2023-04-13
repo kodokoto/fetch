@@ -1,16 +1,14 @@
-import { View, TouchableOpacity } from 'react-native'
+import { View } from 'react-native'
 import { useSearchParams, useRouter, Stack } from 'expo-router'
 import { api } from 'app/utils/trpc'
-import { StatusBar } from 'expo-status-bar'
-import { useUser } from '@clerk/clerk-expo'
 import React from 'react'
-import { Box, Select, FormControl, Text, Button, CheckIcon, VStack } from 'native-base'
-import { Service, ScheduledTime, TimeOfDay, Day, BookingFrequency } from '@prisma/client'
+import { Select, FormControl, Text, Button } from 'native-base'
+import { Service, TimeOfDay, Day } from '@prisma/client'
 
 export default function EditBooking() {
   const router = useRouter()
 
-  const { bookingId, sitterId, ownerId, scheduledTimeId, day, timeOfDay } = useSearchParams()
+  const { bookingId, sitterId, ownerId, day, timeOfDay } = useSearchParams()
 
   const { data: bookingData, isLoading: bookingDataIsLoading } = api.booking.byId.useQuery(Number(bookingId))
 

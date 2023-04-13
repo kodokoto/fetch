@@ -1,17 +1,13 @@
-import { Button, ScrollView, Select, FormControl, TextArea, Text, Input, Box } from 'native-base'
+import { Button, TextArea, Text, Input, Box } from 'native-base'
 import { api } from 'app/utils/trpc'
 import { View } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { sessionAtom } from 'app/utils/storage'
-import { useAtom } from 'jotai'
 import { useRouter, useSearchParams } from 'expo-router'
 import AddImageButton from 'app/components/AddPictureButton'
-import { log } from 'react-native-reanimated'
 import PetTypeSelect from 'app/components/PetTypeSelect'
 import { Stack } from 'expo-router'
 
 export default function petCreateForm() {
-  const [session, _] = useAtom(sessionAtom)
   const { id } = useSearchParams()
   const mutation = api.pet.update.useMutation()
   const router = useRouter()
@@ -25,7 +21,7 @@ export default function petCreateForm() {
   })
   const [images, setImages] = React.useState([])
 
-  const { data: pet, isLoading } = api.pet.byId.useQuery(Number(id), {
+  const { isLoading } = api.pet.byId.useQuery(Number(id), {
     onSuccess: (data) => {
       setName(data.name)
       setDescription(data.description)
@@ -39,7 +35,6 @@ export default function petCreateForm() {
 
   useEffect(() => {
     const handleSubmit = () => {
-      console.log(456)
       mutation
         .mutateAsync({
           id: Number(id),
@@ -61,8 +56,11 @@ export default function petCreateForm() {
   function getPetByBoolean() {
     const availablePetTypes = Object.keys(petType)
     const PetType = availablePetTypes.find((type) => petType[type] === true)
-    console.log(PetType)
     return PetType
+  }
+
+  if (isLoading) {
+    return <Text>Loading...</Text>
   }
   return (
     <>

@@ -1,24 +1,20 @@
-import { View, Text, Keyboard, ScrollView, Button, TouchableOpacity } from 'react-native'
+import { View, Text, Keyboard, ScrollView, TouchableOpacity } from 'react-native'
 import { Box, TextArea } from 'native-base'
 import React, { useEffect, useState, useRef } from 'react'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import ChatLog, { FilteredMessages } from 'app/components/ChatLog'
-// import 'react-native-get-random-values';
 import { useSearchParams, useRouter } from 'expo-router'
 import { api } from 'app/utils/trpc'
 import { useAtom } from 'jotai'
-import { sessionAtom, Profile } from 'app/utils/storage'
+import { sessionAtom } from 'app/utils/storage'
 import { Message } from '@prisma/client'
 
 export default function Messages() {
   const { receiverId, senderId, receiverName, receiverImgUrl } = useSearchParams()
   const router = useRouter()
   const [session, _] = useAtom(sessionAtom)
-  // router.setParams({ headerTitle: String(receiverName)});
   const [filteredMessages, setfilteredMessages] = useState<FilteredMessages[]>([])
 
-  console.log('Owner Id 2: ' + receiverId)
-  console.log('Sitter Id 2: ' + senderId)
 
   const { data, error, isLoading } = api.message.betweenUsers.useQuery(
     { ownerId: String(receiverId), sitterId: String(senderId) },
@@ -26,7 +22,6 @@ export default function Messages() {
       onSuccess: (data: Message[]) => {
         // filter out id from each message
         const filteredData = data.map((message) => {
-          console.log('Message: ' + JSON.stringify(message))
           return {
             content: message.content,
             createdAt: message.createdAt,
@@ -36,7 +31,6 @@ export default function Messages() {
           }
         })
 
-        console.log('Filtered Data: ' + JSON.stringify(filteredData))
 
         setfilteredMessages(filteredData)
       },
@@ -72,8 +66,6 @@ export default function Messages() {
   }, [currentMessageContent])
 
   const onSend = () => {
-    console.log('Owner Id 3: ' + receiverId)
-    console.log('Sitter Id 3: ' + senderId)
     mutation.mutate({
       content: currentMessageContent,
       ownerId: String(senderId),

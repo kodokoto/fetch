@@ -11,13 +11,11 @@ import PetDisplayCard from 'app/components/PetDisplayCard'
 export default function Pets() {
   const [session, _] = useAtom(sessionAtom)
   const router = useRouter()
-  console.log(session)
   const [pets, setPets] = React.useState([] as Pet[])
   const { isLoading } = api.pet.byOwnerId.useQuery(session.ownerId, { cacheTime: 0, onSuccess: setPets })
   const mutation = api.pet.delete.useMutation()
 
   const handleDeletePet = (pet: Pet) => {
-    console.log('Delete')
     mutation
       .mutateAsync({
         id: pet.id,
@@ -32,7 +30,6 @@ export default function Pets() {
   }
 
   const handleEditPet = (pet: Pet) => {
-    console.log('Edit pet: ' + pet)
     router.push({
       pathname: '/edit/pet',
       params: {

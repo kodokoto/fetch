@@ -3,13 +3,10 @@ import React from 'react'
 import SitterDescriptionCard from 'app/components/SitterDescriptionCard'
 import { api } from 'app/utils/trpc'
 import { useSearchParams } from 'expo-router'
-import { PetType } from 'db'
 
 export default function Results() {
   const { serviceType, day, timeOfDay, maxPrice, petTypes } = useSearchParams()
-  console.log('max: ' + maxPrice)
 
-  // const searchParamasAtom = useAtom(searchParamsAtom)
 
   const searchParamsObject = {
     serviceType: String(serviceType),
@@ -19,11 +16,7 @@ export default function Results() {
     petTypes: String(petTypes).split(','),
   }
 
-  console.log('Search Params: ' + JSON.stringify(searchParamsObject))
-
   const { data: sitters, isLoading } = api.sitter.bySearchParams.useQuery(searchParamsObject)
-
-  console.log('Sitters in results: ' + JSON.stringify(sitters))
 
   if (isLoading) return <Text>Loading...</Text>
 

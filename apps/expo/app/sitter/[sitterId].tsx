@@ -28,7 +28,6 @@ export default function SitterProfile() {
     {
       cacheTime: 0,
       onSuccess: (data) => {
-        console.log('data: ', data)
         setName(data.name)
         setLocation(data.location)
         setDescription(data.description)
@@ -43,7 +42,6 @@ export default function SitterProfile() {
         })
 
         const averageRating = (totalOfRatings / data.reviews.length).toFixed(1)
-        console.log('Average Rating 2: ' + totalOfRatings)
 
         setAverageRating(averageRating)
       },

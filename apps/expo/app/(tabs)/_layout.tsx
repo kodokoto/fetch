@@ -4,7 +4,7 @@ import { useAtom } from 'jotai'
 import { Profile, sessionAtom } from 'app/utils/storage'
 
 export default function () {
-  const [session, setSession] = useAtom(sessionAtom)
+  const [session, _] = useAtom(sessionAtom)
   if (session.currentProfile == Profile.OWNER) {
     return (
       <Tabs

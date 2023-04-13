@@ -1,4 +1,4 @@
-import { Button, ScrollView, Select, FormControl, TextArea, Text, Input, Box } from 'native-base'
+import { Button, TextArea, Text, Input, Box } from 'native-base'
 import { api } from 'app/utils/trpc'
 import { View } from 'react-native'
 import React, { useState, useEffect } from 'react'
@@ -7,7 +7,6 @@ import { useAtom } from 'jotai'
 import PetTypeSelect from 'app/components/PetTypeSelect'
 import { useRouter, useSearchParams } from 'expo-router'
 import AddImageButton from 'app/components/AddPictureButton'
-import { sub } from 'react-native-reanimated'
 
 export default function petCreateForm() {
   const [session, _] = useAtom(sessionAtom)
@@ -18,8 +17,6 @@ export default function petCreateForm() {
   const router = useRouter()
 
   function handleSubmit() {
-    console.log('CURRENT SESSION', session)
-    console.log('Images: ' + images)
 
     mutation
       .mutateAsync({
@@ -40,7 +37,6 @@ export default function petCreateForm() {
     }
   }, [images, submitPressed])
 
-  const [SelectedPetType, setSelectedPetType] = React.useState('DOG')
   const [name, setName] = React.useState('')
   const [description, setDescription] = React.useState('')
   const [petType, setPetType] = React.useState({
@@ -52,7 +48,6 @@ export default function petCreateForm() {
   function getPetByBoolean() {
     const availablePetTypes = Object.keys(petType)
     const PetType = availablePetTypes.find((type) => petType[type] === true)
-    console.log(PetType)
     return PetType
   }
 

@@ -1,10 +1,9 @@
-import { View, TouchableOpacity } from 'react-native'
+import { View } from 'react-native'
 import { useSearchParams, useRouter } from 'expo-router'
 import { api } from 'app/utils/trpc'
-import { StatusBar } from 'expo-status-bar'
 import { useUser } from '@clerk/clerk-expo'
 import React from 'react'
-import { Box, Select, FormControl, Text, Button, CheckIcon, VStack } from 'native-base'
+import {  Select, FormControl, Text, Button, CheckIcon, VStack } from 'native-base'
 import { Service, ScheduledTime, TimeOfDay, Day, BookingFrequency } from '@prisma/client'
 
 export default function AddBooking() {
@@ -12,9 +11,6 @@ export default function AddBooking() {
 
   const { sitterId, serviceType, day, timeOfDay, petTypes } = useSearchParams()
 
-  console.log('Sitter Id: ' + sitterId)
-  console.log('Service Type: ' + serviceType)
-  console.log('Day Time: ' + timeOfDay)
 
   const { isLoaded, user } = useUser()
   const userId = user?.id
@@ -22,7 +18,6 @@ export default function AddBooking() {
   const { data: ownerData } = api.owner.byUserId.useQuery(userId, { enabled: !!userId })
   const ownerId = ownerData?.id
 
-  console.log('Owner Id: ' + ownerId)
 
   const { data: sitterData, isLoading: sitterDataIsLoading } = api.sitter.byId.useQuery(String(sitterId))
 

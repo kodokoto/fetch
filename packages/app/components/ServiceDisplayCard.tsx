@@ -37,7 +37,6 @@ export default function ServiceDisplayCard({
   onEdit,
   onDelete,
 }: EditableDisplayCard<ServiceWithPetType>) {
-  console.log('Pet types: ', value.petTypes)
 
   return (
     <View className="flex-row h-16 mb-2 pl-4 justify-start">

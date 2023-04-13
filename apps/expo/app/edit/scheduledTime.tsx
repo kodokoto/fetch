@@ -1,11 +1,8 @@
-import { View, TouchableOpacity } from 'react-native'
+import { View } from 'react-native'
 import React from 'react'
-import { Box, Select, FormControl, Text, Button, CheckIcon, Center, VStack } from 'native-base'
-import { Service, ScheduledTime, TimeOfDay, Day, BookingFrequency } from '@prisma/client'
-import { Booking } from '@prisma/client'
+import { Select, FormControl, Text, Button, VStack } from 'native-base'
 import { Stack, useRouter, useSearchParams } from 'expo-router'
 import { api } from 'app/utils/trpc'
-import { useUser } from '@clerk/clerk-expo'
 import { useAtom } from 'jotai'
 import { sessionAtom } from 'app/utils/storage'
 
@@ -19,18 +16,15 @@ export default function RescheduleBooking() {
 
   const [session] = useAtom(sessionAtom)
   //OWNERID
-  const ownerId = session.ownerId
 
-  console.log('ownerId: ', session.ownerId)
   const { bookingId } = useSearchParams()
-  console.log('BookingId: ', bookingId)
 
   const { data: booking, isLoading: bookingDataIsLoading } = api.booking.byId.useQuery(Number(bookingId))
 
   //GET TIMES
   const scheduledTimeId = booking.scheduledTimeId
   const mutation = api.scheduledTime.update.useMutation()
-  const { data: schdeuledTimes, isLoading: shceduledTimesIsLoading } = api.scheduledTime.byId.useQuery(
+  const { isLoading: shceduledTimesIsLoading } = api.scheduledTime.byId.useQuery(
     scheduledTimeId,
     {
       onSuccess: (data) => {
