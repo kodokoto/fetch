@@ -33,7 +33,7 @@ export default function BookingDetail(props: Booking) {
   const { isLoading: isLoadingPet } = api.pet.byId.useQuery(props.id, {
     onSuccess: setPet,
   })
-  const { data } = api.booking.byIdWithScheduledTime.useQuery({
+  const { data, isLoading: isLoadingData } = api.booking.byIdWithScheduledTime.useQuery({
     id: props.id,
     include: 'scheduledTime',
   })
@@ -87,6 +87,10 @@ export default function BookingDetail(props: Booking) {
     })
 
   if (isLoadingPet) {
+    return <Text>Loading...</Text>
+  }
+
+  if (isLoadingData) {
     return <Text>Loading...</Text>
   }
 
@@ -151,8 +155,8 @@ export default function BookingDetail(props: Booking) {
             <Box className="flex-end">
               <Text className="text-md">Date & Time</Text>
               <Text className="text-lg font-bold">
-                {data.scheduledTime ? capitalizeWords(data.scheduledTime.day) : null},{' '}
-                {data.scheduledTime ? parseTime(data.scheduledTime.time) : null}
+                {data?.scheduledTime ? capitalizeWords(data.scheduledTime.day) : null},{' '}
+                {data?.scheduledTime ? parseTime(data.scheduledTime.time) : null}
               </Text>
             </Box>
           </Box>
@@ -181,7 +185,7 @@ export default function BookingDetail(props: Booking) {
             <Box className="flex-end">
               <Text className="text-md">Frequency</Text>
               <Text className="text-lg font-bold">
-                {data.scheduledTime ? parseBookingFrequency(data.scheduledTime.frequency) : null}
+                {data?.scheduledTime ? parseBookingFrequency(data?.scheduledTime.frequency) : null}
               </Text>
             </Box>
           </Box>
@@ -195,7 +199,12 @@ export default function BookingDetail(props: Booking) {
           </Box>
           <Box className="flex-col gap-y-4 mt-4 mb-10">
             {session.currentProfile === Profile.OWNER ? (
-              <Button className="mx-2 bg-blue-500 rounded-full" onPress={() => router.push('/review')}>
+              <Button className="mx-2 bg-blue-500 rounded-full" onPress={() => router.push({
+                pathname: '/create/review',
+                params: {
+                  sitterId: sitterData.id,
+                }
+              })}>
                 <Text className="text-white font-bold">Review</Text>
               </Button>
             ) : null}

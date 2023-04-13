@@ -40,10 +40,10 @@ export default function ProfileForm(formData: ProfileFormProps) {
         />
 
         <View className="my-4 mt-8">
-          <Text className="text-md font-semibold mb-2">Give us an insight into your experience as a sitter:</Text>
+          <Text className="text-md font-semibold mb-2">Tell us more about yourself:</Text>
           <TextArea
             h={20}
-            placeholder="Enter a description of yourself"
+            placeholder="Enter a description"
             value={formData.description}
             w="100%"
             autoCompleteType={undefined}

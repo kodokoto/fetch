@@ -1,9 +1,8 @@
 import React from 'react'
 import { Box, Select, FormControl, Button, CheckIcon, TextArea, VStack } from 'native-base'
 
-import { useRouter, useSearchParams } from 'expo-router'
+import { useRouter } from 'expo-router'
 import { api } from 'app/utils/trpc'
-import { useUser } from '@clerk/clerk-expo'
 import { useAtom } from 'jotai'
 import { sessionAtom } from 'app/utils/storage'
 
@@ -21,7 +20,7 @@ export default function ReportForm({ sitterId }: { sitterId: number }) {
       toId: String(sitterId),
     })
 
-    router.replace('/')
+    router.replace('/home')
   }
 
   const [type, setType] = React.useState('')

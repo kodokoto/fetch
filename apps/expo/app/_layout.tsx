@@ -6,6 +6,10 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
 
 SplashScreen.preventAutoHideAsync()
 
