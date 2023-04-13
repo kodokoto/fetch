@@ -32,13 +32,14 @@ export default function ProfileIcon(props: User) {
   }
 
   const switchProfile = (profile: Profile) => {
-    setSession({ ...session, currentProfile: profile })
+    setSession({...session, currentProfile: profile})
   }
+
 
   return (
     <Box className="">
       <Menu
-        className="mt-4 mr-4"
+        className='mt-4 mr-4'
         trigger={(triggerProps) => {
           return (
             <Pressable accessibilityLabel="More options menu" {...triggerProps}>
@@ -47,71 +48,49 @@ export default function ProfileIcon(props: User) {
           )
         }}
       >
-        <Menu.Item
-          onPress={() =>
-            router.push(
-              `/${getDefaultValue().toLowerCase()}/${
-                session.currentProfile === 'Owner' ? ownerProfile?.id : sitterProfile?.id
-              }`
-            )
+          <Menu.Item onPress={() => router.push(`/${getDefaultValue().toLowerCase()}/${
+            session.currentProfile === 'Owner' ? ownerProfile?.id : sitterProfile?.id
+          }`)}>Your Profile</Menu.Item>
+          <Menu.Item onPress={() => router.push('/settings')}>Setting</Menu.Item>
+          <Menu.Item
+            onPress={() => {
+              signOut()
+            }}
+          >
+            Sign out
+          </Menu.Item>
+          <Menu.Item>Help</Menu.Item>
+        <Menu.OptionGroup title='Profiles' defaultValue={getDefaultValue()} type='checkbox'>
+          {
+            ownerProfile != null
+            ? <Menu.ItemOption value={'Owner'} onPress={() => {
+              switchProfile(Profile.OWNER)
+              // router.push('/home')
+            }}>Owner</Menu.ItemOption>
+            : <Menu.Item onPress={() => {
+              router.push('/create/owner')
+            }}>
+            <View className='flex flex-row items-center'>
+              <Ionicons name="add-circle-outline" size={14}></Ionicons>
+              <Text className='ml-4'>Add Owner</Text>
+            </View>
+          </Menu.Item>
           }
-        >
-          Your Profile
-        </Menu.Item>
-        <Menu.Item onPress={() => router.push('/settings')}>Setting</Menu.Item>
-        <Menu.Item
-          onPress={() => {
-            signOut()
-          }}
-        >
-          Sign out
-        </Menu.Item>
-        <Menu.Item>Help</Menu.Item>
-        <Menu.OptionGroup title="Profiles" defaultValue={getDefaultValue()} type="checkbox">
-          {ownerProfile != null ? (
-            <Menu.ItemOption
-              value={'Owner'}
-              onPress={() => {
-                switchProfile(Profile.OWNER)
-                // router.push('/home')
-              }}
-            >
-              Owner
-            </Menu.ItemOption>
-          ) : (
-            <Menu.Item
-              onPress={() => {
-                router.push('/create/owner')
-              }}
-            >
-              <View className="flex flex-row items-center">
-                <Ionicons name="add-circle-outline" size={14}></Ionicons>
-                <Text className="ml-4">Add Owner</Text>
-              </View>
-            </Menu.Item>
-          )}
-          {sitterProfile != null ? (
-            <Menu.ItemOption
-              value={'Sitter'}
-              onPress={() => {
-                switchProfile(Profile.SITTER)
-                // router.push('/home')
-              }}
-            >
-              Sitter
-            </Menu.ItemOption>
-          ) : (
-            <Menu.Item
-              onPress={() => {
-                router.push('/create/sitter')
-              }}
-            >
-              <View className="flex flex-row items-center">
-                <Ionicons name="add-circle-outline" size={14}></Ionicons>
-                <Text className="ml-4">Add Sitter</Text>
-              </View>
-            </Menu.Item>
-          )}
+          {
+            sitterProfile != null
+            ? <Menu.ItemOption value={'Sitter'} onPress={() => {
+              switchProfile(Profile.SITTER)
+              // router.push('/home')
+            }}>Sitter</Menu.ItemOption>
+            : <Menu.Item onPress={() => {
+              router.push('/create/sitter')
+            }}>
+            <View className='flex flex-row items-center'>
+              <Ionicons name="add-circle-outline" size={14}></Ionicons>
+              <Text className='ml-4'>Add Sitter</Text>
+            </View>
+          </Menu.Item>
+          }
         </Menu.OptionGroup>
       </Menu>
     </Box>

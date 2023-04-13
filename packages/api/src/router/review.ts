@@ -2,18 +2,18 @@ import { router, publicProcedure } from '../trpc'
 import { ReportType, prisma } from 'db'
 import { z } from 'zod'
 
-export const reviewRouter = router({
-  all: publicProcedure.query(() => {
-    return prisma.report.findMany()
-  }),
+export const reviewRouter = router ({
+    all: publicProcedure.query(() => {
+        return prisma.report.findMany()
+      }),
 
-  create: publicProcedure
+    create: publicProcedure
     .input(
       z.object({
         rating: z.number(),
         content: z.string(),
         fromId: z.string(),
-        toId: z.string(),
+        toId: z.string()
       })
     )
     .mutation(async ({ input }) => {
@@ -22,8 +22,8 @@ export const reviewRouter = router({
           rating: input.rating,
           content: input.content,
           fromId: input.fromId,
-          toId: input.toId,
+          toId: input.toId
         },
       })
-    }),
+    }), 
 })

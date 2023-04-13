@@ -3,7 +3,8 @@ import { z } from 'zod'
 import { prisma } from 'db'
 // import { Role } from '../../../app/utils/storage'
 
-type Role = 'OWNER' | 'SITTER'
+type Role = "OWNER" | "SITTER" 
+
 
 export const messageRouter = router({
   all: publicProcedure.query(() => {
@@ -36,16 +37,17 @@ export const messageRouter = router({
         ownerId: z.string(),
         sitterId: z.string(),
         content: z.string(),
-        sender: z.string(),
+        sender: z.string()
       })
     )
     .mutation(({ input }) => {
+      // console.log("create message");
       return prisma.message.create({
         data: {
           ownerId: input.ownerId,
           sitterId: input.sitterId,
           content: input.content,
-          sender: input.sender as Role,
+          sender: input.sender as Role
         },
       })
     }),

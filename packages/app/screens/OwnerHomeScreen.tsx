@@ -11,63 +11,62 @@ import BookingDisplayCard from '../components/BookingDisplayCard'
 import { RefreshControl } from 'react-native'
 
 export default function OwnerHomeScreen() {
-  const [refreshing, setRefreshing] = React.useState(false)
+
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true)
+    setRefreshing(true);
     setTimeout(() => {
-      setRefreshing(false)
-    }, 2000)
-  }, [])
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
-  const { user, isLoaded } = useUser()
+  const { user, isLoaded } = useUser();
   const userId = user?.id
 
   const { data: ownerProfile, isLoading: ownerProfileLoading } = api.owner.byUserId.useQuery(userId, {
     enabled: !!userId,
     cacheTime: 0,
   })
-  const {
-    data: bookings,
-    isLoading: bookingsLoading,
-    refetch,
-  } = api.booking.byOwnerId.useQuery(ownerProfile?.id, {
+  const { data: bookings, isLoading: bookingsLoading, refetch } = api.booking.byOwnerId.useQuery(ownerProfile?.id, {
     enabled: !!ownerProfile?.id,
     cacheTime: 0,
   })
 
-  React.useEffect(() => {
+    React.useEffect(() => {
     refetch()
   }, [refreshing])
 
   if (!isLoaded) return null
   if (bookingsLoading) return <Text>Loading...</Text>
 
+
   return (
-    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-      <View className="m-4">
+    <ScrollView
+     refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
+      <View className='m-4'>
         <Box className="flex-row justify-between my-8">
           <WelcomeMessage name={ownerProfile.name} />
-          <View className=" justify-center">
+          <View className=' justify-center'>
             <ProfileIcon iconUrl={ownerProfile.imageUrl} />
           </View>
         </Box>
         <Text className="font-bold text-xl ml-8 mb-8">Upcoming Bookings</Text>
-        {bookings && bookings.length > 0 ? (
-          bookings
-            .filter((booking) => booking.status === 'ACCEPTED')
-            .map((booking, index) => <BookingDisplayCard key={index} value={booking} />)
-        ) : (
-          <Text className="ml-8">You have no upcoming bookings</Text>
-        )}
+        {
+          bookings && bookings.length > 0 
+          ? bookings.filter((booking) => booking.status === "ACCEPTED")
+                    .map((booking, index) => <BookingDisplayCard key={index} value={booking} />)
+          : <Text className='ml-8'>You have no upcoming bookings</Text>
+        }
         <Text className="font-bold text-xl ml-8 my-8">Pending Bookings</Text>
-        {bookings && bookings.length > 0 ? (
-          bookings
-            .filter((booking) => booking.status === 'PENDING')
-            .map((booking, index) => <BookingDisplayCard key={index} value={booking} />)
-        ) : (
-          <Text className="ml-8">You have no pending bookings</Text>
-        )}
+        {
+          bookings && bookings.length > 0 
+          ? bookings.filter((booking) => booking.status === "PENDING")
+                    .map((booking, index) => <BookingDisplayCard key={index} value={booking} />)
+          : <Text className='ml-8'>You have no pending bookings</Text>
+        }
       </View>
     </ScrollView>
   )

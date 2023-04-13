@@ -63,7 +63,7 @@ export const ownerRouter = router({
         userId: z.string(),
         name: z.string(),
         imageUrl: z.string(),
-        location: z.string(),
+        location : z.string(),
         description: z.string(),
         bio: z.string(),
         images: z.array(z.string()),
@@ -86,14 +86,14 @@ export const ownerRouter = router({
         },
       })
     }),
-
+  
   update: publicProcedure
     .input(
       z.object({
         id: z.string(),
         name: z.string(),
         imageUrl: z.string(),
-        location: z.string(),
+        location : z.string(),
         description: z.string(),
         bio: z.string(),
       })
@@ -112,4 +112,5 @@ export const ownerRouter = router({
         },
       })
     }),
+
 })
