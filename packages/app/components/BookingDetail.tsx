@@ -195,10 +195,7 @@ export default function BookingDetail(props: Booking) {
               <Ionicons className="mx-auto ml-2" size={30} color="#3b82f6" name="paw"></Ionicons>
             </Button>
             <Box className="flex-end">
-                <DisplayCardList 
-                  Card={PetDisplayCard} 
-                  value={pets} 
-                />
+              
               <PetDisplayCard value={pet} />
             </Box>
           </Box>
