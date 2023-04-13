@@ -4,11 +4,12 @@
     "web": {
       "bundler": "metro"
     },
-    "name": "expo-app",
+    "name": "fetch",
     "slug": "expo-app",
+    "icon": "./assets/FetchLogoTransparentWithText.png",
     "userInterfaceStyle": "automatic",
     "sourceExts": ["js", "json", "ts", "tsx", "jsx", "vue"],
-    "productionApiUrl": "",
+    "productionApiUrl": "https://fetch-kodokoto.vercel.app/",
     "plugins": [
       [
         "expo-location",
