@@ -46,6 +46,7 @@ export default function EditBooking() {
     const handleSubmit = () => {
       mutation.mutateAsync({
         id: Number(bookingId),
+
         serviceId: getServiceByType(selectedServiceType).id,
         petId: getPetByName(selectedPet).id,
       }).then(() => {

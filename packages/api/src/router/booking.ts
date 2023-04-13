@@ -102,7 +102,6 @@ export const bookingRouter = router({
       })
     }),
   update: publicProcedure
-<<<<<<< Updated upstream
     .input(z.object({
       id: z.number(),
       ownerId: z.string(),
@@ -115,29 +114,12 @@ export const bookingRouter = router({
         frequency: z.string(),
       }),
     }))
-=======
-    .input(
-      z.object({
-        id: z.number(),
-        // ownerId: z.string(),
-        // sitterId: z.string(),
-        serviceId: z.number(),
-        petId: z.number(),
-        // scheduledTime: z.object({
-        //   time: z.string(),
-        //   day: z.string(),
-        //   frequency: z.string(),
-        // }),
-      })
-    )
->>>>>>> Stashed changes
     .mutation(async ({ input }) => {
       return await prisma.booking.update({
         where: {
           id: input.id,
         },
         data: {
-<<<<<<< Updated upstream
           owner: {
             connect: {
               id: input.ownerId,
@@ -148,30 +130,18 @@ export const bookingRouter = router({
               id: input.sitterId,
             }
           },
-=======
-          // owner: {
-          //   connect: {
-          //     id: input.ownerId,
-          //   },
-          // },
-          // sitter: {
-          //   connect: {
-          //     id: input.sitterId,
-          //   },
-          // },
->>>>>>> Stashed changes
           service: {
             connect: {
               id: input.serviceId,
             }
           },
-          // scheduledTime: {
-          //   create: {
-          //     time: input.scheduledTime.time as TimeOfDay,
-          //     day: input.scheduledTime.day as Day,
-          //     frequency: input.scheduledTime.frequency as BookingFrequency,
-          //   },
-          // },
+          scheduledTime: {
+            create: {
+              time: input.scheduledTime.time as TimeOfDay,
+              day: input.scheduledTime.day as Day,
+              frequency: input.scheduledTime.frequency as BookingFrequency,
+            },
+          },
           pet: {
             connect: {
               id: input.petId,
