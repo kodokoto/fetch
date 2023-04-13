@@ -41,6 +41,7 @@ export default function BookingDetail(props: Booking) {
   const mutationDelete = api.booking.delete.useMutation()
 
   const handleCancelBooking = () => {
+    
     mutationDelete.mutate(props.id)
     router.push({
       pathname: '/home',
