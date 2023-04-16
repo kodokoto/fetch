@@ -31,13 +31,9 @@ yarn install
 yarn db-generate
 ```
 
-If you use a simulator you need to add a flag to the `dev` script in `apps/expo/package.json`:
+I have provided the `.env` file with all the necessary envidoment variables to run the app locally within your development enviroment. This is bad practice, but for simplicities sake, this was our best option. Please keep this file, and its contents safe.
 
-i.e `"dev": "expo start --android",` or `"dev": "expo start --ios",`
-
-If you are using Expo go, you need to copy the `exp://` url from the terminal and paste it into the Expo go app.
-
-Ask me for the `.env` file and put it in the root directory.
+IMPORTANT FOR MARKERS: compressing the folder seems to rename `.env` to `env`. Please rename it back to `.env`
 
 ## Usage
 
@@ -45,7 +41,32 @@ Ask me for the `.env` file and put it in the root directory.
 yarn dev
 ```
 
-Setup for [android](https://docs.expo.dev/workflow/android-studio-emulator/) and [ios](https://docs.expo.dev/workflow/ios-simulator/) simulators.
+### Expo Go (Reccomended)
+To use run the app using [Expo Go](https://expo.dev/client), first download the app on your IOS or android device, create an account and run the following commands in the root folder of the project:
+
+```sh
+cd apps/expo
+npx expo run  
+```
+
+Here you will see a QR code which you can now scan using the Expo Go app. If you are logged in, it will save the link, so you wont have to do this again. From there you have to go back to the root folder and start the application there to also run the backend locally:
+
+```sh
+cd ../..
+yarn dev
+```
+
+### IOS Simulator
+
+If you are on OSX, I suggest using the IOS Simulator. Here is the required [setup](https://docs.expo.dev/workflow/ios-simulator/).
+
+Finally, go into `package.json` within `apps/expo` and add the `--ios` tag within the `dev` script as such: `"dev": "npx expo start --ios"`
+
+### Android Studio
+
+If you are on Windows, you can use the Android Simulator. Here is the required [setup](https://docs.expo.dev/workflow/android-studio-emulator/)
+
+Finally, go into `package.json` within `apps/expo` and add the `--android` tag within the `dev` script as such: `"dev": "npx expo start --android"`
 
 ## Build
 
@@ -233,6 +254,7 @@ export default function Component({ text }: componentProps) {
         |-- components
         |-- provider
         |-- utils
+        |-- assets
     |-- api
     |-- db
 ```
@@ -251,7 +273,7 @@ export default function Component({ text }: componentProps) {
 
 - [prisma](https://www.prisma.io/docs)
 - [trpc](https://trpc.io/docs)
-- [tanstack query](https://tanstack.com/query/latest/docs/react/quick-start)
+- [tanstack query](https://tanstack.com/query/latest/docs/react/quick-start) (data fetching)
 
 ### react native
 
