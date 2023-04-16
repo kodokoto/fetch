@@ -249,6 +249,7 @@ export default function Component({ text }: componentProps) {
 ```
 |-- apps
     |-- expo
+    |-- backend
 |-- packages
     |-- app
         |-- components
@@ -260,11 +261,12 @@ export default function Component({ text }: componentProps) {
 ```
 
 - `expo` is the expo app, this is where the [mobile navigation](https://expo.github.io/router/docs/) is handled
+- `backend` is where the express.js backend is located.
 - `components` is where all the custom components are stored
 - `provider` contains the context providers for the app (authentication, theming, tanstack query and trpc)
 - `assets` is where all the images and other assets are stored
 - `utils` is where all the utility and helper functions are stored, including the api client
-- `api` api backend w/ tRPC routers
+- `api` api for the backend, using tRPC routers
 - `db` database backend w/ prisma
 
 ## resources
