@@ -31,7 +31,7 @@ yarn install
 yarn db-generate
 ```
 
-I have provided the `.env` file with all the necessary envidoment variables to run the app locally within your development enviroment. This is bad practice, but for the sake of simplicity, this was our best option. Please keep this file, and its contents safe.
+I have provided the `.env` file with all the necessary envidoment variables to run the app locally within your development enviroment. This is bad practice, but for the sake of simplicity, this was our best option. Please keep this file and its contents safe.
 
 IMPORTANT FOR MARKERS: compressing the folder seems to rename `.env` to `env`. Please rename it back to `.env`
 
